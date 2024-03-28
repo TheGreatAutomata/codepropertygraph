@@ -33,12 +33,12 @@ object AnnotationParameter {
   val layoutInformation = new NodeLayoutInformation(
     Label,
     PropertyNames.allAsJava,
-    List().asJava,
+    List(io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation).asJava,
     List(io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation).asJava
   )
 
   object Edges {
-    val Out: Array[String] = Array()
+    val Out: Array[String] = Array("IN_MACRO")
     val In: Array[String]  = Array("AST")
   }
 
@@ -77,6 +77,9 @@ class AnnotationParameter(graph_4762: Graph, id_4762: Long /*cf https://github.c
       case "ORDER" => AnnotationParameter.PropertyDefaults.Order
       case _       => super.propertyDefaultValue(propertyKey)
     }
+
+  def inMacroOut: Iterator[MacroDecl] = get().inMacroOut
+  override def _inMacroOut            = get()._inMacroOut
 
   def astIn: Iterator[AnnotationParameterAssign] = get().astIn
   override def _astIn                            = get()._astIn
@@ -164,8 +167,11 @@ class AnnotationParameterDb(ref: NodeRef[NodeDb])
   }
 
   import overflowdb.traversal._
-  def astIn: Iterator[AnnotationParameterAssign] = createAdjacentNodeScalaIteratorByOffSet[AnnotationParameterAssign](0)
-  override def _astIn                            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
+  def inMacroOut: Iterator[MacroDecl] = createAdjacentNodeScalaIteratorByOffSet[MacroDecl](0)
+  override def _inMacroOut            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
+
+  def astIn: Iterator[AnnotationParameterAssign] = createAdjacentNodeScalaIteratorByOffSet[AnnotationParameterAssign](1)
+  override def _astIn                            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
   def _annotationParameterAssignViaAstIn: overflowdb.traversal.Traversal[AnnotationParameterAssign] =
     astIn.collectAll[AnnotationParameterAssign]
 

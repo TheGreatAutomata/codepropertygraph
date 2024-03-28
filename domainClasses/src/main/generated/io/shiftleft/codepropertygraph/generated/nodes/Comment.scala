@@ -36,7 +36,10 @@ object Comment {
   val layoutInformation = new NodeLayoutInformation(
     Label,
     PropertyNames.allAsJava,
-    List(io.shiftleft.codepropertygraph.generated.edges.SourceFile.layoutInformation).asJava,
+    List(
+      io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SourceFile.layoutInformation
+    ).asJava,
     List(
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.SourceFile.layoutInformation
@@ -44,7 +47,7 @@ object Comment {
   )
 
   object Edges {
-    val Out: Array[String] = Array("SOURCE_FILE")
+    val Out: Array[String] = Array("IN_MACRO", "SOURCE_FILE")
     val In: Array[String]  = Array("AST", "SOURCE_FILE")
   }
 
@@ -86,6 +89,9 @@ class Comment(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
       case "ORDER"    => Comment.PropertyDefaults.Order
       case _          => super.propertyDefaultValue(propertyKey)
     }
+
+  def inMacroOut: Iterator[MacroDecl] = get().inMacroOut
+  override def _inMacroOut            = get()._inMacroOut
 
   def sourceFileOut: Iterator[Comment] = get().sourceFileOut
   override def _sourceFileOut          = get()._sourceFileOut
@@ -188,16 +194,19 @@ class CommentDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with A
   }
 
   import overflowdb.traversal._
-  def sourceFileOut: Iterator[Comment]              = createAdjacentNodeScalaIteratorByOffSet[Comment](0)
-  override def _sourceFileOut                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
+  def inMacroOut: Iterator[MacroDecl] = createAdjacentNodeScalaIteratorByOffSet[MacroDecl](0)
+  override def _inMacroOut            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
+
+  def sourceFileOut: Iterator[Comment]              = createAdjacentNodeScalaIteratorByOffSet[Comment](1)
+  override def _sourceFileOut                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
   def file: overflowdb.traversal.Traversal[Comment] = sourceFileOut.collectAll[Comment]
 
-  def astIn: Iterator[File]                               = createAdjacentNodeScalaIteratorByOffSet[File](1)
-  override def _astIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+  def astIn: Iterator[File]                               = createAdjacentNodeScalaIteratorByOffSet[File](2)
+  override def _astIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
   def _fileViaAstIn: overflowdb.traversal.Traversal[File] = astIn.collectAll[File]
 
-  def sourceFileIn: Iterator[Comment] = createAdjacentNodeScalaIteratorByOffSet[Comment](2)
-  override def _sourceFileIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+  def sourceFileIn: Iterator[Comment] = createAdjacentNodeScalaIteratorByOffSet[Comment](3)
+  override def _sourceFileIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _commentViaSourceFileIn: overflowdb.traversal.Traversal[Comment] = sourceFileIn.collectAll[Comment]
 
   override def label: String = {

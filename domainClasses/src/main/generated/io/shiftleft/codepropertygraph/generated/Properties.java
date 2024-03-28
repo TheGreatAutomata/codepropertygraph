@@ -185,6 +185,9 @@ public static final overflowdb.PropertyKey<Integer> LINE_NUMBER = new overflowdb
 represented by the node ends. */
 public static final overflowdb.PropertyKey<Integer> LINE_NUMBER_END = new overflowdb.PropertyKey<>("LINE_NUMBER_END");
 
+/** MACRO_FULL_NAME */
+public static final overflowdb.PropertyKey<String> MACRO_FULL_NAME = new overflowdb.PropertyKey<>("MACRO_FULL_NAME");
+
 /** The FULL_NAME of a method. Used to link CALL and METHOD nodes. It is required
 to have exactly one METHOD node for each METHOD_FULL_NAME */
 public static final overflowdb.PropertyKey<String> METHOD_FULL_NAME = new overflowdb.PropertyKey<>("METHOD_FULL_NAME");
@@ -310,6 +313,7 @@ add(KEY);
 add(LANGUAGE);
 add(LINE_NUMBER);
 add(LINE_NUMBER_END);
+add(MACRO_FULL_NAME);
 add(METHOD_FULL_NAME);
 add(METHOD_SHORT_NAME);
 add(MODIFIER_TYPE);

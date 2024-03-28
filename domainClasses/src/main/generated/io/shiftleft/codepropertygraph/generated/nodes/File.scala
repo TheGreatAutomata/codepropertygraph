@@ -44,13 +44,14 @@ object File {
     List(
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Contains.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.TaggedBy.layoutInformation
     ).asJava,
     List(io.shiftleft.codepropertygraph.generated.edges.SourceFile.layoutInformation).asJava
   )
 
   object Edges {
-    val Out: Array[String] = Array("AST", "CONTAINS", "TAGGED_BY")
+    val Out: Array[String] = Array("AST", "CONTAINS", "IN_MACRO", "TAGGED_BY")
     val In: Array[String]  = Array("SOURCE_FILE")
   }
 
@@ -116,6 +117,10 @@ class File(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
   def containsOut: Iterator[AstNode] = get().containsOut
   override def _containsOut          = get()._containsOut
 
+  /** Traverse to MACRO_DECL via CONTAINS OUT edge.
+    */
+  def _macroDeclViaContainsOut: overflowdb.traversal.Traversal[MacroDecl] = get()._macroDeclViaContainsOut
+
   /** Traverse to METHOD via CONTAINS OUT edge.
     */
   def _methodViaContainsOut: overflowdb.traversal.Traversal[Method] = get()._methodViaContainsOut
@@ -128,6 +133,9 @@ class File(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
     */
   def _typeDeclViaContainsOut: overflowdb.traversal.Traversal[TypeDecl] = get()._typeDeclViaContainsOut
 
+  def inMacroOut: Iterator[MacroDecl] = get().inMacroOut
+  override def _inMacroOut            = get()._inMacroOut
+
   def taggedByOut: Iterator[Tag] = get().taggedByOut
   override def _taggedByOut      = get()._taggedByOut
 
@@ -137,6 +145,10 @@ class File(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
 
   def sourceFileIn: Iterator[AstNode] = get().sourceFileIn
   override def _sourceFileIn          = get()._sourceFileIn
+
+  /** Traverse to MACRO_DECL via SOURCE_FILE IN edge.
+    */
+  def macroDecl: overflowdb.traversal.Traversal[MacroDecl] = get().macroDecl
 
   /** Traverse to METHOD via SOURCE_FILE IN edge.
     */
@@ -250,17 +262,22 @@ class FileDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with AstN
 
   def containsOut: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](1)
   override def _containsOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+  def _macroDeclViaContainsOut: overflowdb.traversal.Traversal[MacroDecl]     = containsOut.collectAll[MacroDecl]
   def _methodViaContainsOut: overflowdb.traversal.Traversal[Method]           = containsOut.collectAll[Method]
   def _templateDomViaContainsOut: overflowdb.traversal.Traversal[TemplateDom] = containsOut.collectAll[TemplateDom]
   def _typeDeclViaContainsOut: overflowdb.traversal.Traversal[TypeDecl]       = containsOut.collectAll[TypeDecl]
 
-  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](2)
-  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+  def inMacroOut: Iterator[MacroDecl] = createAdjacentNodeScalaIteratorByOffSet[MacroDecl](2)
+  override def _inMacroOut            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+
+  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](3)
+  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _tagViaTaggedByOut: overflowdb.traversal.Traversal[Tag] = taggedByOut.collectAll[Tag]
 
-  def sourceFileIn: Iterator[AstNode]                = createAdjacentNodeScalaIteratorByOffSet[AstNode](3)
-  override def _sourceFileIn                         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
-  def method: overflowdb.traversal.Traversal[Method] = sourceFileIn.collectAll[Method]
+  def sourceFileIn: Iterator[AstNode]                      = createAdjacentNodeScalaIteratorByOffSet[AstNode](4)
+  override def _sourceFileIn                               = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+  def macroDecl: overflowdb.traversal.Traversal[MacroDecl] = sourceFileIn.collectAll[MacroDecl]
+  def method: overflowdb.traversal.Traversal[Method]       = sourceFileIn.collectAll[Method]
   def namespaceBlock: overflowdb.traversal.Traversal[NamespaceBlock] = sourceFileIn.collectAll[NamespaceBlock]
   def typeDecl: overflowdb.traversal.Traversal[TypeDecl]             = sourceFileIn.collectAll[TypeDecl]
 

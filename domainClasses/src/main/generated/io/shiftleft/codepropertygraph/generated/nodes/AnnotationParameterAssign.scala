@@ -33,12 +33,15 @@ object AnnotationParameterAssign {
   val layoutInformation = new NodeLayoutInformation(
     Label,
     PropertyNames.allAsJava,
-    List(io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation).asJava,
+    List(
+      io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation
+    ).asJava,
     List(io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation).asJava
   )
 
   object Edges {
-    val Out: Array[String] = Array("AST")
+    val Out: Array[String] = Array("AST", "IN_MACRO")
     val In: Array[String]  = Array("AST")
   }
 
@@ -97,6 +100,9 @@ class AnnotationParameterAssign(graph_4762: Graph, id_4762: Long /*cf https://gi
   /** Traverse to ARRAY_INITIALIZER via AST OUT edge.
     */
   def _arrayInitializerViaAstOut: overflowdb.traversal.Traversal[ArrayInitializer] = get()._arrayInitializerViaAstOut
+
+  def inMacroOut: Iterator[MacroDecl] = get().inMacroOut
+  override def _inMacroOut            = get()._inMacroOut
 
   def astIn: Iterator[Annotation] = get().astIn
   override def _astIn             = get()._astIn
@@ -192,8 +198,11 @@ class AnnotationParameterAssignDb(ref: NodeRef[NodeDb])
     astOut.collectAll[AnnotationParameter]
   def _arrayInitializerViaAstOut: overflowdb.traversal.Traversal[ArrayInitializer] = astOut.collectAll[ArrayInitializer]
 
-  def astIn: Iterator[Annotation] = createAdjacentNodeScalaIteratorByOffSet[Annotation](1)
-  override def _astIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+  def inMacroOut: Iterator[MacroDecl] = createAdjacentNodeScalaIteratorByOffSet[MacroDecl](1)
+  override def _inMacroOut            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+
+  def astIn: Iterator[Annotation] = createAdjacentNodeScalaIteratorByOffSet[Annotation](2)
+  override def _astIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
   def _annotationViaAstIn: overflowdb.traversal.Traversal[Annotation] = astIn.collectAll[Annotation]
 
   override def label: String = {

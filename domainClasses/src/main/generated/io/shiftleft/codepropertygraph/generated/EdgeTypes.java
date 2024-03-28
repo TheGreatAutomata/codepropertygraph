@@ -65,6 +65,9 @@ public static final String EVAL_TYPE = "EVAL_TYPE";
 /** Edge from imports to dependencies */
 public static final String IMPORTS = "IMPORTS";
 
+/** IN_MACRO */
+public static final String IN_MACRO = "IN_MACRO";
+
 /** Inheritance relation between a type declaration and a type. This edge MUST NOT
  be created by the language frontend as it is automatically created from
  `INHERITS_FROM_TYPE_FULL_NAME` fields then the CPG is first loaded. */
@@ -124,6 +127,7 @@ add(CONTAINS);
 add(DOMINATE);
 add(EVAL_TYPE);
 add(IMPORTS);
+add(IN_MACRO);
 add(INHERITS_FROM);
 add(IS_CALL_FOR_IMPORT);
 add(PARAMETER_LINK);

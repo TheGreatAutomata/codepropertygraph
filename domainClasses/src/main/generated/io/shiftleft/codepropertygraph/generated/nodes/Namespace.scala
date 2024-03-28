@@ -36,12 +36,12 @@ object Namespace {
   val layoutInformation = new NodeLayoutInformation(
     Label,
     PropertyNames.allAsJava,
-    List().asJava,
+    List(io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation).asJava,
     List(io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation).asJava
   )
 
   object Edges {
-    val Out: Array[String] = Array()
+    val Out: Array[String] = Array("IN_MACRO")
     val In: Array[String]  = Array("REF")
   }
 
@@ -83,6 +83,9 @@ class Namespace(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/b
       case "ORDER" => Namespace.PropertyDefaults.Order
       case _       => super.propertyDefaultValue(propertyKey)
     }
+
+  def inMacroOut: Iterator[MacroDecl] = get().inMacroOut
+  override def _inMacroOut            = get()._inMacroOut
 
   def refIn: Iterator[NamespaceBlock] = get().refIn
   override def _refIn                 = get()._refIn
@@ -171,8 +174,11 @@ class NamespaceDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   }
 
   import overflowdb.traversal._
-  def refIn: Iterator[NamespaceBlock] = createAdjacentNodeScalaIteratorByOffSet[NamespaceBlock](0)
-  override def _refIn                 = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
+  def inMacroOut: Iterator[MacroDecl] = createAdjacentNodeScalaIteratorByOffSet[MacroDecl](0)
+  override def _inMacroOut            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
+
+  def refIn: Iterator[NamespaceBlock] = createAdjacentNodeScalaIteratorByOffSet[NamespaceBlock](1)
+  override def _refIn                 = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
   def _namespaceBlockViaRefIn: overflowdb.traversal.Traversal[NamespaceBlock] = refIn.collectAll[NamespaceBlock]
 
   override def label: String = {

@@ -32,6 +32,7 @@ object Factories {
     Dominate.factory,
     EvalType.factory,
     Imports.factory,
+    InMacro.factory,
     InheritsFrom.factory,
     IsCallForImport.factory,
     ParameterLink.factory,

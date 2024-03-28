@@ -185,6 +185,9 @@ public static final String LINE_NUMBER = "LINE_NUMBER";
 represented by the node ends. */
 public static final String LINE_NUMBER_END = "LINE_NUMBER_END";
 
+/** MACRO_FULL_NAME */
+public static final String MACRO_FULL_NAME = "MACRO_FULL_NAME";
+
 /** The FULL_NAME of a method. Used to link CALL and METHOD nodes. It is required
 to have exactly one METHOD node for each METHOD_FULL_NAME */
 public static final String METHOD_FULL_NAME = "METHOD_FULL_NAME";
@@ -310,6 +313,7 @@ add(KEY);
 add(LANGUAGE);
 add(LINE_NUMBER);
 add(LINE_NUMBER_END);
+add(MACRO_FULL_NAME);
 add(METHOD_FULL_NAME);
 add(METHOD_SHORT_NAME);
 add(MODIFIER_TYPE);

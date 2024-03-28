@@ -39,12 +39,12 @@ object JumpLabel {
   val layoutInformation = new NodeLayoutInformation(
     Label,
     PropertyNames.allAsJava,
-    List().asJava,
+    List(io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation).asJava,
     List(io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation).asJava
   )
 
   object Edges {
-    val Out: Array[String] = Array()
+    val Out: Array[String] = Array("IN_MACRO")
     val In: Array[String]  = Array("AST")
   }
 
@@ -89,6 +89,9 @@ class JumpLabel(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/b
       case "PARSER_TYPE_NAME" => JumpLabel.PropertyDefaults.ParserTypeName
       case _                  => super.propertyDefaultValue(propertyKey)
     }
+
+  def inMacroOut: Iterator[MacroDecl] = get().inMacroOut
+  override def _inMacroOut            = get()._inMacroOut
 
   def astIn: Iterator[ControlStructure] = get().astIn
   override def _astIn                   = get()._astIn
@@ -183,8 +186,11 @@ class JumpLabelDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   }
 
   import overflowdb.traversal._
-  def astIn: Iterator[ControlStructure] = createAdjacentNodeScalaIteratorByOffSet[ControlStructure](0)
-  override def _astIn                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
+  def inMacroOut: Iterator[MacroDecl] = createAdjacentNodeScalaIteratorByOffSet[MacroDecl](0)
+  override def _inMacroOut            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
+
+  def astIn: Iterator[ControlStructure] = createAdjacentNodeScalaIteratorByOffSet[ControlStructure](1)
+  override def _astIn                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
   def _controlStructureViaAstIn: overflowdb.traversal.Traversal[ControlStructure] = astIn.collectAll[ControlStructure]
 
   override def label: String = {

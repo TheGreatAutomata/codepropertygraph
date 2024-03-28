@@ -163,6 +163,14 @@ class GeneratedNodeStarterExt(val wrapper: Cpg) extends AnyVal {
   def location: Iterator[nodes.Location] =
     overflowdb.traversal.InitialTraversal.from[nodes.Location](wrapper.graph, "LOCATION")
 
+  @overflowdb.traversal.help.Doc(info = "All nodes of type MacroDecl, i.e. with label MACRO_DECL")
+  def macroDecl: Iterator[nodes.MacroDecl] =
+    overflowdb.traversal.InitialTraversal.from[nodes.MacroDecl](wrapper.graph, "MACRO_DECL")
+
+  @overflowdb.traversal.help.Doc(info = "All nodes of type MacroRef, i.e. with label MACRO_REF")
+  def macroRef: Iterator[nodes.MacroRef] =
+    overflowdb.traversal.InitialTraversal.from[nodes.MacroRef](wrapper.graph, "MACRO_REF")
+
   @overflowdb.traversal.help.Doc(info = "All nodes of type Member, i.e. with label MEMBER")
   def member: Iterator[nodes.Member] = overflowdb.traversal.InitialTraversal.from[nodes.Member](wrapper.graph, "MEMBER")
 
@@ -240,7 +248,7 @@ class GeneratedNodeStarterExt(val wrapper: Cpg) extends AnyVal {
 
   @overflowdb.traversal.help.Doc(
     info =
-      "All nodes of type AstNode, i.e. with label in ANNOTATION, ANNOTATION_LITERAL, ANNOTATION_PARAMETER, ANNOTATION_PARAMETER_ASSIGN, ARRAY_INITIALIZER, BLOCK, CALL, COMMENT, CONTROL_STRUCTURE, FIELD_IDENTIFIER, FILE, IDENTIFIER, IMPORT, JUMP_LABEL, JUMP_TARGET, LITERAL, LOCAL, MEMBER, METHOD, METHOD_PARAMETER_IN, METHOD_PARAMETER_OUT, METHOD_REF, METHOD_RETURN, MODIFIER, NAMESPACE, NAMESPACE_BLOCK, RETURN, TEMPLATE_DOM, TYPE_ARGUMENT, TYPE_DECL, TYPE_PARAMETER, TYPE_REF, UNKNOWN"
+      "All nodes of type AstNode, i.e. with label in ANNOTATION, ANNOTATION_LITERAL, ANNOTATION_PARAMETER, ANNOTATION_PARAMETER_ASSIGN, ARRAY_INITIALIZER, BLOCK, CALL, COMMENT, CONTROL_STRUCTURE, FIELD_IDENTIFIER, FILE, IDENTIFIER, IMPORT, JUMP_LABEL, JUMP_TARGET, LITERAL, LOCAL, MACRO_DECL, MACRO_REF, MEMBER, METHOD, METHOD_PARAMETER_IN, METHOD_PARAMETER_OUT, METHOD_REF, METHOD_RETURN, MODIFIER, NAMESPACE, NAMESPACE_BLOCK, RETURN, TEMPLATE_DOM, TYPE_ARGUMENT, TYPE_DECL, TYPE_PARAMETER, TYPE_REF, UNKNOWN"
   )
   def astNode: Iterator[nodes.AstNode] = wrapper.graph
     .nodes(
@@ -261,6 +269,8 @@ class GeneratedNodeStarterExt(val wrapper: Cpg) extends AnyVal {
       "JUMP_TARGET",
       "LITERAL",
       "LOCAL",
+      "MACRO_DECL",
+      "MACRO_REF",
       "MEMBER",
       "METHOD",
       "METHOD_PARAMETER_IN",
@@ -286,7 +296,7 @@ class GeneratedNodeStarterExt(val wrapper: Cpg) extends AnyVal {
 
   @overflowdb.traversal.help.Doc(
     info =
-      "All nodes of type CfgNode, i.e. with label in ANNOTATION, ANNOTATION_LITERAL, ARRAY_INITIALIZER, BLOCK, CALL, CONTROL_STRUCTURE, FIELD_IDENTIFIER, IDENTIFIER, JUMP_TARGET, LITERAL, METHOD, METHOD_PARAMETER_IN, METHOD_PARAMETER_OUT, METHOD_REF, METHOD_RETURN, RETURN, TEMPLATE_DOM, TYPE_REF, UNKNOWN"
+      "All nodes of type CfgNode, i.e. with label in ANNOTATION, ANNOTATION_LITERAL, ARRAY_INITIALIZER, BLOCK, CALL, CONTROL_STRUCTURE, FIELD_IDENTIFIER, IDENTIFIER, JUMP_TARGET, LITERAL, MACRO_REF, METHOD, METHOD_PARAMETER_IN, METHOD_PARAMETER_OUT, METHOD_REF, METHOD_RETURN, RETURN, TEMPLATE_DOM, TYPE_REF, UNKNOWN"
   )
   def cfgNode: Iterator[nodes.CfgNode] = wrapper.graph
     .nodes(
@@ -300,6 +310,7 @@ class GeneratedNodeStarterExt(val wrapper: Cpg) extends AnyVal {
       "IDENTIFIER",
       "JUMP_TARGET",
       "LITERAL",
+      "MACRO_REF",
       "METHOD",
       "METHOD_PARAMETER_IN",
       "METHOD_PARAMETER_OUT",
@@ -315,16 +326,16 @@ class GeneratedNodeStarterExt(val wrapper: Cpg) extends AnyVal {
 
   @overflowdb.traversal.help.Doc(
     info =
-      "All nodes of type Declaration, i.e. with label in LOCAL, MEMBER, METHOD, METHOD_PARAMETER_IN, METHOD_PARAMETER_OUT"
+      "All nodes of type Declaration, i.e. with label in LOCAL, MACRO_DECL, MEMBER, METHOD, METHOD_PARAMETER_IN, METHOD_PARAMETER_OUT"
   )
   def declaration: Iterator[nodes.Declaration] = wrapper.graph
-    .nodes("LOCAL", "MEMBER", "METHOD", "METHOD_PARAMETER_IN", "METHOD_PARAMETER_OUT")
+    .nodes("LOCAL", "MACRO_DECL", "MEMBER", "METHOD", "METHOD_PARAMETER_IN", "METHOD_PARAMETER_OUT")
     .asScala
     .asInstanceOf[Iterator[nodes.Declaration]]
 
   @overflowdb.traversal.help.Doc(
     info =
-      "All nodes of type Expression, i.e. with label in ANNOTATION, ANNOTATION_LITERAL, ARRAY_INITIALIZER, BLOCK, CALL, CONTROL_STRUCTURE, FIELD_IDENTIFIER, IDENTIFIER, LITERAL, METHOD_REF, RETURN, TEMPLATE_DOM, TYPE_REF, UNKNOWN"
+      "All nodes of type Expression, i.e. with label in ANNOTATION, ANNOTATION_LITERAL, ARRAY_INITIALIZER, BLOCK, CALL, CONTROL_STRUCTURE, FIELD_IDENTIFIER, IDENTIFIER, LITERAL, MACRO_REF, METHOD_REF, RETURN, TEMPLATE_DOM, TYPE_REF, UNKNOWN"
   )
   def expression: Iterator[nodes.Expression] = wrapper.graph
     .nodes(
@@ -337,6 +348,7 @@ class GeneratedNodeStarterExt(val wrapper: Cpg) extends AnyVal {
       "FIELD_IDENTIFIER",
       "IDENTIFIER",
       "LITERAL",
+      "MACRO_REF",
       "METHOD_REF",
       "RETURN",
       "TEMPLATE_DOM",

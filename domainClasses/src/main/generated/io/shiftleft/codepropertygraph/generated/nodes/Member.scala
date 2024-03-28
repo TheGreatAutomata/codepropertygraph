@@ -63,6 +63,7 @@ object Member {
     List(
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.EvalType.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.TaggedBy.layoutInformation
     ).asJava,
     List(
@@ -72,7 +73,7 @@ object Member {
   )
 
   object Edges {
-    val Out: Array[String] = Array("AST", "EVAL_TYPE", "TAGGED_BY")
+    val Out: Array[String] = Array("AST", "EVAL_TYPE", "IN_MACRO", "TAGGED_BY")
     val In: Array[String]  = Array("AST", "REF")
   }
 
@@ -148,6 +149,9 @@ class Member(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
   /** Traverse to member type */
   @overflowdb.traversal.help.Doc(info = """Traverse to member type""")
   def typ: overflowdb.traversal.Traversal[Type] = get().typ
+
+  def inMacroOut: Iterator[MacroDecl] = get().inMacroOut
+  override def _inMacroOut            = get()._inMacroOut
 
   def taggedByOut: Iterator[Tag] = get().taggedByOut
   override def _taggedByOut      = get()._taggedByOut
@@ -299,12 +303,15 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
   override def _evalTypeOut                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
   def typ: overflowdb.traversal.Traversal[Type] = evalTypeOut.collectAll[Type]
 
-  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](2)
-  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+  def inMacroOut: Iterator[MacroDecl] = createAdjacentNodeScalaIteratorByOffSet[MacroDecl](2)
+  override def _inMacroOut            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+
+  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](3)
+  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _tagViaTaggedByOut: overflowdb.traversal.Traversal[Tag] = taggedByOut.collectAll[Tag]
 
-  def astIn: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](3)
-  override def _astIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
+  def astIn: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](4)
+  override def _astIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
   def typeDecl: TypeDecl = try { astIn.collectAll[TypeDecl].next() }
   catch {
     case e: java.util.NoSuchElementException =>
@@ -315,8 +322,8 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
   }
   def _unknownViaAstIn: overflowdb.traversal.Traversal[Unknown] = astIn.collectAll[Unknown]
 
-  def refIn: Iterator[Call]                               = createAdjacentNodeScalaIteratorByOffSet[Call](4)
-  override def _refIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+  def refIn: Iterator[Call]                               = createAdjacentNodeScalaIteratorByOffSet[Call](5)
+  override def _refIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
   def _callViaRefIn: overflowdb.traversal.Traversal[Call] = refIn.collectAll[Call]
 
   override def label: String = {

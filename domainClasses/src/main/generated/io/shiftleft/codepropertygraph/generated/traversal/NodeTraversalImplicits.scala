@@ -75,6 +75,12 @@ trait NodeTraversalImplicits extends NodeBaseTypeTraversalImplicits {
   implicit def toLocationTraversalExtGen[NodeType <: Location](
     trav: IterableOnce[NodeType]
   ): LocationTraversalExtGen[NodeType] = new LocationTraversalExtGen(trav.iterator)
+  implicit def toMacroDeclTraversalExtGen[NodeType <: MacroDecl](
+    trav: IterableOnce[NodeType]
+  ): MacroDeclTraversalExtGen[NodeType] = new MacroDeclTraversalExtGen(trav.iterator)
+  implicit def toMacroRefTraversalExtGen[NodeType <: MacroRef](
+    trav: IterableOnce[NodeType]
+  ): MacroRefTraversalExtGen[NodeType] = new MacroRefTraversalExtGen(trav.iterator)
   implicit def toMemberTraversalExtGen[NodeType <: Member](
     trav: IterableOnce[NodeType]
   ): MemberTraversalExtGen[NodeType] = new MemberTraversalExtGen(trav.iterator)
@@ -185,6 +191,8 @@ class StoredNodeTraversalExtGen[NodeType <: StoredNode](val traversal: Iterator[
   def _evalTypeIn: Iterator[StoredNode]         = traversal.flatMap { _._evalTypeIn }
   def _importsOut: Iterator[StoredNode]         = traversal.flatMap { _._importsOut }
   def _importsIn: Iterator[StoredNode]          = traversal.flatMap { _._importsIn }
+  def _inMacroOut: Iterator[StoredNode]         = traversal.flatMap { _._inMacroOut }
+  def _inMacroIn: Iterator[StoredNode]          = traversal.flatMap { _._inMacroIn }
   def _inheritsFromOut: Iterator[StoredNode]    = traversal.flatMap { _._inheritsFromOut }
   def _inheritsFromIn: Iterator[StoredNode]     = traversal.flatMap { _._inheritsFromIn }
   def _isCallForImportOut: Iterator[StoredNode] = traversal.flatMap { _._isCallForImportOut }

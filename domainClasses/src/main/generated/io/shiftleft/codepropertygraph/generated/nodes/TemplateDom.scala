@@ -44,6 +44,7 @@ object TemplateDom {
     List(
       io.shiftleft.codepropertygraph.generated.edges.Argument.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.TaggedBy.layoutInformation
     ).asJava,
@@ -57,7 +58,7 @@ object TemplateDom {
   )
 
   object Edges {
-    val Out: Array[String] = Array("ARGUMENT", "AST", "REACHING_DEF", "TAGGED_BY")
+    val Out: Array[String] = Array("ARGUMENT", "AST", "IN_MACRO", "REACHING_DEF", "TAGGED_BY")
     val In: Array[String]  = Array("ARGUMENT", "AST", "CFG", "CONTAINS", "REACHING_DEF")
   }
 
@@ -114,6 +115,9 @@ class TemplateDom(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala
   /** Traverse to EXPRESSION via AST OUT edge.
     */
   def _expressionViaAstOut: overflowdb.traversal.Traversal[Expression] = get()._expressionViaAstOut
+
+  def inMacroOut: Iterator[MacroDecl] = get().inMacroOut
+  override def _inMacroOut            = get()._inMacroOut
 
   def reachingDefOut: Iterator[Expression] = get().reachingDefOut
   override def _reachingDefOut             = get()._reachingDefOut
@@ -255,31 +259,34 @@ class TemplateDomDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode wi
   override def _astOut             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
   def _expressionViaAstOut: overflowdb.traversal.Traversal[Expression] = astOut.collectAll[Expression]
 
-  def reachingDefOut: Iterator[Expression] = createAdjacentNodeScalaIteratorByOffSet[Expression](2)
-  override def _reachingDefOut             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+  def inMacroOut: Iterator[MacroDecl] = createAdjacentNodeScalaIteratorByOffSet[MacroDecl](2)
+  override def _inMacroOut            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+
+  def reachingDefOut: Iterator[Expression] = createAdjacentNodeScalaIteratorByOffSet[Expression](3)
+  override def _reachingDefOut             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _expressionViaReachingDefOut: overflowdb.traversal.Traversal[Expression] = reachingDefOut.collectAll[Expression]
 
-  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](3)
-  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
+  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](4)
+  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
   def _tagViaTaggedByOut: overflowdb.traversal.Traversal[Tag] = taggedByOut.collectAll[Tag]
 
-  def argumentIn: Iterator[Expression] = createAdjacentNodeScalaIteratorByOffSet[Expression](4)
-  override def _argumentIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+  def argumentIn: Iterator[Expression] = createAdjacentNodeScalaIteratorByOffSet[Expression](5)
+  override def _argumentIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
   def _expressionViaArgumentIn: overflowdb.traversal.Traversal[Expression] = argumentIn.collectAll[Expression]
 
-  def astIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](5)
-  override def _astIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
+  def astIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](6)
+  override def _astIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
 
-  def cfgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](6)
-  override def _cfgIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
+  def cfgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](7)
+  override def _cfgIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
 
-  def containsIn: Iterator[AstNode]                            = createAdjacentNodeScalaIteratorByOffSet[AstNode](7)
-  override def _containsIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
+  def containsIn: Iterator[AstNode]                            = createAdjacentNodeScalaIteratorByOffSet[AstNode](8)
+  override def _containsIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
   def _fileViaContainsIn: overflowdb.traversal.Traversal[File] = containsIn.collectAll[File]
   def _methodViaContainsIn: overflowdb.traversal.Traversal[Method] = containsIn.collectAll[Method]
 
-  def reachingDefIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](8)
-  override def _reachingDefIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
+  def reachingDefIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](9)
+  override def _reachingDefIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](9)
 
   override def label: String = {
     TemplateDom.Label

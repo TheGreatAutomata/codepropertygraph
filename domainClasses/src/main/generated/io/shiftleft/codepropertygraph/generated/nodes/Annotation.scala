@@ -46,7 +46,8 @@ object Annotation {
     PropertyNames.allAsJava,
     List(
       io.shiftleft.codepropertygraph.generated.edges.Argument.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation
     ).asJava,
     List(
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
@@ -56,7 +57,7 @@ object Annotation {
   )
 
   object Edges {
-    val Out: Array[String] = Array("ARGUMENT", "AST")
+    val Out: Array[String] = Array("ARGUMENT", "AST", "IN_MACRO")
     val In: Array[String]  = Array("AST", "CFG", "REACHING_DEF")
   }
 
@@ -117,6 +118,9 @@ class Annotation(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/
     */
   def _annotationParameterAssignViaAstOut: overflowdb.traversal.Traversal[AnnotationParameterAssign] =
     get()._annotationParameterAssignViaAstOut
+
+  def inMacroOut: Iterator[MacroDecl] = get().inMacroOut
+  override def _inMacroOut            = get()._inMacroOut
 
   def astIn: Iterator[AstNode] = get().astIn
   override def _astIn          = get()._astIn
@@ -271,8 +275,11 @@ class AnnotationDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode wit
   def _annotationParameterAssignViaAstOut: overflowdb.traversal.Traversal[AnnotationParameterAssign] =
     astOut.collectAll[AnnotationParameterAssign]
 
-  def astIn: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](2)
-  override def _astIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+  def inMacroOut: Iterator[MacroDecl] = createAdjacentNodeScalaIteratorByOffSet[MacroDecl](2)
+  override def _inMacroOut            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+
+  def astIn: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](3)
+  override def _astIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _annotationParameterAssignViaAstIn: overflowdb.traversal.Traversal[AnnotationParameterAssign] =
     astIn.collectAll[AnnotationParameterAssign]
   def _identifierViaAstIn: overflowdb.traversal.Traversal[Identifier] = astIn.collectAll[Identifier]
@@ -285,11 +292,11 @@ class AnnotationDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode wit
   def _typeDeclViaAstIn: overflowdb.traversal.Traversal[TypeDecl]   = astIn.collectAll[TypeDecl]
   def _unknownViaAstIn: overflowdb.traversal.Traversal[Unknown]     = astIn.collectAll[Unknown]
 
-  def cfgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](3)
-  override def _cfgIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
+  def cfgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](4)
+  override def _cfgIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
 
-  def reachingDefIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](4)
-  override def _reachingDefIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+  def reachingDefIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](5)
+  override def _reachingDefIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
 
   override def label: String = {
     Annotation.Label

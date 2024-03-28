@@ -153,6 +153,12 @@ public static final String LOCAL = "LOCAL";
 /** A location node summarizes a source code location. */
 public static final String LOCATION = "LOCATION";
 
+/** MACRO_DECL */
+public static final String MACRO_DECL = "MACRO_DECL";
+
+/** MACRO_REF */
+public static final String MACRO_REF = "MACRO_REF";
+
 /** This node represents a type member of a class, struct or union, e.g., for the
  type declaration `class Foo{ int i ; }`, it represents the declaration of the
  variable `i`. */
@@ -342,6 +348,8 @@ add(KEY_VALUE_PAIR);
 add(LITERAL);
 add(LOCAL);
 add(LOCATION);
+add(MACRO_DECL);
+add(MACRO_REF);
 add(MEMBER);
 add(META_DATA);
 add(METHOD);

@@ -30,6 +30,8 @@ class CpgSchema(builder: SchemaBuilder) {
   val finding         = Finding(builder, base)
   val hidden = Hidden(builder, base, method, typeSchema, ast, cfg, fs, callGraph, pdg, tagsAndLocation, shortcuts)
   val protoSerialize = ProtoSerialize(builder, ast)
+  
+  val macroDecl = MacroDecl(builder, base, typeSchema, fs, ast, shortcuts, namespaces)
 }
 
 object CpgSchema {

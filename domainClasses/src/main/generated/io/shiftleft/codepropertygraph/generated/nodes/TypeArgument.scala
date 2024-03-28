@@ -35,13 +35,14 @@ object TypeArgument {
     PropertyNames.allAsJava,
     List(
       io.shiftleft.codepropertygraph.generated.edges.BindsTo.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
     ).asJava,
     List(io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation).asJava
   )
 
   object Edges {
-    val Out: Array[String] = Array("BINDS_TO", "REF")
+    val Out: Array[String] = Array("BINDS_TO", "IN_MACRO", "REF")
     val In: Array[String]  = Array("AST")
   }
 
@@ -87,6 +88,9 @@ class TypeArgument(graph_4762: Graph, id_4762: Long /*cf https://github.com/scal
   /** Traverse to TYPE_PARAMETER via BINDS_TO OUT edge.
     */
   def _typeParameterViaBindsToOut: overflowdb.traversal.Traversal[TypeParameter] = get()._typeParameterViaBindsToOut
+
+  def inMacroOut: Iterator[MacroDecl] = get().inMacroOut
+  override def _inMacroOut            = get()._inMacroOut
 
   def refOut: Iterator[Type] = get().refOut
   override def _refOut       = get()._refOut
@@ -180,12 +184,15 @@ class TypeArgumentDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode w
   override def _bindsToOut                = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
   def _typeParameterViaBindsToOut: overflowdb.traversal.Traversal[TypeParameter] = bindsToOut.collectAll[TypeParameter]
 
-  def refOut: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](1)
-  override def _refOut                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+  def inMacroOut: Iterator[MacroDecl] = createAdjacentNodeScalaIteratorByOffSet[MacroDecl](1)
+  override def _inMacroOut            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+
+  def refOut: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](2)
+  override def _refOut                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
   def _typeViaRefOut: overflowdb.traversal.Traversal[Type] = refOut.collectAll[Type]
 
-  def astIn: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](2)
-  override def _astIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+  def astIn: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](3)
+  override def _astIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _typeViaAstIn: overflowdb.traversal.Traversal[Type] = astIn.collectAll[Type]
 
   override def label: String = {

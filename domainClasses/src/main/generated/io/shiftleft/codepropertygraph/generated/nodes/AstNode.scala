@@ -22,7 +22,7 @@ object AstNode {
   }
 
   object Edges {
-    val Out: Array[String] = Array()
+    val Out: Array[String] = Array("IN_MACRO")
     val In: Array[String]  = Array()
   }
 
@@ -48,5 +48,21 @@ trait AstNodeNew extends NewNode {
 
 trait AstNode extends StoredNode with AstNodeBase {
   import overflowdb.traversal._
+  def inMacroOut: Iterator[_ <: StoredNode]
+
+  /** Traverse to AST_NODE via IN_MACRO OUT edge.
+    */
+  def _astNodeViaInMacroOut: overflowdb.traversal.Traversal[AstNode] =
+    inMacroOut.collectAll[AstNode]
+
+  /** Traverse to DECLARATION via IN_MACRO OUT edge.
+    */
+  def _declarationViaInMacroOut: overflowdb.traversal.Traversal[Declaration] =
+    inMacroOut.collectAll[Declaration]
+
+  /** Traverse to MACRO_DECL via IN_MACRO OUT edge.
+    */
+  def _macroDeclViaInMacroOut: overflowdb.traversal.Traversal[MacroDecl] =
+    inMacroOut.collectAll[MacroDecl]
 
 }

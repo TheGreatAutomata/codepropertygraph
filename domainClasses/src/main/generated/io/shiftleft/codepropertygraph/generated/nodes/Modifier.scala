@@ -36,12 +36,12 @@ object Modifier {
   val layoutInformation = new NodeLayoutInformation(
     Label,
     PropertyNames.allAsJava,
-    List().asJava,
+    List(io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation).asJava,
     List(io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation).asJava
   )
 
   object Edges {
-    val Out: Array[String] = Array()
+    val Out: Array[String] = Array("IN_MACRO")
     val In: Array[String]  = Array("AST")
   }
 
@@ -83,6 +83,9 @@ class Modifier(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bu
       case "ORDER"         => Modifier.PropertyDefaults.Order
       case _               => super.propertyDefaultValue(propertyKey)
     }
+
+  def inMacroOut: Iterator[MacroDecl] = get().inMacroOut
+  override def _inMacroOut            = get()._inMacroOut
 
   def astIn: Iterator[AstNode] = get().astIn
   override def _astIn          = get()._astIn
@@ -187,8 +190,11 @@ class ModifierDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
   }
 
   import overflowdb.traversal._
-  def astIn: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](0)
-  override def _astIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
+  def inMacroOut: Iterator[MacroDecl] = createAdjacentNodeScalaIteratorByOffSet[MacroDecl](0)
+  override def _inMacroOut            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
+
+  def astIn: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](1)
+  override def _astIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
   def _controlStructureViaAstIn: overflowdb.traversal.Traversal[ControlStructure] = astIn.collectAll[ControlStructure]
   def _memberViaAstIn: overflowdb.traversal.Traversal[Member]                     = astIn.collectAll[Member]
   def _methodViaAstIn: Method = try { astIn.collectAll[Method].next() }
