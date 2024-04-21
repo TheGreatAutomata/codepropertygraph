@@ -18,6 +18,9 @@ public static final String ALIAS_OF = "ALIAS_OF";
 that return. */
 public static final String ARGUMENT = "ARGUMENT";
 
+/** ARRAY_OF */
+public static final String ARRAY_OF = "ARRAY_OF";
+
 /** This edge connects a parent node to its child in the syntax tree. */
 public static final String AST = "AST";
 
@@ -79,9 +82,15 @@ public static final String INHERITS_FROM = "INHERITS_FROM";
 ￼        | */
 public static final String IS_CALL_FOR_IMPORT = "IS_CALL_FOR_IMPORT";
 
+/** LENGTH_ARRAY_OF */
+public static final String LENGTH = "LENGTH";
+
 /** This edge connects a method input parameter to the corresponding
 method output parameter. */
 public static final String PARAMETER_LINK = "PARAMETER_LINK";
+
+/** POINTER_OF */
+public static final String POINTER_OF = "POINTER_OF";
 
 /** This edge indicates that the source node immediately post dominates the destination node. */
 public static final String POST_DOMINATE = "POST_DOMINATE";
@@ -114,6 +123,7 @@ public static final String TAGGED_BY = "TAGGED_BY";
 public static Set<String> ALL = new HashSet<String>() {{
 add(ALIAS_OF);
 add(ARGUMENT);
+add(ARRAY_OF);
 add(AST);
 add(BINDS);
 add(BINDS_TO);
@@ -130,7 +140,9 @@ add(IMPORTS);
 add(IN_MACRO);
 add(INHERITS_FROM);
 add(IS_CALL_FOR_IMPORT);
+add(LENGTH);
 add(PARAMETER_LINK);
+add(POINTER_OF);
 add(POST_DOMINATE);
 add(REACHING_DEF);
 add(RECEIVER);

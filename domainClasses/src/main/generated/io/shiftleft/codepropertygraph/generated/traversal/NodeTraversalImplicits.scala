@@ -165,6 +165,8 @@ class StoredNodeTraversalExtGen[NodeType <: StoredNode](val traversal: Iterator[
   def _aliasOfIn: Iterator[StoredNode]          = traversal.flatMap { _._aliasOfIn }
   def _argumentOut: Iterator[StoredNode]        = traversal.flatMap { _._argumentOut }
   def _argumentIn: Iterator[StoredNode]         = traversal.flatMap { _._argumentIn }
+  def _arrayOfOut: Iterator[StoredNode]         = traversal.flatMap { _._arrayOfOut }
+  def _arrayOfIn: Iterator[StoredNode]          = traversal.flatMap { _._arrayOfIn }
   def _astOut: Iterator[StoredNode]             = traversal.flatMap { _._astOut }
   def _astIn: Iterator[StoredNode]              = traversal.flatMap { _._astIn }
   def _bindsOut: Iterator[StoredNode]           = traversal.flatMap { _._bindsOut }
@@ -197,8 +199,12 @@ class StoredNodeTraversalExtGen[NodeType <: StoredNode](val traversal: Iterator[
   def _inheritsFromIn: Iterator[StoredNode]     = traversal.flatMap { _._inheritsFromIn }
   def _isCallForImportOut: Iterator[StoredNode] = traversal.flatMap { _._isCallForImportOut }
   def _isCallForImportIn: Iterator[StoredNode]  = traversal.flatMap { _._isCallForImportIn }
+  def _lengthOut: Iterator[StoredNode]          = traversal.flatMap { _._lengthOut }
+  def _lengthIn: Iterator[StoredNode]           = traversal.flatMap { _._lengthIn }
   def _parameterLinkOut: Iterator[StoredNode]   = traversal.flatMap { _._parameterLinkOut }
   def _parameterLinkIn: Iterator[StoredNode]    = traversal.flatMap { _._parameterLinkIn }
+  def _pointerOfOut: Iterator[StoredNode]       = traversal.flatMap { _._pointerOfOut }
+  def _pointerOfIn: Iterator[StoredNode]        = traversal.flatMap { _._pointerOfIn }
   def _postDominateOut: Iterator[StoredNode]    = traversal.flatMap { _._postDominateOut }
   def _postDominateIn: Iterator[StoredNode]     = traversal.flatMap { _._postDominateIn }
   def _reachingDefOut: Iterator[StoredNode]     = traversal.flatMap { _._reachingDefOut }

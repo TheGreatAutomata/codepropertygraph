@@ -1,6 +1,7 @@
 
 /build/*
 .idea/
+domainClasses/src/main/generated/**
 /codepropertygraph/src/main/proto/io/shiftleft/codepropertygraph/protos.proto
 target/
 codepropertygraph/project/

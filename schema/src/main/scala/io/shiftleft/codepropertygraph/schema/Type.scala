@@ -207,6 +207,37 @@ object Type extends SchemaBase {
       .addOutEdge(edge = bindsTo, inNode = typeParameter)
       .addOutEdge(edge = ref, inNode = tpe)
 
+
+    val pointerOf = builder
+      .addEdgeType(
+        name = "POINTER_OF",
+        comment = """POINTER_OF
+                    |""".stripMargin
+      )
+      .protoId(51021)
+
+    val arrayOf = builder
+      .addEdgeType(
+        name = "ARRAY_OF",
+        comment =
+          """ARRAY_OF
+            |""".stripMargin
+      )
+      .protoId(51022)
+
+    val length = builder
+      .addEdgeType(
+        name = "LENGTH",
+        comment =
+          """LENGTH_ARRAY_OF
+            |""".stripMargin
+      )
+      .protoId(51023)
+
+    tpe
+      .addOutEdge(edge = pointerOf, inNode = tpe)
+      .addOutEdge(edge = arrayOf, inNode = tpe)
+//      .addOutEdge(edge = length, inNode = ast)
   }
 
 }

@@ -642,6 +642,8 @@ object Ast extends SchemaBase {
 
     namespaceBlock.addOutEdge(edge = ref, inNode = namespace)
 
+    astNode.addInEdge(length, tpe);
+
   }
 
 }

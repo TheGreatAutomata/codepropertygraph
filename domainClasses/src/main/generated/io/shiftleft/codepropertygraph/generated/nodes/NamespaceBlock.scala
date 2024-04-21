@@ -48,12 +48,15 @@ object NamespaceBlock {
       io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.SourceFile.layoutInformation
     ).asJava,
-    List(io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation).asJava
+    List(
+      io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation
+    ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("AST", "IN_MACRO", "REF", "SOURCE_FILE")
-    val In: Array[String]  = Array("AST")
+    val In: Array[String]  = Array("AST", "LENGTH")
   }
 
   val factory = new NodeFactory[NamespaceBlockDb] {
@@ -139,6 +142,9 @@ class NamespaceBlock(graph_4762: Graph, id_4762: Long /*cf https://github.com/sc
   /** Traverse to FILE via AST IN edge.
     */
   def _fileViaAstIn: Option[File] = get()._fileViaAstIn
+
+  def lengthIn: Iterator[Type] = get().lengthIn
+  override def _lengthIn       = get()._lengthIn
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
@@ -252,6 +258,9 @@ class NamespaceBlockDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode
   def astIn: Iterator[File]       = createAdjacentNodeScalaIteratorByOffSet[File](4)
   override def _astIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
   def _fileViaAstIn: Option[File] = astIn.collectAll[File].nextOption()
+
+  def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](5)
+  override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
 
   override def label: String = {
     NamespaceBlock.Label

@@ -84,13 +84,14 @@ object MacroDecl {
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Contains.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("AST", "CONTAINS", "IN_MACRO", "SOURCE_FILE")
-    val In: Array[String]  = Array("AST", "CONTAINS", "IN_MACRO", "REF")
+    val In: Array[String]  = Array("AST", "CONTAINS", "IN_MACRO", "LENGTH", "REF")
   }
 
   val factory = new NodeFactory[MacroDeclDb] {
@@ -222,6 +223,9 @@ class MacroDecl(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/b
   /** Traverse to AST_NODE via IN_MACRO IN edge.
     */
   def _astNodeViaInMacroIn: overflowdb.traversal.Traversal[AstNode] = get()._astNodeViaInMacroIn
+
+  def lengthIn: Iterator[Type] = get().lengthIn
+  override def _lengthIn       = get()._lengthIn
 
   def refIn: Iterator[MacroRef] = get().refIn
   override def _refIn           = get()._refIn
@@ -408,8 +412,11 @@ class MacroDeclDb(ref: NodeRef[NodeDb])
   override def _inMacroIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
   def _astNodeViaInMacroIn: overflowdb.traversal.Traversal[AstNode] = inMacroIn.collectAll[AstNode]
 
-  def refIn: Iterator[MacroRef] = createAdjacentNodeScalaIteratorByOffSet[MacroRef](7)
-  override def _refIn           = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
+  def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](7)
+  override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
+
+  def refIn: Iterator[MacroRef] = createAdjacentNodeScalaIteratorByOffSet[MacroRef](8)
+  override def _refIn           = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
   def _macroRefViaRefIn: overflowdb.traversal.Traversal[MacroRef] = refIn.collectAll[MacroRef]
 
   override def label: String = {

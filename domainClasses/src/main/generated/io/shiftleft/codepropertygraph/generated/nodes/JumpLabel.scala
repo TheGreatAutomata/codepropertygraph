@@ -40,12 +40,15 @@ object JumpLabel {
     Label,
     PropertyNames.allAsJava,
     List(io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation).asJava,
-    List(io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation).asJava
+    List(
+      io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation
+    ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("IN_MACRO")
-    val In: Array[String]  = Array("AST")
+    val In: Array[String]  = Array("AST", "LENGTH")
   }
 
   val factory = new NodeFactory[JumpLabelDb] {
@@ -99,6 +102,9 @@ class JumpLabel(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/b
   /** Traverse to CONTROL_STRUCTURE via AST IN edge.
     */
   def _controlStructureViaAstIn: overflowdb.traversal.Traversal[ControlStructure] = get()._controlStructureViaAstIn
+
+  def lengthIn: Iterator[Type] = get().lengthIn
+  override def _lengthIn       = get()._lengthIn
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
@@ -192,6 +198,9 @@ class JumpLabelDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def astIn: Iterator[ControlStructure] = createAdjacentNodeScalaIteratorByOffSet[ControlStructure](1)
   override def _astIn                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
   def _controlStructureViaAstIn: overflowdb.traversal.Traversal[ControlStructure] = astIn.collectAll[ControlStructure]
+
+  def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](2)
+  override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
 
   override def label: String = {
     JumpLabel.Label

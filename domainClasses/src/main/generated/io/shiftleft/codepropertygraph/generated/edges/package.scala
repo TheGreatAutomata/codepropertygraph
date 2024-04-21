@@ -19,6 +19,7 @@ object Factories {
   lazy val all: Seq[EdgeFactory[_]] = Seq(
     AliasOf.factory,
     Argument.factory,
+    ArrayOf.factory,
     Ast.factory,
     Binds.factory,
     BindsTo.factory,
@@ -35,7 +36,9 @@ object Factories {
     InMacro.factory,
     InheritsFrom.factory,
     IsCallForImport.factory,
+    Length.factory,
     ParameterLink.factory,
+    PointerOf.factory,
     PostDominate.factory,
     ReachingDef.factory,
     Receiver.factory,

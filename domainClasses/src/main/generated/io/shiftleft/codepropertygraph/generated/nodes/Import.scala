@@ -51,13 +51,14 @@ object Import {
     ).asJava,
     List(
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.IsCallForImport.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.IsCallForImport.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("IMPORTS", "IN_MACRO", "TAGGED_BY")
-    val In: Array[String]  = Array("AST", "IS_CALL_FOR_IMPORT")
+    val In: Array[String]  = Array("AST", "IS_CALL_FOR_IMPORT", "LENGTH")
   }
 
   val factory = new NodeFactory[ImportDb] {
@@ -144,6 +145,9 @@ class Import(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
   /** Traverse to CALL via IS_CALL_FOR_IMPORT IN edge.
     */
   def _callViaIsCallForImportIn: overflowdb.traversal.Traversal[Call] = get()._callViaIsCallForImportIn
+
+  def lengthIn: Iterator[Type] = get().lengthIn
+  override def _lengthIn       = get()._lengthIn
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
@@ -269,6 +273,9 @@ class ImportDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
   def isCallForImportIn: Iterator[Call] = createAdjacentNodeScalaIteratorByOffSet[Call](4)
   override def _isCallForImportIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
   def _callViaIsCallForImportIn: overflowdb.traversal.Traversal[Call] = isCallForImportIn.collectAll[Call]
+
+  def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](5)
+  override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
 
   override def label: String = {
     Import.Label

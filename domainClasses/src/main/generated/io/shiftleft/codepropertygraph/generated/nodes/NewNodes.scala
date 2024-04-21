@@ -43843,9 +43843,16 @@ class NewTemplateDom extends NewNode with TemplateDomBase with ExpressionNew {
 object NewType {
   def apply(): NewType = new NewType
 
-  private val outNeighbors: Map[String, Set[String]] = Map("AST" -> Set("TYPE_ARGUMENT"), "REF" -> Set("TYPE_DECL"))
+  private val outNeighbors: Map[String, Set[String]] = Map(
+    "ARRAY_OF"   -> Set("TYPE"),
+    "AST"        -> Set("TYPE_ARGUMENT"),
+    "LENGTH"     -> Set("AST_NODE"),
+    "POINTER_OF" -> Set("TYPE"),
+    "REF"        -> Set("TYPE_DECL")
+  )
   private val inNeighbors: Map[String, Set[String]] = Map(
     "ALIAS_OF" -> Set("TYPE_DECL"),
+    "ARRAY_OF" -> Set("TYPE"),
     "EVAL_TYPE" -> Set(
       "ARRAY_INITIALIZER",
       "BLOCK",
@@ -43863,6 +43870,7 @@ object NewType {
       "UNKNOWN"
     ),
     "INHERITS_FROM" -> Set("TYPE_DECL"),
+    "POINTER_OF"    -> Set("TYPE"),
     "REF"           -> Set("TYPE_ARGUMENT")
   )
 

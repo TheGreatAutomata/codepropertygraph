@@ -68,13 +68,14 @@ object Member {
     ).asJava,
     List(
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("AST", "EVAL_TYPE", "IN_MACRO", "TAGGED_BY")
-    val In: Array[String]  = Array("AST", "REF")
+    val In: Array[String]  = Array("AST", "LENGTH", "REF")
   }
 
   val factory = new NodeFactory[MemberDb] {
@@ -172,6 +173,9 @@ class Member(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
   /** Traverse to UNKNOWN via AST IN edge.
     */
   def _unknownViaAstIn: overflowdb.traversal.Traversal[Unknown] = get()._unknownViaAstIn
+
+  def lengthIn: Iterator[Type] = get().lengthIn
+  override def _lengthIn       = get()._lengthIn
 
   def refIn: Iterator[Call] = get().refIn
   override def _refIn       = get()._refIn
@@ -322,8 +326,11 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
   }
   def _unknownViaAstIn: overflowdb.traversal.Traversal[Unknown] = astIn.collectAll[Unknown]
 
-  def refIn: Iterator[Call]                               = createAdjacentNodeScalaIteratorByOffSet[Call](5)
-  override def _refIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
+  def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](5)
+  override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
+
+  def refIn: Iterator[Call]                               = createAdjacentNodeScalaIteratorByOffSet[Call](6)
+  override def _refIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
   def _callViaRefIn: overflowdb.traversal.Traversal[Call] = refIn.collectAll[Call]
 
   override def label: String = {

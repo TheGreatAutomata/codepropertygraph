@@ -46,6 +46,7 @@ trait StoredNode extends Node with AbstractNode with Product {
 
   def _aliasOfIn: Iterator[StoredNode]          = Iterator.empty
   def _argumentIn: Iterator[StoredNode]         = Iterator.empty
+  def _arrayOfIn: Iterator[StoredNode]          = Iterator.empty
   def _astIn: Iterator[StoredNode]              = Iterator.empty
   def _bindsIn: Iterator[StoredNode]            = Iterator.empty
   def _bindsToIn: Iterator[StoredNode]          = Iterator.empty
@@ -62,7 +63,9 @@ trait StoredNode extends Node with AbstractNode with Product {
   def _inMacroIn: Iterator[StoredNode]          = Iterator.empty
   def _inheritsFromIn: Iterator[StoredNode]     = Iterator.empty
   def _isCallForImportIn: Iterator[StoredNode]  = Iterator.empty
+  def _lengthIn: Iterator[StoredNode]           = Iterator.empty
   def _parameterLinkIn: Iterator[StoredNode]    = Iterator.empty
+  def _pointerOfIn: Iterator[StoredNode]        = Iterator.empty
   def _postDominateIn: Iterator[StoredNode]     = Iterator.empty
   def _reachingDefIn: Iterator[StoredNode]      = Iterator.empty
   def _receiverIn: Iterator[StoredNode]         = Iterator.empty
@@ -71,6 +74,7 @@ trait StoredNode extends Node with AbstractNode with Product {
   def _taggedByIn: Iterator[StoredNode]         = Iterator.empty
   def _aliasOfOut: Iterator[StoredNode]         = Iterator.empty
   def _argumentOut: Iterator[StoredNode]        = Iterator.empty
+  def _arrayOfOut: Iterator[StoredNode]         = Iterator.empty
   def _astOut: Iterator[StoredNode]             = Iterator.empty
   def _bindsOut: Iterator[StoredNode]           = Iterator.empty
   def _bindsToOut: Iterator[StoredNode]         = Iterator.empty
@@ -87,7 +91,9 @@ trait StoredNode extends Node with AbstractNode with Product {
   def _inMacroOut: Iterator[StoredNode]         = Iterator.empty
   def _inheritsFromOut: Iterator[StoredNode]    = Iterator.empty
   def _isCallForImportOut: Iterator[StoredNode] = Iterator.empty
+  def _lengthOut: Iterator[StoredNode]          = Iterator.empty
   def _parameterLinkOut: Iterator[StoredNode]   = Iterator.empty
+  def _pointerOfOut: Iterator[StoredNode]       = Iterator.empty
   def _postDominateOut: Iterator[StoredNode]    = Iterator.empty
   def _reachingDefOut: Iterator[StoredNode]     = Iterator.empty
   def _receiverOut: Iterator[StoredNode]        = Iterator.empty

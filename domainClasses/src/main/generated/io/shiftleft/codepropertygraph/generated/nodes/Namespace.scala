@@ -37,12 +37,15 @@ object Namespace {
     Label,
     PropertyNames.allAsJava,
     List(io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation).asJava,
-    List(io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation).asJava
+    List(
+      io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
+    ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("IN_MACRO")
-    val In: Array[String]  = Array("REF")
+    val In: Array[String]  = Array("LENGTH", "REF")
   }
 
   val factory = new NodeFactory[NamespaceDb] {
@@ -86,6 +89,9 @@ class Namespace(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/b
 
   def inMacroOut: Iterator[MacroDecl] = get().inMacroOut
   override def _inMacroOut            = get()._inMacroOut
+
+  def lengthIn: Iterator[Type] = get().lengthIn
+  override def _lengthIn       = get()._lengthIn
 
   def refIn: Iterator[NamespaceBlock] = get().refIn
   override def _refIn                 = get()._refIn
@@ -177,8 +183,11 @@ class NamespaceDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def inMacroOut: Iterator[MacroDecl] = createAdjacentNodeScalaIteratorByOffSet[MacroDecl](0)
   override def _inMacroOut            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
 
-  def refIn: Iterator[NamespaceBlock] = createAdjacentNodeScalaIteratorByOffSet[NamespaceBlock](1)
-  override def _refIn                 = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+  def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](1)
+  override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+
+  def refIn: Iterator[NamespaceBlock] = createAdjacentNodeScalaIteratorByOffSet[NamespaceBlock](2)
+  override def _refIn                 = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
   def _namespaceBlockViaRefIn: overflowdb.traversal.Traversal[NamespaceBlock] = refIn.collectAll[NamespaceBlock]
 
   override def label: String = {

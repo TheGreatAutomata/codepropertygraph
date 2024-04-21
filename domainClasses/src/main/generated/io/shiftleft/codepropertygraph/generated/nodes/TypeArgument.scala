@@ -38,12 +38,15 @@ object TypeArgument {
       io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
     ).asJava,
-    List(io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation).asJava
+    List(
+      io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation
+    ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("BINDS_TO", "IN_MACRO", "REF")
-    val In: Array[String]  = Array("AST")
+    val In: Array[String]  = Array("AST", "LENGTH")
   }
 
   val factory = new NodeFactory[TypeArgumentDb] {
@@ -105,6 +108,9 @@ class TypeArgument(graph_4762: Graph, id_4762: Long /*cf https://github.com/scal
   /** Traverse to TYPE via AST IN edge.
     */
   def _typeViaAstIn: overflowdb.traversal.Traversal[Type] = get()._typeViaAstIn
+
+  def lengthIn: Iterator[Type] = get().lengthIn
+  override def _lengthIn       = get()._lengthIn
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
@@ -194,6 +200,9 @@ class TypeArgumentDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode w
   def astIn: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](3)
   override def _astIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _typeViaAstIn: overflowdb.traversal.Traversal[Type] = astIn.collectAll[Type]
+
+  def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](4)
+  override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
 
   override def label: String = {
     TypeArgument.Label
