@@ -43,13 +43,14 @@ object Comment {
     List(
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.SourceFile.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("IN_MACRO", "SOURCE_FILE")
-    val In: Array[String]  = Array("AST", "LENGTH", "SOURCE_FILE")
+    val In: Array[String]  = Array("AST", "LENGTH", "LENGTH_EXP", "SOURCE_FILE")
   }
 
   val factory = new NodeFactory[CommentDb] {
@@ -110,6 +111,9 @@ class Comment(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
 
   def lengthIn: Iterator[Type] = get().lengthIn
   override def _lengthIn       = get()._lengthIn
+
+  def lengthExpIn: Iterator[Type] = get().lengthExpIn
+  override def _lengthExpIn       = get()._lengthExpIn
 
   def sourceFileIn: Iterator[Comment] = get().sourceFileIn
   override def _sourceFileIn          = get()._sourceFileIn
@@ -212,8 +216,11 @@ class CommentDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with A
   def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](3)
   override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
 
-  def sourceFileIn: Iterator[Comment] = createAdjacentNodeScalaIteratorByOffSet[Comment](4)
-  override def _sourceFileIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+  def lengthExpIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](4)
+  override def _lengthExpIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+
+  def sourceFileIn: Iterator[Comment] = createAdjacentNodeScalaIteratorByOffSet[Comment](5)
+  override def _sourceFileIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
   def _commentViaSourceFileIn: overflowdb.traversal.Traversal[Comment] = sourceFileIn.collectAll[Comment]
 
   override def label: String = {

@@ -43844,11 +43844,14 @@ object NewType {
   def apply(): NewType = new NewType
 
   private val outNeighbors: Map[String, Set[String]] = Map(
-    "ARRAY_OF"   -> Set("TYPE"),
-    "AST"        -> Set("TYPE_ARGUMENT"),
-    "LENGTH"     -> Set("AST_NODE"),
-    "POINTER_OF" -> Set("TYPE"),
-    "REF"        -> Set("TYPE_DECL")
+    "ARRAY_OF"       -> Set("TYPE"),
+    "AST"            -> Set("TYPE_ARGUMENT"),
+    "LENGTH"         -> Set("AST_NODE"),
+    "LENGTH_EXP"     -> Set("AST_NODE"),
+    "L_REFERENCE_OF" -> Set("TYPE"),
+    "POINTER_OF"     -> Set("TYPE"),
+    "REF"            -> Set("TYPE_DECL"),
+    "R_REFERENCE_OF" -> Set("TYPE")
   )
   private val inNeighbors: Map[String, Set[String]] = Map(
     "ALIAS_OF" -> Set("TYPE_DECL"),
@@ -43869,9 +43872,11 @@ object NewType {
       "TYPE_REF",
       "UNKNOWN"
     ),
-    "INHERITS_FROM" -> Set("TYPE_DECL"),
-    "POINTER_OF"    -> Set("TYPE"),
-    "REF"           -> Set("TYPE_ARGUMENT")
+    "INHERITS_FROM"  -> Set("TYPE_DECL"),
+    "L_REFERENCE_OF" -> Set("TYPE"),
+    "POINTER_OF"     -> Set("TYPE"),
+    "REF"            -> Set("TYPE_ARGUMENT"),
+    "R_REFERENCE_OF" -> Set("TYPE")
   )
 
 }

@@ -23,7 +23,7 @@ object AstNode {
 
   object Edges {
     val Out: Array[String] = Array("IN_MACRO")
-    val In: Array[String]  = Array("LENGTH")
+    val In: Array[String]  = Array("LENGTH", "LENGTH_EXP")
   }
 
 }
@@ -71,5 +71,12 @@ trait AstNode extends StoredNode with AstNodeBase {
     */
   def _typeViaLengthIn: overflowdb.traversal.Traversal[Type] =
     lengthIn.collectAll[Type]
+
+  def lengthExpIn: Iterator[_ <: StoredNode]
+
+  /** Traverse to TYPE via LENGTH_EXP IN edge.
+    */
+  def _typeViaLengthExpIn: overflowdb.traversal.Traversal[Type] =
+    lengthExpIn.collectAll[Type]
 
 }

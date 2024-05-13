@@ -82,8 +82,14 @@ public static final String INHERITS_FROM = "INHERITS_FROM";
 ￼        | */
 public static final String IS_CALL_FOR_IMPORT = "IS_CALL_FOR_IMPORT";
 
+/** L_REFERENCE_OF */
+public static final String L_REFERENCE_OF = "L_REFERENCE_OF";
+
 /** LENGTH_ARRAY_OF */
 public static final String LENGTH = "LENGTH";
+
+/** LENGTH_EXP */
+public static final String LENGTH_EXP = "LENGTH_EXP";
 
 /** This edge connects a method input parameter to the corresponding
 method output parameter. */
@@ -94,6 +100,9 @@ public static final String POINTER_OF = "POINTER_OF";
 
 /** This edge indicates that the source node immediately post dominates the destination node. */
 public static final String POST_DOMINATE = "POST_DOMINATE";
+
+/** R_REFERENCE_OF */
+public static final String R_REFERENCE_OF = "R_REFERENCE_OF";
 
 /** A reaching definition edge indicates that a variable produced at the source node reaches
 the destination node without being reassigned on the way. The `VARIABLE` property indicates
@@ -140,10 +149,13 @@ add(IMPORTS);
 add(IN_MACRO);
 add(INHERITS_FROM);
 add(IS_CALL_FOR_IMPORT);
+add(L_REFERENCE_OF);
 add(LENGTH);
+add(LENGTH_EXP);
 add(PARAMETER_LINK);
 add(POINTER_OF);
 add(POST_DOMINATE);
+add(R_REFERENCE_OF);
 add(REACHING_DEF);
 add(RECEIVER);
 add(REF);

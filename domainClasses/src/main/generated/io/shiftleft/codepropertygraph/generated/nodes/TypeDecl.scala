@@ -88,6 +88,7 @@ object TypeDecl {
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Contains.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
     ).asJava
   )
@@ -95,7 +96,7 @@ object TypeDecl {
   object Edges {
     val Out: Array[String] =
       Array("ALIAS_OF", "AST", "BINDS", "CONTAINS", "INHERITS_FROM", "IN_MACRO", "SOURCE_FILE", "TAGGED_BY")
-    val In: Array[String] = Array("AST", "CONTAINS", "LENGTH", "REF")
+    val In: Array[String] = Array("AST", "CONTAINS", "LENGTH", "LENGTH_EXP", "REF")
   }
 
   val factory = new NodeFactory[TypeDeclDb] {
@@ -260,6 +261,9 @@ class TypeDecl(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bu
 
   def lengthIn: Iterator[Type] = get().lengthIn
   override def _lengthIn       = get()._lengthIn
+
+  def lengthExpIn: Iterator[Type] = get().lengthExpIn
+  override def _lengthExpIn       = get()._lengthExpIn
 
   def refIn: Iterator[Type] = get().refIn
   override def _refIn       = get()._refIn
@@ -456,8 +460,11 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
   def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](10)
   override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
 
-  def refIn: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](11)
-  override def _refIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](11)
+  def lengthExpIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](11)
+  override def _lengthExpIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](11)
+
+  def refIn: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](12)
+  override def _refIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](12)
   def _typeViaRefIn: overflowdb.traversal.Traversal[Type] = refIn.collectAll[Type]
 
   override def label: String = {

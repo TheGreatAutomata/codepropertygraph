@@ -173,7 +173,13 @@ object CallGraph extends SchemaBase {
         value = "INLINED",
         valueType = ValueType.String,
         comment = "For macro expansions, code is inlined."
-      ).protoId(3)
+      ).protoId(3),
+      Constant(
+        name = "SAME_FILE_STATIC_DISPATCH",
+        value = "SAME_FILE_STATIC_DISPATCH",
+        valueType = ValueType.String,
+        comment = "For cxx static func"
+      ).protoId(4),
     )
 
     callNode

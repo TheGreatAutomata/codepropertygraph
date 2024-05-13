@@ -36,22 +36,37 @@ object Type {
       io.shiftleft.codepropertygraph.generated.edges.ArrayOf.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.LReferenceOf.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PointerOf.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.RReferenceOf.layoutInformation
     ).asJava,
     List(
       io.shiftleft.codepropertygraph.generated.edges.AliasOf.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ArrayOf.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.EvalType.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.InheritsFrom.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.LReferenceOf.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PointerOf.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.RReferenceOf.layoutInformation
     ).asJava
   )
 
   object Edges {
-    val Out: Array[String] = Array("ARRAY_OF", "AST", "LENGTH", "POINTER_OF", "REF")
-    val In: Array[String]  = Array("ALIAS_OF", "ARRAY_OF", "EVAL_TYPE", "INHERITS_FROM", "POINTER_OF", "REF")
+    val Out: Array[String] =
+      Array("ARRAY_OF", "AST", "LENGTH", "LENGTH_EXP", "L_REFERENCE_OF", "POINTER_OF", "REF", "R_REFERENCE_OF")
+    val In: Array[String] = Array(
+      "ALIAS_OF",
+      "ARRAY_OF",
+      "EVAL_TYPE",
+      "INHERITS_FROM",
+      "L_REFERENCE_OF",
+      "POINTER_OF",
+      "REF",
+      "R_REFERENCE_OF"
+    )
   }
 
   val factory = new NodeFactory[TypeDb] {
@@ -109,6 +124,20 @@ class Type(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
     */
   def _astNodeViaLengthOut: overflowdb.traversal.Traversal[AstNode] = get()._astNodeViaLengthOut
 
+  def lengthExpOut: Iterator[AstNode] = get().lengthExpOut
+  override def _lengthExpOut          = get()._lengthExpOut
+
+  /** Traverse to AST_NODE via LENGTH_EXP OUT edge.
+    */
+  def _astNodeViaLengthExpOut: overflowdb.traversal.Traversal[AstNode] = get()._astNodeViaLengthExpOut
+
+  def lReferenceOfOut: Iterator[Type] = get().lReferenceOfOut
+  override def _lReferenceOfOut       = get()._lReferenceOfOut
+
+  /** Traverse to TYPE via L_REFERENCE_OF OUT edge.
+    */
+  def _typeViaLReferenceOfOut: overflowdb.traversal.Traversal[Type] = get()._typeViaLReferenceOfOut
+
   def pointerOfOut: Iterator[Type] = get().pointerOfOut
   override def _pointerOfOut       = get()._pointerOfOut
 
@@ -124,6 +153,13 @@ class Type(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
   /** Type declaration which is referenced by this type. */
   @overflowdb.traversal.help.Doc(info = """Type declaration which is referenced by this type.""")
   def referencedTypeDecl: overflowdb.traversal.Traversal[TypeDecl] = get().referencedTypeDecl
+
+  def rReferenceOfOut: Iterator[Type] = get().rReferenceOfOut
+  override def _rReferenceOfOut       = get()._rReferenceOfOut
+
+  /** Traverse to TYPE via R_REFERENCE_OF OUT edge.
+    */
+  def _typeViaRReferenceOfOut: overflowdb.traversal.Traversal[Type] = get()._typeViaRReferenceOfOut
 
   def aliasOfIn: Iterator[TypeDecl] = get().aliasOfIn
   override def _aliasOfIn           = get()._aliasOfIn
@@ -211,6 +247,13 @@ class Type(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
     */
   def _typeDeclViaInheritsFromIn: overflowdb.traversal.Traversal[TypeDecl] = get()._typeDeclViaInheritsFromIn
 
+  def lReferenceOfIn: Iterator[Type] = get().lReferenceOfIn
+  override def _lReferenceOfIn       = get()._lReferenceOfIn
+
+  /** Traverse to TYPE via L_REFERENCE_OF IN edge.
+    */
+  def _typeViaLReferenceOfIn: overflowdb.traversal.Traversal[Type] = get()._typeViaLReferenceOfIn
+
   def pointerOfIn: Iterator[Type] = get().pointerOfIn
   override def _pointerOfIn       = get()._pointerOfIn
 
@@ -224,6 +267,13 @@ class Type(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
   /** Traverse to TYPE_ARGUMENT via REF IN edge.
     */
   def _typeArgumentViaRefIn: overflowdb.traversal.Traversal[TypeArgument] = get()._typeArgumentViaRefIn
+
+  def rReferenceOfIn: Iterator[Type] = get().rReferenceOfIn
+  override def _rReferenceOfIn       = get()._rReferenceOfIn
+
+  /** Traverse to TYPE via R_REFERENCE_OF IN edge.
+    */
+  def _typeViaRReferenceOfIn: overflowdb.traversal.Traversal[Type] = get()._typeViaRReferenceOfIn
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
@@ -305,24 +355,36 @@ class TypeDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Type
   override def _lengthOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
   def _astNodeViaLengthOut: overflowdb.traversal.Traversal[AstNode] = lengthOut.collectAll[AstNode]
 
-  def pointerOfOut: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](3)
-  override def _pointerOfOut       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
+  def lengthExpOut: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](3)
+  override def _lengthExpOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
+  def _astNodeViaLengthExpOut: overflowdb.traversal.Traversal[AstNode] = lengthExpOut.collectAll[AstNode]
+
+  def lReferenceOfOut: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](4)
+  override def _lReferenceOfOut       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+  def _typeViaLReferenceOfOut: overflowdb.traversal.Traversal[Type] = lReferenceOfOut.collectAll[Type]
+
+  def pointerOfOut: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](5)
+  override def _pointerOfOut       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
   def _typeViaPointerOfOut: overflowdb.traversal.Traversal[Type] = pointerOfOut.collectAll[Type]
 
-  def refOut: Iterator[TypeDecl] = createAdjacentNodeScalaIteratorByOffSet[TypeDecl](4)
-  override def _refOut           = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+  def refOut: Iterator[TypeDecl] = createAdjacentNodeScalaIteratorByOffSet[TypeDecl](6)
+  override def _refOut           = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
   def referencedTypeDecl: overflowdb.traversal.Traversal[TypeDecl] = refOut.collectAll[TypeDecl]
 
-  def aliasOfIn: Iterator[TypeDecl]                           = createAdjacentNodeScalaIteratorByOffSet[TypeDecl](5)
-  override def _aliasOfIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
+  def rReferenceOfOut: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](7)
+  override def _rReferenceOfOut       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
+  def _typeViaRReferenceOfOut: overflowdb.traversal.Traversal[Type] = rReferenceOfOut.collectAll[Type]
+
+  def aliasOfIn: Iterator[TypeDecl]                           = createAdjacentNodeScalaIteratorByOffSet[TypeDecl](8)
+  override def _aliasOfIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
   def aliasTypeDecl: overflowdb.traversal.Traversal[TypeDecl] = aliasOfIn.collectAll[TypeDecl]
 
-  def arrayOfIn: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](6)
-  override def _arrayOfIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
+  def arrayOfIn: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](9)
+  override def _arrayOfIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](9)
   def _typeViaArrayOfIn: overflowdb.traversal.Traversal[Type] = arrayOfIn.collectAll[Type]
 
-  def evalTypeIn: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](7)
-  override def _evalTypeIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
+  def evalTypeIn: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](10)
+  override def _evalTypeIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
   def _arrayInitializerViaEvalTypeIn: overflowdb.traversal.Traversal[ArrayInitializer] =
     evalTypeIn.collectAll[ArrayInitializer]
   def _blockViaEvalTypeIn: overflowdb.traversal.Traversal[Block] = evalTypeIn.collectAll[Block]
@@ -342,17 +404,25 @@ class TypeDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Type
   def _typeRefViaEvalTypeIn: overflowdb.traversal.Traversal[TypeRef]           = evalTypeIn.collectAll[TypeRef]
   def _unknownViaEvalTypeIn: overflowdb.traversal.Traversal[Unknown]           = evalTypeIn.collectAll[Unknown]
 
-  def inheritsFromIn: Iterator[TypeDecl] = createAdjacentNodeScalaIteratorByOffSet[TypeDecl](8)
-  override def _inheritsFromIn           = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
+  def inheritsFromIn: Iterator[TypeDecl] = createAdjacentNodeScalaIteratorByOffSet[TypeDecl](11)
+  override def _inheritsFromIn           = createAdjacentNodeScalaIteratorByOffSet[StoredNode](11)
   def _typeDeclViaInheritsFromIn: overflowdb.traversal.Traversal[TypeDecl] = inheritsFromIn.collectAll[TypeDecl]
 
-  def pointerOfIn: Iterator[Type]                               = createAdjacentNodeScalaIteratorByOffSet[Type](9)
-  override def _pointerOfIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](9)
+  def lReferenceOfIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](12)
+  override def _lReferenceOfIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](12)
+  def _typeViaLReferenceOfIn: overflowdb.traversal.Traversal[Type] = lReferenceOfIn.collectAll[Type]
+
+  def pointerOfIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](13)
+  override def _pointerOfIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](13)
   def _typeViaPointerOfIn: overflowdb.traversal.Traversal[Type] = pointerOfIn.collectAll[Type]
 
-  def refIn: Iterator[TypeArgument] = createAdjacentNodeScalaIteratorByOffSet[TypeArgument](10)
-  override def _refIn               = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
+  def refIn: Iterator[TypeArgument] = createAdjacentNodeScalaIteratorByOffSet[TypeArgument](14)
+  override def _refIn               = createAdjacentNodeScalaIteratorByOffSet[StoredNode](14)
   def _typeArgumentViaRefIn: overflowdb.traversal.Traversal[TypeArgument] = refIn.collectAll[TypeArgument]
+
+  def rReferenceOfIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](15)
+  override def _rReferenceOfIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](15)
+  def _typeViaRReferenceOfIn: overflowdb.traversal.Traversal[Type] = rReferenceOfIn.collectAll[Type]
 
   override def label: String = {
     Type.Label

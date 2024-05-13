@@ -80,6 +80,7 @@ object MethodParameterIn {
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Cfg.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
     ).asJava
@@ -88,7 +89,7 @@ object MethodParameterIn {
   object Edges {
     val Out: Array[String] =
       Array("AST", "CAPTURED_BY", "EVAL_TYPE", "IN_MACRO", "PARAMETER_LINK", "REACHING_DEF", "TAGGED_BY")
-    val In: Array[String] = Array("AST", "CFG", "LENGTH", "REACHING_DEF", "REF")
+    val In: Array[String] = Array("AST", "CFG", "LENGTH", "LENGTH_EXP", "REACHING_DEF", "REF")
   }
 
   val factory = new NodeFactory[MethodParameterInDb] {
@@ -243,6 +244,9 @@ class MethodParameterIn(graph_4762: Graph, id_4762: Long /*cf https://github.com
 
   def lengthIn: Iterator[Type] = get().lengthIn
   override def _lengthIn       = get()._lengthIn
+
+  def lengthExpIn: Iterator[Type] = get().lengthExpIn
+  override def _lengthExpIn       = get()._lengthExpIn
 
   def reachingDefIn: Iterator[Method] = get().reachingDefIn
   override def _reachingDefIn         = get()._reachingDefIn
@@ -456,12 +460,15 @@ class MethodParameterInDb(ref: NodeRef[NodeDb])
   def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](9)
   override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](9)
 
-  def reachingDefIn: Iterator[Method] = createAdjacentNodeScalaIteratorByOffSet[Method](10)
-  override def _reachingDefIn         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
+  def lengthExpIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](10)
+  override def _lengthExpIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
+
+  def reachingDefIn: Iterator[Method] = createAdjacentNodeScalaIteratorByOffSet[Method](11)
+  override def _reachingDefIn         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](11)
   def _methodViaReachingDefIn: overflowdb.traversal.Traversal[Method] = reachingDefIn.collectAll[Method]
 
-  def refIn: Iterator[StoredNode] = createAdjacentNodeScalaIteratorByOffSet[StoredNode](11)
-  override def _refIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](11)
+  def refIn: Iterator[StoredNode] = createAdjacentNodeScalaIteratorByOffSet[StoredNode](12)
+  override def _refIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](12)
   def _closureBindingViaRefIn: overflowdb.traversal.Traversal[ClosureBinding] = refIn.collectAll[ClosureBinding]
   def referencingIdentifiers: overflowdb.traversal.Traversal[Identifier]      = refIn.collectAll[Identifier]
 

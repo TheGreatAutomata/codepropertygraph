@@ -49,13 +49,14 @@ object AnnotationLiteral {
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Cfg.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("ARGUMENT", "IN_MACRO")
-    val In: Array[String]  = Array("AST", "CFG", "LENGTH", "REACHING_DEF")
+    val In: Array[String]  = Array("AST", "CFG", "LENGTH", "LENGTH_EXP", "REACHING_DEF")
   }
 
   val factory = new NodeFactory[AnnotationLiteralDb] {
@@ -121,6 +122,9 @@ class AnnotationLiteral(graph_4762: Graph, id_4762: Long /*cf https://github.com
 
   def lengthIn: Iterator[Type] = get().lengthIn
   override def _lengthIn       = get()._lengthIn
+
+  def lengthExpIn: Iterator[Type] = get().lengthExpIn
+  override def _lengthExpIn       = get()._lengthExpIn
 
   def reachingDefIn: Iterator[TemplateDom] = get().reachingDefIn
   override def _reachingDefIn              = get()._reachingDefIn
@@ -238,8 +242,11 @@ class AnnotationLiteralDb(ref: NodeRef[NodeDb])
   def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](4)
   override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
 
-  def reachingDefIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](5)
-  override def _reachingDefIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
+  def lengthExpIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](5)
+  override def _lengthExpIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
+
+  def reachingDefIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](6)
+  override def _reachingDefIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
 
   override def label: String = {
     AnnotationLiteral.Label

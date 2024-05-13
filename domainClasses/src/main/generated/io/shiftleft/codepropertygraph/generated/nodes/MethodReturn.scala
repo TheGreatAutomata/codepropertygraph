@@ -64,13 +64,14 @@ object MethodReturn {
       io.shiftleft.codepropertygraph.generated.edges.Cfg.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Dominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("EVAL_TYPE", "IN_MACRO", "POST_DOMINATE", "TAGGED_BY")
-    val In: Array[String]  = Array("AST", "CDG", "CFG", "DOMINATE", "LENGTH", "REACHING_DEF")
+    val In: Array[String]  = Array("AST", "CDG", "CFG", "DOMINATE", "LENGTH", "LENGTH_EXP", "REACHING_DEF")
   }
 
   val factory = new NodeFactory[MethodReturnDb] {
@@ -298,6 +299,9 @@ class MethodReturn(graph_4762: Graph, id_4762: Long /*cf https://github.com/scal
   def lengthIn: Iterator[Type] = get().lengthIn
   override def _lengthIn       = get()._lengthIn
 
+  def lengthExpIn: Iterator[Type] = get().lengthExpIn
+  override def _lengthExpIn       = get()._lengthExpIn
+
   def reachingDefIn: Iterator[Return] = get().reachingDefIn
   override def _reachingDefIn         = get()._reachingDefIn
 
@@ -482,8 +486,11 @@ class MethodReturnDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode w
   def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](8)
   override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
 
-  def reachingDefIn: Iterator[Return] = createAdjacentNodeScalaIteratorByOffSet[Return](9)
-  override def _reachingDefIn         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](9)
+  def lengthExpIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](9)
+  override def _lengthExpIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](9)
+
+  def reachingDefIn: Iterator[Return] = createAdjacentNodeScalaIteratorByOffSet[Return](10)
+  override def _reachingDefIn         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
   def _returnViaReachingDefIn: overflowdb.traversal.Traversal[Return] = reachingDefIn.collectAll[Return]
 
   override def label: String = {

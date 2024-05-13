@@ -17,11 +17,15 @@ public static final String DYNAMIC_DISPATCH = "DYNAMIC_DISPATCH";
 /** For macro expansions, code is inlined. */
 public static final String INLINED = "INLINED";
 
+/** For cxx static func */
+public static final String SAME_FILE_STATIC_DISPATCH = "SAME_FILE_STATIC_DISPATCH";
+
 
 public static Set<String> ALL = new HashSet<String>() {{
 add(STATIC_DISPATCH);
 add(DYNAMIC_DISPATCH);
 add(INLINED);
+add(SAME_FILE_STATIC_DISPATCH);
 }};
 
 }

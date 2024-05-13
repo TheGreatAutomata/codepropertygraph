@@ -64,13 +64,14 @@ object Local {
     List(
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("CAPTURED_BY", "EVAL_TYPE", "IN_MACRO", "TAGGED_BY")
-    val In: Array[String]  = Array("AST", "LENGTH", "REF")
+    val In: Array[String]  = Array("AST", "LENGTH", "LENGTH_EXP", "REF")
   }
 
   val factory = new NodeFactory[LocalDb] {
@@ -168,6 +169,9 @@ class Local(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/i
 
   def lengthIn: Iterator[Type] = get().lengthIn
   override def _lengthIn       = get()._lengthIn
+
+  def lengthExpIn: Iterator[Type] = get().lengthExpIn
+  override def _lengthExpIn       = get()._lengthExpIn
 
   def refIn: Iterator[StoredNode] = get().refIn
   override def _refIn             = get()._refIn
@@ -315,8 +319,11 @@ class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Ast
   def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](5)
   override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
 
-  def refIn: Iterator[StoredNode] = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
-  override def _refIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
+  def lengthExpIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](6)
+  override def _lengthExpIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
+
+  def refIn: Iterator[StoredNode] = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
+  override def _refIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
   def _closureBindingViaRefIn: overflowdb.traversal.Traversal[ClosureBinding] = refIn.collectAll[ClosureBinding]
   def referencingIdentifiers: overflowdb.traversal.Traversal[Identifier]      = refIn.collectAll[Identifier]
 

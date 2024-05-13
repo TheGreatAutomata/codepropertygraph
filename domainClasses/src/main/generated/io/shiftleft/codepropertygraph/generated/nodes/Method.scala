@@ -97,6 +97,7 @@ object Method {
       io.shiftleft.codepropertygraph.generated.edges.Cfg.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Contains.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
     ).asJava
@@ -105,7 +106,7 @@ object Method {
   object Edges {
     val Out: Array[String] =
       Array("AST", "CFG", "CONTAINS", "DOMINATE", "IN_MACRO", "REACHING_DEF", "SOURCE_FILE", "TAGGED_BY")
-    val In: Array[String] = Array("AST", "CALL", "CFG", "CONTAINS", "LENGTH", "POST_DOMINATE", "REF")
+    val In: Array[String] = Array("AST", "CALL", "CFG", "CONTAINS", "LENGTH", "LENGTH_EXP", "POST_DOMINATE", "REF")
   }
 
   val factory = new NodeFactory[MethodDb] {
@@ -428,6 +429,9 @@ class Method(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
   def lengthIn: Iterator[Type] = get().lengthIn
   override def _lengthIn       = get()._lengthIn
 
+  def lengthExpIn: Iterator[Type] = get().lengthExpIn
+  override def _lengthExpIn       = get()._lengthExpIn
+
   def postDominateIn: Iterator[CfgNode] = get().postDominateIn
   override def _postDominateIn          = get()._postDominateIn
 
@@ -749,8 +753,11 @@ class MethodDb(ref: NodeRef[NodeDb])
   def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](12)
   override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](12)
 
-  def postDominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](13)
-  override def _postDominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](13)
+  def lengthExpIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](13)
+  override def _lengthExpIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](13)
+
+  def postDominateIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](14)
+  override def _postDominateIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](14)
   def _blockViaPostDominateIn: overflowdb.traversal.Traversal[Block] = postDominateIn.collectAll[Block]
   def _callViaPostDominateIn: overflowdb.traversal.Traversal[Call]   = postDominateIn.collectAll[Call]
   def _controlStructureViaPostDominateIn: overflowdb.traversal.Traversal[ControlStructure] =
@@ -766,8 +773,8 @@ class MethodDb(ref: NodeRef[NodeDb])
   def _typeRefViaPostDominateIn: overflowdb.traversal.Traversal[TypeRef] = postDominateIn.collectAll[TypeRef]
   def _unknownViaPostDominateIn: overflowdb.traversal.Traversal[Unknown] = postDominateIn.collectAll[Unknown]
 
-  def refIn: Iterator[StoredNode] = createAdjacentNodeScalaIteratorByOffSet[StoredNode](14)
-  override def _refIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](14)
+  def refIn: Iterator[StoredNode] = createAdjacentNodeScalaIteratorByOffSet[StoredNode](15)
+  override def _refIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](15)
   def _bindingViaRefIn: overflowdb.traversal.Traversal[Binding]     = refIn.collectAll[Binding]
   def _methodRefViaRefIn: overflowdb.traversal.Traversal[MethodRef] = refIn.collectAll[MethodRef]
 

@@ -39,13 +39,14 @@ object Namespace {
     List(io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation).asJava,
     List(
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("IN_MACRO")
-    val In: Array[String]  = Array("LENGTH", "REF")
+    val In: Array[String]  = Array("LENGTH", "LENGTH_EXP", "REF")
   }
 
   val factory = new NodeFactory[NamespaceDb] {
@@ -92,6 +93,9 @@ class Namespace(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/b
 
   def lengthIn: Iterator[Type] = get().lengthIn
   override def _lengthIn       = get()._lengthIn
+
+  def lengthExpIn: Iterator[Type] = get().lengthExpIn
+  override def _lengthExpIn       = get()._lengthExpIn
 
   def refIn: Iterator[NamespaceBlock] = get().refIn
   override def _refIn                 = get()._refIn
@@ -186,8 +190,11 @@ class NamespaceDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](1)
   override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
 
-  def refIn: Iterator[NamespaceBlock] = createAdjacentNodeScalaIteratorByOffSet[NamespaceBlock](2)
-  override def _refIn                 = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+  def lengthExpIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](2)
+  override def _lengthExpIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+
+  def refIn: Iterator[NamespaceBlock] = createAdjacentNodeScalaIteratorByOffSet[NamespaceBlock](3)
+  override def _refIn                 = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _namespaceBlockViaRefIn: overflowdb.traversal.Traversal[NamespaceBlock] = refIn.collectAll[NamespaceBlock]
 
   override def label: String = {

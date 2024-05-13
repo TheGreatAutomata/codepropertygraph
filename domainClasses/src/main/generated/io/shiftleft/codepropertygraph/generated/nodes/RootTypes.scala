@@ -63,10 +63,13 @@ trait StoredNode extends Node with AbstractNode with Product {
   def _inMacroIn: Iterator[StoredNode]          = Iterator.empty
   def _inheritsFromIn: Iterator[StoredNode]     = Iterator.empty
   def _isCallForImportIn: Iterator[StoredNode]  = Iterator.empty
+  def _lReferenceOfIn: Iterator[StoredNode]     = Iterator.empty
   def _lengthIn: Iterator[StoredNode]           = Iterator.empty
+  def _lengthExpIn: Iterator[StoredNode]        = Iterator.empty
   def _parameterLinkIn: Iterator[StoredNode]    = Iterator.empty
   def _pointerOfIn: Iterator[StoredNode]        = Iterator.empty
   def _postDominateIn: Iterator[StoredNode]     = Iterator.empty
+  def _rReferenceOfIn: Iterator[StoredNode]     = Iterator.empty
   def _reachingDefIn: Iterator[StoredNode]      = Iterator.empty
   def _receiverIn: Iterator[StoredNode]         = Iterator.empty
   def _refIn: Iterator[StoredNode]              = Iterator.empty
@@ -91,10 +94,13 @@ trait StoredNode extends Node with AbstractNode with Product {
   def _inMacroOut: Iterator[StoredNode]         = Iterator.empty
   def _inheritsFromOut: Iterator[StoredNode]    = Iterator.empty
   def _isCallForImportOut: Iterator[StoredNode] = Iterator.empty
+  def _lReferenceOfOut: Iterator[StoredNode]    = Iterator.empty
   def _lengthOut: Iterator[StoredNode]          = Iterator.empty
+  def _lengthExpOut: Iterator[StoredNode]       = Iterator.empty
   def _parameterLinkOut: Iterator[StoredNode]   = Iterator.empty
   def _pointerOfOut: Iterator[StoredNode]       = Iterator.empty
   def _postDominateOut: Iterator[StoredNode]    = Iterator.empty
+  def _rReferenceOfOut: Iterator[StoredNode]    = Iterator.empty
   def _reachingDefOut: Iterator[StoredNode]     = Iterator.empty
   def _receiverOut: Iterator[StoredNode]        = Iterator.empty
   def _refOut: Iterator[StoredNode]             = Iterator.empty
