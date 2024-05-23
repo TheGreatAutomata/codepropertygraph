@@ -578,6 +578,8 @@ object Ast extends SchemaBase {
       .extendz(callRepr)
       .addProperties(typeFullName)
 
+    member.addOutEdge(edge = ast, inNode = callNode)
+
     val expression = builder
       .addNodeBaseType(
         name = "EXPRESSION",
@@ -646,6 +648,10 @@ object Ast extends SchemaBase {
       .addInEdge(length, tpe)
       .addInEdge(lengthExp, tpe)
 
+    local.addOutEdge(edge = ast, inNode = callNode)
+    method.addOutEdge(edge = templatePara, inNode = local)
+    typeDecl.addOutEdge(edge = templatePara, inNode = local)
+    tpe.addOutEdge(edge = specializepara, inNode = astNode)
   }
 
 }

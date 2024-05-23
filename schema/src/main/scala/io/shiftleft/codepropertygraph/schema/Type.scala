@@ -261,11 +261,44 @@ object Type extends SchemaBase {
       )
       .protoId(51026)
 
+    val templatePara = builder
+      .addEdgeType(
+        name = "TEMPLATE_PARA",
+        comment =
+          """TEMPLATE_PARA
+            |""".stripMargin
+      )
+      .protoId(51027)
+
+    val specializeOf = builder
+      .addEdgeType(
+        name = "SPECIALIZE_OF",
+        comment =
+          """SPECIALIZE_OF
+            |""".stripMargin
+      )
+      .protoId(51028)
+
+    val specializepara = builder
+      .addEdgeType(
+        name = "SPECIALIZE_PARA",
+        comment =
+          """SPECIALIZE_PARA
+            |""".stripMargin
+      )
+      .protoId(51029)
+
     tpe
       .addOutEdge(edge = pointerOf, inNode = tpe)
       .addOutEdge(edge = arrayOf, inNode = tpe)
       .addOutEdge(edge = lReferenceOf, inNode = tpe)
       .addOutEdge(edge = rReferenceOf, inNode = tpe)
+      .addOutEdge(edge = specializeOf, inNode = tpe)
+      .addOutEdge(edge = specializepara, inNode = tpe)
+      .addOutEdge(edge = aliasOf, inNode = tpe)
+
+    typeDecl
+      .addOutEdge(edge = templatePara, inNode = tpe)
 //      .addOutEdge(edge = length, inNode = ast)
   }
 

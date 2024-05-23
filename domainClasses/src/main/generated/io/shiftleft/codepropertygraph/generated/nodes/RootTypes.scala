@@ -74,7 +74,10 @@ trait StoredNode extends Node with AbstractNode with Product {
   def _receiverIn: Iterator[StoredNode]         = Iterator.empty
   def _refIn: Iterator[StoredNode]              = Iterator.empty
   def _sourceFileIn: Iterator[StoredNode]       = Iterator.empty
+  def _specializeOfIn: Iterator[StoredNode]     = Iterator.empty
+  def _specializeParaIn: Iterator[StoredNode]   = Iterator.empty
   def _taggedByIn: Iterator[StoredNode]         = Iterator.empty
+  def _templateParaIn: Iterator[StoredNode]     = Iterator.empty
   def _aliasOfOut: Iterator[StoredNode]         = Iterator.empty
   def _argumentOut: Iterator[StoredNode]        = Iterator.empty
   def _arrayOfOut: Iterator[StoredNode]         = Iterator.empty
@@ -105,7 +108,10 @@ trait StoredNode extends Node with AbstractNode with Product {
   def _receiverOut: Iterator[StoredNode]        = Iterator.empty
   def _refOut: Iterator[StoredNode]             = Iterator.empty
   def _sourceFileOut: Iterator[StoredNode]      = Iterator.empty
+  def _specializeOfOut: Iterator[StoredNode]    = Iterator.empty
+  def _specializeParaOut: Iterator[StoredNode]  = Iterator.empty
   def _taggedByOut: Iterator[StoredNode]        = Iterator.empty
+  def _templateParaOut: Iterator[StoredNode]    = Iterator.empty
 }
 
 object Factories {

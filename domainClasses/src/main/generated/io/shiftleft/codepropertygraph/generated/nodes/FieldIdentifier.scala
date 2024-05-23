@@ -60,7 +60,8 @@ object FieldIdentifier {
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
@@ -76,7 +77,8 @@ object FieldIdentifier {
       "LENGTH",
       "LENGTH_EXP",
       "POST_DOMINATE",
-      "REACHING_DEF"
+      "REACHING_DEF",
+      "SPECIALIZE_PARA"
     )
   }
 
@@ -492,6 +494,9 @@ class FieldIdentifier(graph_4762: Graph, id_4762: Long /*cf https://github.com/s
   def reachingDefIn: Iterator[TemplateDom] = get().reachingDefIn
   override def _reachingDefIn              = get()._reachingDefIn
 
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
+
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
   // This must become `class Derived(x_4762:Int) extends Base(x_4762)`.
@@ -738,6 +743,9 @@ class FieldIdentifierDb(ref: NodeRef[NodeDb])
 
   def reachingDefIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](16)
   override def _reachingDefIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](16)
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](17)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](17)
 
   override def label: String = {
     FieldIdentifier.Label

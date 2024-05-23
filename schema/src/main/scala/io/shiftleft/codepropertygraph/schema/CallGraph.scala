@@ -180,6 +180,12 @@ object CallGraph extends SchemaBase {
         valueType = ValueType.String,
         comment = "For cxx static func"
       ).protoId(4),
+      Constant(
+        name = "NO_DISPATCH",
+        value = "NO_DISPATCH",
+        valueType = ValueType.String,
+        comment = "no need to dispatch"
+      ).protoId(5),
     )
 
     callNode

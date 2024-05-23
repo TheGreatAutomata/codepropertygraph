@@ -79,7 +79,8 @@ object TypeRef {
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.Receiver.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.Receiver.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
@@ -108,7 +109,8 @@ object TypeRef {
       "LENGTH_EXP",
       "POST_DOMINATE",
       "REACHING_DEF",
-      "RECEIVER"
+      "RECEIVER",
+      "SPECIALIZE_PARA"
     )
   }
 
@@ -656,6 +658,9 @@ class TypeRef(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
     */
   def _callViaReceiverIn: overflowdb.traversal.Traversal[Call] = get()._callViaReceiverIn
 
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
+
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
   // This must become `class Derived(x_4762:Int) extends Base(x_4762)`.
@@ -948,6 +953,9 @@ class TypeRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with E
   def receiverIn: Iterator[Call]                               = createAdjacentNodeScalaIteratorByOffSet[Call](21)
   override def _receiverIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](21)
   def _callViaReceiverIn: overflowdb.traversal.Traversal[Call] = receiverIn.collectAll[Call]
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](22)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](22)
 
   override def label: String = {
     TypeRef.Label

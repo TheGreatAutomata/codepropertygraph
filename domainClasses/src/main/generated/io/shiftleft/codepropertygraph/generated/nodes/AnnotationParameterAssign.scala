@@ -40,13 +40,14 @@ object AnnotationParameterAssign {
     List(
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("AST", "IN_MACRO")
-    val In: Array[String]  = Array("AST", "LENGTH", "LENGTH_EXP")
+    val In: Array[String]  = Array("AST", "LENGTH", "LENGTH_EXP", "SPECIALIZE_PARA")
   }
 
   val factory = new NodeFactory[AnnotationParameterAssignDb] {
@@ -120,6 +121,9 @@ class AnnotationParameterAssign(graph_4762: Graph, id_4762: Long /*cf https://gi
 
   def lengthExpIn: Iterator[Type] = get().lengthExpIn
   override def _lengthExpIn       = get()._lengthExpIn
+
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
@@ -220,6 +224,9 @@ class AnnotationParameterAssignDb(ref: NodeRef[NodeDb])
 
   def lengthExpIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](4)
   override def _lengthExpIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](5)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
 
   override def label: String = {
     AnnotationParameterAssign.Label

@@ -40,13 +40,14 @@ object Namespace {
     List(
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("IN_MACRO")
-    val In: Array[String]  = Array("LENGTH", "LENGTH_EXP", "REF")
+    val In: Array[String]  = Array("LENGTH", "LENGTH_EXP", "REF", "SPECIALIZE_PARA")
   }
 
   val factory = new NodeFactory[NamespaceDb] {
@@ -103,6 +104,9 @@ class Namespace(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/b
   /** Traverse to NAMESPACE_BLOCK via REF IN edge.
     */
   def _namespaceBlockViaRefIn: overflowdb.traversal.Traversal[NamespaceBlock] = get()._namespaceBlockViaRefIn
+
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
@@ -196,6 +200,9 @@ class NamespaceDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with
   def refIn: Iterator[NamespaceBlock] = createAdjacentNodeScalaIteratorByOffSet[NamespaceBlock](3)
   override def _refIn                 = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
   def _namespaceBlockViaRefIn: overflowdb.traversal.Traversal[NamespaceBlock] = refIn.collectAll[NamespaceBlock]
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](4)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
 
   override def label: String = {
     Namespace.Label

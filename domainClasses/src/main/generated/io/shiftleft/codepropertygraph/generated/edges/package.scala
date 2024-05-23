@@ -47,7 +47,10 @@ object Factories {
     Receiver.factory,
     Ref.factory,
     SourceFile.factory,
-    TaggedBy.factory
+    SpecializeOf.factory,
+    SpecializePara.factory,
+    TaggedBy.factory,
+    TemplatePara.factory
   )
   lazy val allAsJava: java.util.List[EdgeFactory[_]] = all.asJava
 }

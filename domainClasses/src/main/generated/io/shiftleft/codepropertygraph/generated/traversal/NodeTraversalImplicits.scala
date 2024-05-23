@@ -221,6 +221,12 @@ class StoredNodeTraversalExtGen[NodeType <: StoredNode](val traversal: Iterator[
   def _refIn: Iterator[StoredNode]              = traversal.flatMap { _._refIn }
   def _sourceFileOut: Iterator[StoredNode]      = traversal.flatMap { _._sourceFileOut }
   def _sourceFileIn: Iterator[StoredNode]       = traversal.flatMap { _._sourceFileIn }
+  def _specializeOfOut: Iterator[StoredNode]    = traversal.flatMap { _._specializeOfOut }
+  def _specializeOfIn: Iterator[StoredNode]     = traversal.flatMap { _._specializeOfIn }
+  def _specializeParaOut: Iterator[StoredNode]  = traversal.flatMap { _._specializeParaOut }
+  def _specializeParaIn: Iterator[StoredNode]   = traversal.flatMap { _._specializeParaIn }
   def _taggedByOut: Iterator[StoredNode]        = traversal.flatMap { _._taggedByOut }
   def _taggedByIn: Iterator[StoredNode]         = traversal.flatMap { _._taggedByIn }
+  def _templateParaOut: Iterator[StoredNode]    = traversal.flatMap { _._templateParaOut }
+  def _templateParaIn: Iterator[StoredNode]     = traversal.flatMap { _._templateParaIn }
 }

@@ -56,6 +56,7 @@ object Local {
     Label,
     PropertyNames.allAsJava,
     List(
+      io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.CapturedBy.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.EvalType.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.InMacro.layoutInformation,
@@ -65,13 +66,15 @@ object Local {
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.TemplatePara.layoutInformation
     ).asJava
   )
 
   object Edges {
-    val Out: Array[String] = Array("CAPTURED_BY", "EVAL_TYPE", "IN_MACRO", "TAGGED_BY")
-    val In: Array[String]  = Array("AST", "LENGTH", "LENGTH_EXP", "REF")
+    val Out: Array[String] = Array("AST", "CAPTURED_BY", "EVAL_TYPE", "IN_MACRO", "TAGGED_BY")
+    val In: Array[String]  = Array("AST", "LENGTH", "LENGTH_EXP", "REF", "SPECIALIZE_PARA", "TEMPLATE_PARA")
   }
 
   val factory = new NodeFactory[LocalDb] {
@@ -122,6 +125,13 @@ class Local(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/i
       case "TYPE_FULL_NAME" => Local.PropertyDefaults.TypeFullName
       case _                => super.propertyDefaultValue(propertyKey)
     }
+
+  def astOut: Iterator[Call] = get().astOut
+  override def _astOut       = get()._astOut
+
+  /** Traverse to CALL via AST OUT edge.
+    */
+  def _callViaAstOut: overflowdb.traversal.Traversal[Call] = get()._callViaAstOut
 
   def capturedByOut: Iterator[ClosureBinding] = get().capturedByOut
   override def _capturedByOut                 = get()._capturedByOut
@@ -185,6 +195,20 @@ class Local(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/i
   /** Places (identifier) where this local is being referenced */
   @overflowdb.traversal.help.Doc(info = """Places (identifier) where this local is being referenced""")
   def referencingIdentifiers: overflowdb.traversal.Traversal[Identifier] = get().referencingIdentifiers
+
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
+
+  def templateParaIn: Iterator[AstNode] = get().templateParaIn
+  override def _templateParaIn          = get()._templateParaIn
+
+  /** Traverse to METHOD via TEMPLATE_PARA IN edge.
+    */
+  def _methodViaTemplateParaIn: overflowdb.traversal.Traversal[Method] = get()._methodViaTemplateParaIn
+
+  /** Traverse to TYPE_DECL via TEMPLATE_PARA IN edge.
+    */
+  def _typeDeclViaTemplateParaIn: overflowdb.traversal.Traversal[TypeDecl] = get()._typeDeclViaTemplateParaIn
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
@@ -294,38 +318,50 @@ class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Ast
   }
 
   import overflowdb.traversal._
-  def capturedByOut: Iterator[ClosureBinding] = createAdjacentNodeScalaIteratorByOffSet[ClosureBinding](0)
-  override def _capturedByOut                 = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
+  def astOut: Iterator[Call]                               = createAdjacentNodeScalaIteratorByOffSet[Call](0)
+  override def _astOut                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
+  def _callViaAstOut: overflowdb.traversal.Traversal[Call] = astOut.collectAll[Call]
+
+  def capturedByOut: Iterator[ClosureBinding] = createAdjacentNodeScalaIteratorByOffSet[ClosureBinding](1)
+  override def _capturedByOut                 = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
   def _closureBindingViaCapturedByOut: overflowdb.traversal.Traversal[ClosureBinding] =
     capturedByOut.collectAll[ClosureBinding]
 
-  def evalTypeOut: Iterator[Type]               = createAdjacentNodeScalaIteratorByOffSet[Type](1)
-  override def _evalTypeOut                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](1)
+  def evalTypeOut: Iterator[Type]               = createAdjacentNodeScalaIteratorByOffSet[Type](2)
+  override def _evalTypeOut                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
   def typ: overflowdb.traversal.Traversal[Type] = evalTypeOut.collectAll[Type]
 
-  def inMacroOut: Iterator[MacroDecl] = createAdjacentNodeScalaIteratorByOffSet[MacroDecl](2)
-  override def _inMacroOut            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
+  def inMacroOut: Iterator[MacroDecl] = createAdjacentNodeScalaIteratorByOffSet[MacroDecl](3)
+  override def _inMacroOut            = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
 
-  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](3)
-  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)
+  def taggedByOut: Iterator[Tag]                              = createAdjacentNodeScalaIteratorByOffSet[Tag](4)
+  override def _taggedByOut                                   = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
   def _tagViaTaggedByOut: overflowdb.traversal.Traversal[Tag] = taggedByOut.collectAll[Tag]
 
-  def astIn: Iterator[Expression]                          = createAdjacentNodeScalaIteratorByOffSet[Expression](4)
-  override def _astIn                                      = createAdjacentNodeScalaIteratorByOffSet[StoredNode](4)
+  def astIn: Iterator[Expression]                          = createAdjacentNodeScalaIteratorByOffSet[Expression](5)
+  override def _astIn                                      = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
   def definingBlock: overflowdb.traversal.Traversal[Block] = astIn.collectAll[Block]
   def _controlStructureViaAstIn: overflowdb.traversal.Traversal[ControlStructure] = astIn.collectAll[ControlStructure]
   def _unknownViaAstIn: overflowdb.traversal.Traversal[Unknown]                   = astIn.collectAll[Unknown]
 
-  def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](5)
-  override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
+  def lengthIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](6)
+  override def _lengthIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
 
-  def lengthExpIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](6)
-  override def _lengthExpIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
+  def lengthExpIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](7)
+  override def _lengthExpIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
 
-  def refIn: Iterator[StoredNode] = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
-  override def _refIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
+  def refIn: Iterator[StoredNode] = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
+  override def _refIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
   def _closureBindingViaRefIn: overflowdb.traversal.Traversal[ClosureBinding] = refIn.collectAll[ClosureBinding]
   def referencingIdentifiers: overflowdb.traversal.Traversal[Identifier]      = refIn.collectAll[Identifier]
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](9)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](9)
+
+  def templateParaIn: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](10)
+  override def _templateParaIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
+  def _methodViaTemplateParaIn: overflowdb.traversal.Traversal[Method]     = templateParaIn.collectAll[Method]
+  def _typeDeclViaTemplateParaIn: overflowdb.traversal.Traversal[TypeDecl] = templateParaIn.collectAll[TypeDecl]
 
   override def label: String = {
     Local.Label

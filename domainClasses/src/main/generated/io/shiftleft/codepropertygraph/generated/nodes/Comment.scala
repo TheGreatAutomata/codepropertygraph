@@ -44,13 +44,14 @@ object Comment {
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.SourceFile.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.SourceFile.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("IN_MACRO", "SOURCE_FILE")
-    val In: Array[String]  = Array("AST", "LENGTH", "LENGTH_EXP", "SOURCE_FILE")
+    val In: Array[String]  = Array("AST", "LENGTH", "LENGTH_EXP", "SOURCE_FILE", "SPECIALIZE_PARA")
   }
 
   val factory = new NodeFactory[CommentDb] {
@@ -121,6 +122,9 @@ class Comment(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug
   /** Traverse to COMMENT via SOURCE_FILE IN edge.
     */
   def _commentViaSourceFileIn: overflowdb.traversal.Traversal[Comment] = get()._commentViaSourceFileIn
+
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
@@ -222,6 +226,9 @@ class CommentDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with A
   def sourceFileIn: Iterator[Comment] = createAdjacentNodeScalaIteratorByOffSet[Comment](5)
   override def _sourceFileIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](5)
   def _commentViaSourceFileIn: overflowdb.traversal.Traversal[Comment] = sourceFileIn.collectAll[Comment]
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](6)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](6)
 
   override def label: String = {
     Comment.Label

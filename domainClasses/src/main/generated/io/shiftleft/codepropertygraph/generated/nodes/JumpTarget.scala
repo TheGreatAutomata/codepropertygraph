@@ -60,7 +60,8 @@ object JumpTarget {
       io.shiftleft.codepropertygraph.generated.edges.Dominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
@@ -76,7 +77,8 @@ object JumpTarget {
       "DOMINATE",
       "LENGTH",
       "LENGTH_EXP",
-      "POST_DOMINATE"
+      "POST_DOMINATE",
+      "SPECIALIZE_PARA"
     )
   }
 
@@ -492,6 +494,9 @@ class JumpTarget(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/
     */
   def _unknownViaPostDominateIn: overflowdb.traversal.Traversal[Unknown] = get()._unknownViaPostDominateIn
 
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
+
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
   // This must become `class Derived(x_4762:Int) extends Base(x_4762)`.
@@ -723,6 +728,9 @@ class JumpTargetDb(ref: NodeRef[NodeDb])
   def _returnViaPostDominateIn: overflowdb.traversal.Traversal[Return]   = postDominateIn.collectAll[Return]
   def _typeRefViaPostDominateIn: overflowdb.traversal.Traversal[TypeRef] = postDominateIn.collectAll[TypeRef]
   def _unknownViaPostDominateIn: overflowdb.traversal.Traversal[Unknown] = postDominateIn.collectAll[Unknown]
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](16)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](16)
 
   override def label: String = {
     JumpTarget.Label

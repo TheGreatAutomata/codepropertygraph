@@ -84,7 +84,8 @@ object Identifier {
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.Receiver.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.Receiver.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
@@ -114,7 +115,8 @@ object Identifier {
       "LENGTH_EXP",
       "POST_DOMINATE",
       "REACHING_DEF",
-      "RECEIVER"
+      "RECEIVER",
+      "SPECIALIZE_PARA"
     )
   }
 
@@ -676,6 +678,9 @@ class Identifier(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/
     */
   def _callViaReceiverIn: Option[Call] = get()._callViaReceiverIn
 
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
+
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
   // This must become `class Derived(x_4762:Int) extends Base(x_4762)`.
@@ -978,6 +983,9 @@ class IdentifierDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode wit
   def receiverIn: Iterator[Call]       = createAdjacentNodeScalaIteratorByOffSet[Call](22)
   override def _receiverIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](22)
   def _callViaReceiverIn: Option[Call] = receiverIn.collectAll[Call].nextOption()
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](23)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](23)
 
   override def label: String = {
     Identifier.Label

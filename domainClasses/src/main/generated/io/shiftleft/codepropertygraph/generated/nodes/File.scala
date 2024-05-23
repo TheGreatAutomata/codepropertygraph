@@ -50,13 +50,14 @@ object File {
     List(
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.SourceFile.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.SourceFile.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("AST", "CONTAINS", "IN_MACRO", "TAGGED_BY")
-    val In: Array[String]  = Array("LENGTH", "LENGTH_EXP", "SOURCE_FILE")
+    val In: Array[String]  = Array("LENGTH", "LENGTH_EXP", "SOURCE_FILE", "SPECIALIZE_PARA")
   }
 
   val factory = new NodeFactory[FileDb] {
@@ -171,6 +172,9 @@ class File(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
   /** Traverse to TYPE_DECL via SOURCE_FILE IN edge.
     */
   def typeDecl: overflowdb.traversal.Traversal[TypeDecl] = get().typeDecl
+
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
@@ -296,6 +300,9 @@ class FileDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with AstN
   def method: overflowdb.traversal.Traversal[Method]       = sourceFileIn.collectAll[Method]
   def namespaceBlock: overflowdb.traversal.Traversal[NamespaceBlock] = sourceFileIn.collectAll[NamespaceBlock]
   def typeDecl: overflowdb.traversal.Traversal[TypeDecl]             = sourceFileIn.collectAll[TypeDecl]
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](7)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
 
   override def label: String = {
     File.Label

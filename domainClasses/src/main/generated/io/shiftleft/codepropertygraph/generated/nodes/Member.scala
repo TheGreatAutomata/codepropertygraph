@@ -70,13 +70,14 @@ object Member {
       io.shiftleft.codepropertygraph.generated.edges.Ast.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("AST", "EVAL_TYPE", "IN_MACRO", "TAGGED_BY")
-    val In: Array[String]  = Array("AST", "LENGTH", "LENGTH_EXP", "REF")
+    val In: Array[String]  = Array("AST", "LENGTH", "LENGTH_EXP", "REF", "SPECIALIZE_PARA")
   }
 
   val factory = new NodeFactory[MemberDb] {
@@ -139,6 +140,10 @@ class Member(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
     */
   def _annotationViaAstOut: overflowdb.traversal.Traversal[Annotation] = get()._annotationViaAstOut
 
+  /** Traverse to CALL via AST OUT edge.
+    */
+  def _callViaAstOut: overflowdb.traversal.Traversal[Call] = get()._callViaAstOut
+
   /** Traverse to MODIFIER via AST OUT edge.
     */
   def _modifierViaAstOut: overflowdb.traversal.Traversal[Modifier] = get()._modifierViaAstOut
@@ -187,6 +192,9 @@ class Member(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
   /** Traverse to CALL via REF IN edge.
     */
   def _callViaRefIn: overflowdb.traversal.Traversal[Call] = get()._callViaRefIn
+
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
@@ -305,6 +313,7 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
   def astOut: Iterator[AstNode] = createAdjacentNodeScalaIteratorByOffSet[AstNode](0)
   override def _astOut          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](0)
   def _annotationViaAstOut: overflowdb.traversal.Traversal[Annotation] = astOut.collectAll[Annotation]
+  def _callViaAstOut: overflowdb.traversal.Traversal[Call]             = astOut.collectAll[Call]
   def _modifierViaAstOut: overflowdb.traversal.Traversal[Modifier]     = astOut.collectAll[Modifier]
 
   def evalTypeOut: Iterator[Type]               = createAdjacentNodeScalaIteratorByOffSet[Type](1)
@@ -339,6 +348,9 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
   def refIn: Iterator[Call]                               = createAdjacentNodeScalaIteratorByOffSet[Call](7)
   override def _refIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
   def _callViaRefIn: overflowdb.traversal.Traversal[Call] = refIn.collectAll[Call]
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](8)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
 
   override def label: String = {
     Member.Label

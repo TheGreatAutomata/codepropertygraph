@@ -126,7 +126,11 @@ object Method extends SchemaBase {
       .protoId(3)
       .addProperties(typeFullName)
 
-    method.addOutEdge(edge = sourceFile, inNode = file, stepNameIn = "method")
+    method
+      .addOutEdge(edge = sourceFile, inNode = file, stepNameIn = "method")
+      .addOutEdge(edge = templatePara, inNode = tpe)
+      .addOutEdge(edge = specializeOf, inNode = method)
+      .addOutEdge(edge = specializepara, inNode = tpe)
   }
 
 }

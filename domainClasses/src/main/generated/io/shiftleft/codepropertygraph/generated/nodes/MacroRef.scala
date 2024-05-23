@@ -51,13 +51,14 @@ object MacroRef {
       io.shiftleft.codepropertygraph.generated.edges.Cfg.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("ARGUMENT", "IN_MACRO", "REF")
-    val In: Array[String]  = Array("AST", "CFG", "LENGTH", "LENGTH_EXP", "REACHING_DEF")
+    val In: Array[String]  = Array("AST", "CFG", "LENGTH", "LENGTH_EXP", "REACHING_DEF", "SPECIALIZE_PARA")
   }
 
   val factory = new NodeFactory[MacroRefDb] {
@@ -131,6 +132,9 @@ class MacroRef(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bu
 
   def reachingDefIn: Iterator[TemplateDom] = get().reachingDefIn
   override def _reachingDefIn              = get()._reachingDefIn
+
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
@@ -248,6 +252,9 @@ class MacroRefDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
 
   def reachingDefIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](7)
   override def _reachingDefIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](7)
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](8)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](8)
 
   override def label: String = {
     MacroRef.Label

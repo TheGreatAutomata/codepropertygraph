@@ -61,13 +61,15 @@ object MethodParameterOut {
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ParameterLink.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("EVAL_TYPE", "IN_MACRO", "REACHING_DEF", "TAGGED_BY")
-    val In: Array[String]  = Array("AST", "CFG", "LENGTH", "LENGTH_EXP", "PARAMETER_LINK", "REACHING_DEF")
+    val In: Array[String] =
+      Array("AST", "CFG", "LENGTH", "LENGTH_EXP", "PARAMETER_LINK", "REACHING_DEF", "SPECIALIZE_PARA")
   }
 
   val factory = new NodeFactory[MethodParameterOutDb] {
@@ -241,6 +243,9 @@ class MethodParameterOut(graph_4762: Graph, id_4762: Long /*cf https://github.co
     */
   def _unknownViaReachingDefIn: overflowdb.traversal.Traversal[Unknown] = get()._unknownViaReachingDefIn
 
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
+
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
   // This must become `class Derived(x_4762:Int) extends Base(x_4762)`.
@@ -410,6 +415,9 @@ class MethodParameterOutDb(ref: NodeRef[NodeDb])
   def _returnViaReachingDefIn: overflowdb.traversal.Traversal[Return]       = reachingDefIn.collectAll[Return]
   def _typeRefViaReachingDefIn: overflowdb.traversal.Traversal[TypeRef]     = reachingDefIn.collectAll[TypeRef]
   def _unknownViaReachingDefIn: overflowdb.traversal.Traversal[Unknown]     = reachingDefIn.collectAll[Unknown]
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](10)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
 
   override def label: String = {
     MethodParameterOut.Label

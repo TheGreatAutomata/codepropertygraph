@@ -70,7 +70,8 @@ object ControlStructure {
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.Receiver.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.Receiver.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
@@ -100,7 +101,8 @@ object ControlStructure {
       "LENGTH_EXP",
       "POST_DOMINATE",
       "REACHING_DEF",
-      "RECEIVER"
+      "RECEIVER",
+      "SPECIALIZE_PARA"
     )
   }
 
@@ -680,6 +682,9 @@ class ControlStructure(graph_4762: Graph, id_4762: Long /*cf https://github.com/
     */
   def _callViaReceiverIn: overflowdb.traversal.Traversal[Call] = get()._callViaReceiverIn
 
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
+
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
   // This must become `class Derived(x_4762:Int) extends Base(x_4762)`.
@@ -974,6 +979,9 @@ class ControlStructureDb(ref: NodeRef[NodeDb])
   def receiverIn: Iterator[Call]                               = createAdjacentNodeScalaIteratorByOffSet[Call](22)
   override def _receiverIn                                     = createAdjacentNodeScalaIteratorByOffSet[StoredNode](22)
   def _callViaReceiverIn: overflowdb.traversal.Traversal[Call] = receiverIn.collectAll[Call]
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](23)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](23)
 
   override def label: String = {
     ControlStructure.Label

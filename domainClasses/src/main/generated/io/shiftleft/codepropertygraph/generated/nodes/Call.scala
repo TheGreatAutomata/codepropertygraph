@@ -99,7 +99,8 @@ object Call {
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.Receiver.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.Receiver.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
@@ -132,7 +133,8 @@ object Call {
       "LENGTH_EXP",
       "POST_DOMINATE",
       "REACHING_DEF",
-      "RECEIVER"
+      "RECEIVER",
+      "SPECIALIZE_PARA"
     )
   }
 
@@ -564,8 +566,8 @@ class Call(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
     */
   def _returnViaArgumentIn: Option[Return] = get()._returnViaArgumentIn
 
-  def astIn: Iterator[Expression] = get().astIn
-  override def _astIn             = get()._astIn
+  def astIn: Iterator[AstNode] = get().astIn
+  override def _astIn          = get()._astIn
 
   /** Traverse to BLOCK via AST IN edge.
     */
@@ -578,6 +580,14 @@ class Call(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
   /** Traverse to CONTROL_STRUCTURE via AST IN edge.
     */
   def _controlStructureViaAstIn: ControlStructure = get()._controlStructureViaAstIn
+
+  /** Traverse to LOCAL via AST IN edge.
+    */
+  def _localViaAstIn: overflowdb.traversal.Traversal[Local] = get()._localViaAstIn
+
+  /** Traverse to MEMBER via AST IN edge.
+    */
+  def _memberViaAstIn: overflowdb.traversal.Traversal[Member] = get()._memberViaAstIn
 
   /** Traverse to RETURN via AST IN edge.
     */
@@ -817,6 +827,9 @@ class Call(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
   /** Traverse to CALL via RECEIVER IN edge.
     */
   def _callViaReceiverIn: Option[Call] = get()._callViaReceiverIn
+
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
@@ -1081,7 +1094,7 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
   def _callViaArgumentIn: Option[Call]     = argumentIn.collectAll[Call].nextOption()
   def _returnViaArgumentIn: Option[Return] = argumentIn.collectAll[Return].nextOption()
 
-  def astIn: Iterator[Expression]                           = createAdjacentNodeScalaIteratorByOffSet[Expression](15)
+  def astIn: Iterator[AstNode]                              = createAdjacentNodeScalaIteratorByOffSet[AstNode](15)
   override def _astIn                                       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](15)
   def _blockViaAstIn: overflowdb.traversal.Traversal[Block] = astIn.collectAll[Block]
   def _callViaAstIn: overflowdb.traversal.Traversal[Call]   = astIn.collectAll[Call]
@@ -1093,6 +1106,8 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
         e
       )
   }
+  def _localViaAstIn: overflowdb.traversal.Traversal[Local]     = astIn.collectAll[Local]
+  def _memberViaAstIn: overflowdb.traversal.Traversal[Member]   = astIn.collectAll[Member]
   def _returnViaAstIn: overflowdb.traversal.Traversal[Return]   = astIn.collectAll[Return]
   def _unknownViaAstIn: overflowdb.traversal.Traversal[Unknown] = astIn.collectAll[Unknown]
 
@@ -1182,6 +1197,9 @@ class CallDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Call
   def receiverIn: Iterator[Call]       = createAdjacentNodeScalaIteratorByOffSet[Call](25)
   override def _receiverIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](25)
   def _callViaReceiverIn: Option[Call] = receiverIn.collectAll[Call].nextOption()
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](26)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](26)
 
   override def label: String = {
     Call.Label

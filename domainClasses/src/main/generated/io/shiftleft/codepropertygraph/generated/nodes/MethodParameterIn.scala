@@ -82,14 +82,15 @@ object MethodParameterIn {
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.Ref.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] =
       Array("AST", "CAPTURED_BY", "EVAL_TYPE", "IN_MACRO", "PARAMETER_LINK", "REACHING_DEF", "TAGGED_BY")
-    val In: Array[String] = Array("AST", "CFG", "LENGTH", "LENGTH_EXP", "REACHING_DEF", "REF")
+    val In: Array[String] = Array("AST", "CFG", "LENGTH", "LENGTH_EXP", "REACHING_DEF", "REF", "SPECIALIZE_PARA")
   }
 
   val factory = new NodeFactory[MethodParameterInDb] {
@@ -267,6 +268,9 @@ class MethodParameterIn(graph_4762: Graph, id_4762: Long /*cf https://github.com
   /** Places (identifier) where this parameter is being referenced */
   @overflowdb.traversal.help.Doc(info = """Places (identifier) where this parameter is being referenced""")
   def referencingIdentifiers: overflowdb.traversal.Traversal[Identifier] = get().referencingIdentifiers
+
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
@@ -471,6 +475,9 @@ class MethodParameterInDb(ref: NodeRef[NodeDb])
   override def _refIn             = createAdjacentNodeScalaIteratorByOffSet[StoredNode](12)
   def _closureBindingViaRefIn: overflowdb.traversal.Traversal[ClosureBinding] = refIn.collectAll[ClosureBinding]
   def referencingIdentifiers: overflowdb.traversal.Traversal[Identifier]      = refIn.collectAll[Identifier]
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](13)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](13)
 
   override def label: String = {
     MethodParameterIn.Label

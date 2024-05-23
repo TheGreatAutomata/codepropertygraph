@@ -55,13 +55,15 @@ object TemplateDom {
       io.shiftleft.codepropertygraph.generated.edges.Contains.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("ARGUMENT", "AST", "IN_MACRO", "REACHING_DEF", "TAGGED_BY")
-    val In: Array[String]  = Array("ARGUMENT", "AST", "CFG", "CONTAINS", "LENGTH", "LENGTH_EXP", "REACHING_DEF")
+    val In: Array[String] =
+      Array("ARGUMENT", "AST", "CFG", "CONTAINS", "LENGTH", "LENGTH_EXP", "REACHING_DEF", "SPECIALIZE_PARA")
   }
 
   val factory = new NodeFactory[TemplateDomDb] {
@@ -167,6 +169,9 @@ class TemplateDom(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala
 
   def reachingDefIn: Iterator[TemplateDom] = get().reachingDefIn
   override def _reachingDefIn              = get()._reachingDefIn
+
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
 
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
@@ -301,6 +306,9 @@ class TemplateDomDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode wi
 
   def reachingDefIn: Iterator[TemplateDom] = createAdjacentNodeScalaIteratorByOffSet[TemplateDom](11)
   override def _reachingDefIn              = createAdjacentNodeScalaIteratorByOffSet[StoredNode](11)
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](12)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](12)
 
   override def label: String = {
     TemplateDom.Label

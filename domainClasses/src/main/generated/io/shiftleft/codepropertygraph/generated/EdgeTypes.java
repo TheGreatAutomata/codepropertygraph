@@ -125,8 +125,17 @@ edges MUST not be created by the language frontend but are automatically
 created based on `FILENAME` fields. */
 public static final String SOURCE_FILE = "SOURCE_FILE";
 
+/** SPECIALIZE_OF */
+public static final String SPECIALIZE_OF = "SPECIALIZE_OF";
+
+/** SPECIALIZE_PARA */
+public static final String SPECIALIZE_PARA = "SPECIALIZE_PARA";
+
 /** Edges from nodes to the tags they are tagged by. */
 public static final String TAGGED_BY = "TAGGED_BY";
+
+/** TEMPLATE_PARA */
+public static final String TEMPLATE_PARA = "TEMPLATE_PARA";
 
 
 public static Set<String> ALL = new HashSet<String>() {{
@@ -160,7 +169,10 @@ add(REACHING_DEF);
 add(RECEIVER);
 add(REF);
 add(SOURCE_FILE);
+add(SPECIALIZE_OF);
+add(SPECIALIZE_PARA);
 add(TAGGED_BY);
+add(TEMPLATE_PARA);
 }};
 
 }

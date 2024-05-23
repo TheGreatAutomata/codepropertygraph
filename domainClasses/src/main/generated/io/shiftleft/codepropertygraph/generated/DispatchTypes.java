@@ -20,12 +20,16 @@ public static final String INLINED = "INLINED";
 /** For cxx static func */
 public static final String SAME_FILE_STATIC_DISPATCH = "SAME_FILE_STATIC_DISPATCH";
 
+/** no need to dispatch */
+public static final String NO_DISPATCH = "NO_DISPATCH";
+
 
 public static Set<String> ALL = new HashSet<String>() {{
 add(STATIC_DISPATCH);
 add(DYNAMIC_DISPATCH);
 add(INLINED);
 add(SAME_FILE_STATIC_DISPATCH);
+add(NO_DISPATCH);
 }};
 
 }

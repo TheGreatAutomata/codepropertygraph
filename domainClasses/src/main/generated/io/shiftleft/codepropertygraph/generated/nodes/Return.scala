@@ -59,7 +59,8 @@ object Return {
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.PostDominate.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
@@ -77,7 +78,8 @@ object Return {
       "LENGTH",
       "LENGTH_EXP",
       "POST_DOMINATE",
-      "REACHING_DEF"
+      "REACHING_DEF",
+      "SPECIALIZE_PARA"
     )
   }
 
@@ -611,6 +613,9 @@ class Return(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
     */
   def _unknownViaReachingDefIn: overflowdb.traversal.Traversal[Unknown] = get()._unknownViaReachingDefIn
 
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
+
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
   // This must become `class Derived(x_4762:Int) extends Base(x_4762)`.
@@ -880,6 +885,9 @@ class ReturnDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Ex
   def _methodRefViaReachingDefIn: overflowdb.traversal.Traversal[MethodRef] = reachingDefIn.collectAll[MethodRef]
   def _typeRefViaReachingDefIn: overflowdb.traversal.Traversal[TypeRef]     = reachingDefIn.collectAll[TypeRef]
   def _unknownViaReachingDefIn: overflowdb.traversal.Traversal[Unknown]     = reachingDefIn.collectAll[Unknown]
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](19)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](19)
 
   override def label: String = {
     Return.Label

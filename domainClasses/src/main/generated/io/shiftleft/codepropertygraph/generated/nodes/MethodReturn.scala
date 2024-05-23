@@ -65,13 +65,15 @@ object MethodReturn {
       io.shiftleft.codepropertygraph.generated.edges.Dominate.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.Length.layoutInformation,
       io.shiftleft.codepropertygraph.generated.edges.LengthExp.layoutInformation,
-      io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation
+      io.shiftleft.codepropertygraph.generated.edges.ReachingDef.layoutInformation,
+      io.shiftleft.codepropertygraph.generated.edges.SpecializePara.layoutInformation
     ).asJava
   )
 
   object Edges {
     val Out: Array[String] = Array("EVAL_TYPE", "IN_MACRO", "POST_DOMINATE", "TAGGED_BY")
-    val In: Array[String]  = Array("AST", "CDG", "CFG", "DOMINATE", "LENGTH", "LENGTH_EXP", "REACHING_DEF")
+    val In: Array[String] =
+      Array("AST", "CDG", "CFG", "DOMINATE", "LENGTH", "LENGTH_EXP", "REACHING_DEF", "SPECIALIZE_PARA")
   }
 
   val factory = new NodeFactory[MethodReturnDb] {
@@ -309,6 +311,9 @@ class MethodReturn(graph_4762: Graph, id_4762: Long /*cf https://github.com/scal
     */
   def _returnViaReachingDefIn: overflowdb.traversal.Traversal[Return] = get()._returnViaReachingDefIn
 
+  def specializeParaIn: Iterator[Type] = get().specializeParaIn
+  override def _specializeParaIn       = get()._specializeParaIn
+
   // In view of https://github.com/scala/bug/issues/4762 it is advisable to use different variable names in
   // patterns like `class Base(x:Int)` and `class Derived(x:Int) extends Base(x)`.
   // This must become `class Derived(x_4762:Int) extends Base(x_4762)`.
@@ -492,6 +497,9 @@ class MethodReturnDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode w
   def reachingDefIn: Iterator[Return] = createAdjacentNodeScalaIteratorByOffSet[Return](10)
   override def _reachingDefIn         = createAdjacentNodeScalaIteratorByOffSet[StoredNode](10)
   def _returnViaReachingDefIn: overflowdb.traversal.Traversal[Return] = reachingDefIn.collectAll[Return]
+
+  def specializeParaIn: Iterator[Type] = createAdjacentNodeScalaIteratorByOffSet[Type](11)
+  override def _specializeParaIn       = createAdjacentNodeScalaIteratorByOffSet[StoredNode](11)
 
   override def label: String = {
     MethodReturn.Label
