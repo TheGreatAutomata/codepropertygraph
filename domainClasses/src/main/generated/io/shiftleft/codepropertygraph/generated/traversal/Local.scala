@@ -190,6 +190,62 @@ class LocalTraversalExtGen[NodeType <: Local](val traversal: Iterator[NodeType])
   def dynamicTypeHintFullName: Iterator[String] =
     traversal.flatMap(_.dynamicTypeHintFullName)
 
+  /** Traverse to fullName property */
+  def fullName: Iterator[String] =
+    traversal.map(_.fullName)
+
+  /** Traverse to nodes where the fullName matches the regular expression `value`
+    */
+  def fullName(pattern: String): Iterator[NodeType] = {
+    if (!Misc.isRegex(pattern)) {
+      fullNameExact(pattern)
+    } else {
+      overflowdb.traversal.filter.StringPropertyFilter.regexp(traversal)(_.fullName, pattern)
+    }
+  }
+
+  /** Traverse to nodes where the fullName matches at least one of the regular expressions in `values`
+    */
+  def fullName(patterns: String*): Iterator[NodeType] =
+    overflowdb.traversal.filter.StringPropertyFilter.regexpMultiple(traversal)(_.fullName, patterns)
+
+  /** Traverse to nodes where fullName matches `value` exactly.
+    */
+  def fullNameExact(value: String): Iterator[NodeType] = {
+    val fastResult = traversal match {
+      case init: overflowdb.traversal.InitialTraversal[NodeType] => init.getByIndex("FULL_NAME", value).getOrElse(null)
+      case _                                                     => null
+    }
+    if (fastResult != null) fastResult
+    else traversal.filter { node => node.fullName == value }
+  }
+
+  /** Traverse to nodes where fullName matches one of the elements in `values` exactly.
+    */
+  def fullNameExact(values: String*): Iterator[NodeType] = {
+    if (values.size == 1)
+      fullNameExact(values.head)
+    else
+      overflowdb.traversal.filter.StringPropertyFilter
+        .exactMultiple[NodeType, String](traversal, node => Some(node.fullName), values, "FULL_NAME")
+  }
+
+  /** Traverse to nodes where fullName does not match the regular expression `value`.
+    */
+  def fullNameNot(pattern: String): Iterator[NodeType] = {
+    if (!Misc.isRegex(pattern)) {
+      traversal.filter { node => node.fullName != pattern }
+    } else {
+      overflowdb.traversal.filter.StringPropertyFilter.regexpNot(traversal)(_.fullName, pattern)
+    }
+  }
+
+  /** Traverse to nodes where fullName does not match any of the regular expressions in `values`.
+    */
+  def fullNameNot(patterns: String*): Iterator[NodeType] = {
+    overflowdb.traversal.filter.StringPropertyFilter.regexpNotMultiple(traversal)(_.fullName, patterns)
+  }
+
   /** Traverse to lineNumber property */
   def lineNumber: Iterator[Integer] =
     traversal.flatMap(_.lineNumber)

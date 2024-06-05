@@ -1,4 +1,4 @@
-VERSION="1814-e6abdaf9+20240523-2311"
+VERSION="1815-d53c3d57+20240605-1644"
 
 chmod -R a+w /home/noisy/.cache/coursier/v1/https/repo1.maven.org/maven2/io/shiftleft/codepropertygraph_3/1.6.6/
 chmod -R a+w /home/noisy/.cache/coursier/v1/https/repo1.maven.org/maven2/io/shiftleft/codepropertygraph-protos_3/1.6.6/

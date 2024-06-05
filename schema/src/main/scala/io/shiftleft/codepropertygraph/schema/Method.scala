@@ -77,6 +77,8 @@ object Method extends SchemaBase {
       .addProperties(offset, offsetEnd)
       .extendz(declaration)
 
+    typeDecl.addProperties(lineNumberEnd, columnNumberEnd)
+
     val isVariadic = builder
       .addProperty(
         name = "IS_VARIADIC",

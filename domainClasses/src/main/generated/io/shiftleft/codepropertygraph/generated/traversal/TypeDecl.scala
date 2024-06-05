@@ -293,6 +293,54 @@ class TypeDeclTraversalExtGen[NodeType <: TypeDecl](val traversal: Iterator[Node
     traversal.filter { node => !node.columnNumber.isDefined || !vset.contains(node.columnNumber.get) }
   }
 
+  /** Traverse to columnNumberEnd property */
+  def columnNumberEnd: Iterator[Integer] =
+    traversal.flatMap(_.columnNumberEnd)
+
+  /** Traverse to nodes where the columnNumberEnd equals the given `value`
+    */
+  def columnNumberEnd(value: Integer): Iterator[NodeType] =
+    traversal.filter { node => node.columnNumberEnd.isDefined && node.columnNumberEnd.get == value }
+
+  /** Traverse to nodes where the columnNumberEnd equals at least one of the given `values`
+    */
+  def columnNumberEnd(values: Integer*): Iterator[NodeType] = {
+    val vset = values.toSet
+    traversal.filter { node => node.columnNumberEnd.isDefined && vset.contains(node.columnNumberEnd.get) }
+  }
+
+  /** Traverse to nodes where the columnNumberEnd is greater than the given `value`
+    */
+  def columnNumberEndGt(value: Integer): Iterator[NodeType] =
+    traversal.filter { node => node.columnNumberEnd.isDefined && node.columnNumberEnd.get > value }
+
+  /** Traverse to nodes where the columnNumberEnd is greater than or equal the given `value`
+    */
+  def columnNumberEndGte(value: Integer): Iterator[NodeType] =
+    traversal.filter { node => node.columnNumberEnd.isDefined && node.columnNumberEnd.get >= value }
+
+  /** Traverse to nodes where the columnNumberEnd is less than the given `value`
+    */
+  def columnNumberEndLt(value: Integer): Iterator[NodeType] =
+    traversal.filter { node => node.columnNumberEnd.isDefined && node.columnNumberEnd.get < value }
+
+  /** Traverse to nodes where the columnNumberEnd is less than or equal the given `value`
+    */
+  def columnNumberEndLte(value: Integer): Iterator[NodeType] =
+    traversal.filter { node => node.columnNumberEnd.isDefined && node.columnNumberEnd.get <= value }
+
+  /** Traverse to nodes where columnNumberEnd is not equal to the given `value`.
+    */
+  def columnNumberEndNot(value: Integer): Iterator[NodeType] =
+    traversal.filter { node => !node.columnNumberEnd.isDefined || node.columnNumberEnd.get != value }
+
+  /** Traverse to nodes where columnNumberEnd is not equal to any of the given `values`.
+    */
+  def columnNumberEndNot(values: Integer*): Iterator[NodeType] = {
+    val vset = values.toSet
+    traversal.filter { node => !node.columnNumberEnd.isDefined || !vset.contains(node.columnNumberEnd.get) }
+  }
+
   /** Traverse to filename property */
   def filename: Iterator[String] =
     traversal.map(_.filename)
@@ -469,6 +517,54 @@ class TypeDeclTraversalExtGen[NodeType <: TypeDecl](val traversal: Iterator[Node
   def lineNumberNot(values: Integer*): Iterator[NodeType] = {
     val vset = values.toSet
     traversal.filter { node => !node.lineNumber.isDefined || !vset.contains(node.lineNumber.get) }
+  }
+
+  /** Traverse to lineNumberEnd property */
+  def lineNumberEnd: Iterator[Integer] =
+    traversal.flatMap(_.lineNumberEnd)
+
+  /** Traverse to nodes where the lineNumberEnd equals the given `value`
+    */
+  def lineNumberEnd(value: Integer): Iterator[NodeType] =
+    traversal.filter { node => node.lineNumberEnd.isDefined && node.lineNumberEnd.get == value }
+
+  /** Traverse to nodes where the lineNumberEnd equals at least one of the given `values`
+    */
+  def lineNumberEnd(values: Integer*): Iterator[NodeType] = {
+    val vset = values.toSet
+    traversal.filter { node => node.lineNumberEnd.isDefined && vset.contains(node.lineNumberEnd.get) }
+  }
+
+  /** Traverse to nodes where the lineNumberEnd is greater than the given `value`
+    */
+  def lineNumberEndGt(value: Integer): Iterator[NodeType] =
+    traversal.filter { node => node.lineNumberEnd.isDefined && node.lineNumberEnd.get > value }
+
+  /** Traverse to nodes where the lineNumberEnd is greater than or equal the given `value`
+    */
+  def lineNumberEndGte(value: Integer): Iterator[NodeType] =
+    traversal.filter { node => node.lineNumberEnd.isDefined && node.lineNumberEnd.get >= value }
+
+  /** Traverse to nodes where the lineNumberEnd is less than the given `value`
+    */
+  def lineNumberEndLt(value: Integer): Iterator[NodeType] =
+    traversal.filter { node => node.lineNumberEnd.isDefined && node.lineNumberEnd.get < value }
+
+  /** Traverse to nodes where the lineNumberEnd is less than or equal the given `value`
+    */
+  def lineNumberEndLte(value: Integer): Iterator[NodeType] =
+    traversal.filter { node => node.lineNumberEnd.isDefined && node.lineNumberEnd.get <= value }
+
+  /** Traverse to nodes where lineNumberEnd is not equal to the given `value`.
+    */
+  def lineNumberEndNot(value: Integer): Iterator[NodeType] =
+    traversal.filter { node => !node.lineNumberEnd.isDefined || node.lineNumberEnd.get != value }
+
+  /** Traverse to nodes where lineNumberEnd is not equal to any of the given `values`.
+    */
+  def lineNumberEndNot(values: Integer*): Iterator[NodeType] = {
+    val vset = values.toSet
+    traversal.filter { node => !node.lineNumberEnd.isDefined || !vset.contains(node.lineNumberEnd.get) }
   }
 
   /** Traverse to name property */

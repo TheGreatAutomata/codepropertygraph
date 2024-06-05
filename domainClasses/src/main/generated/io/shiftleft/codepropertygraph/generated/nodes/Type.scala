@@ -12,7 +12,8 @@ object Type {
     val FullName                         = "FULL_NAME"
     val Name                             = "NAME"
     val TypeDeclFullName                 = "TYPE_DECL_FULL_NAME"
-    val all: Set[String]                 = Set(FullName, Name, TypeDeclFullName)
+    val TypeSize                         = "TYPE_SIZE"
+    val all: Set[String]                 = Set(FullName, Name, TypeDeclFullName, TypeSize)
     val allAsJava: java.util.Set[String] = all.asJava
   }
 
@@ -20,6 +21,7 @@ object Type {
     val FullName         = new overflowdb.PropertyKey[String]("FULL_NAME")
     val Name             = new overflowdb.PropertyKey[String]("NAME")
     val TypeDeclFullName = new overflowdb.PropertyKey[String]("TYPE_DECL_FULL_NAME")
+    val TypeSize         = new overflowdb.PropertyKey[scala.Int]("TYPE_SIZE")
 
   }
 
@@ -27,6 +29,7 @@ object Type {
     val FullName         = "<empty>"
     val Name             = "<empty>"
     val TypeDeclFullName = "<empty>"
+    val TypeSize         = -1: Int
   }
 
   val layoutInformation = new NodeLayoutInformation(
@@ -105,6 +108,7 @@ trait TypeBase extends AbstractNode {
   def fullName: String
   def name: String
   def typeDeclFullName: String
+  def typeSize: scala.Int
 
 }
 
@@ -115,11 +119,13 @@ class Type(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
   override def fullName: String         = get().fullName
   override def name: String             = get().name
   override def typeDeclFullName: String = get().typeDeclFullName
+  override def typeSize: scala.Int      = get().typeSize
   override def propertyDefaultValue(propertyKey: String) =
     propertyKey match {
       case "FULL_NAME"           => Type.PropertyDefaults.FullName
       case "NAME"                => Type.PropertyDefaults.Name
       case "TYPE_DECL_FULL_NAME" => Type.PropertyDefaults.TypeDeclFullName
+      case "TYPE_SIZE"           => Type.PropertyDefaults.TypeSize
       case _                     => super.propertyDefaultValue(propertyKey)
     }
 
@@ -375,6 +381,7 @@ class Type(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
       case 1 => "fullName"
       case 2 => "name"
       case 3 => "typeDeclFullName"
+      case 4 => "typeSize"
     }
 
   override def productElement(n: Int): Any =
@@ -383,10 +390,11 @@ class Type(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
       case 1 => fullName
       case 2 => name
       case 3 => typeDeclFullName
+      case 4 => typeSize
     }
 
   override def productPrefix = "Type"
-  override def productArity  = 4
+  override def productArity  = 5
 }
 
 class TypeDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with TypeBase {
@@ -399,6 +407,8 @@ class TypeDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Type
   def name: String                      = _name
   private var _typeDeclFullName: String = Type.PropertyDefaults.TypeDeclFullName
   def typeDeclFullName: String          = _typeDeclFullName
+  private var _typeSize: scala.Int      = Type.PropertyDefaults.TypeSize
+  def typeSize: scala.Int               = _typeSize
 
   /** faster than the default implementation */
   override def propertiesMap: java.util.Map[String, Any] = {
@@ -406,6 +416,7 @@ class TypeDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Type
     properties.put("FULL_NAME", fullName)
     properties.put("NAME", name)
     properties.put("TYPE_DECL_FULL_NAME", typeDeclFullName)
+    properties.put("TYPE_SIZE", typeSize)
 
     properties
   }
@@ -416,6 +427,7 @@ class TypeDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Type
     if (!(("<empty>") == fullName)) { properties.put("FULL_NAME", fullName) }
     if (!(("<empty>") == name)) { properties.put("NAME", name) }
     if (!(("<empty>") == typeDeclFullName)) { properties.put("TYPE_DECL_FULL_NAME", typeDeclFullName) }
+    if (!((-1: Int) == typeSize)) { properties.put("TYPE_SIZE", typeSize) }
 
     properties
   }
@@ -540,6 +552,7 @@ class TypeDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Type
       case 1 => "fullName"
       case 2 => "name"
       case 3 => "typeDeclFullName"
+      case 4 => "typeSize"
     }
 
   override def productElement(n: Int): Any =
@@ -548,10 +561,11 @@ class TypeDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Type
       case 1 => fullName
       case 2 => name
       case 3 => typeDeclFullName
+      case 4 => typeSize
     }
 
   override def productPrefix = "Type"
-  override def productArity  = 4
+  override def productArity  = 5
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[TypeDb]
 
@@ -560,6 +574,7 @@ class TypeDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Type
       case "FULL_NAME"           => this._fullName
       case "NAME"                => this._name
       case "TYPE_DECL_FULL_NAME" => this._typeDeclFullName
+      case "TYPE_SIZE"           => this._typeSize
 
       case _ => null
     }
@@ -570,6 +585,7 @@ class TypeDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Type
       case "FULL_NAME"           => this._fullName = value.asInstanceOf[String]
       case "NAME"                => this._name = value.asInstanceOf[String]
       case "TYPE_DECL_FULL_NAME" => this._typeDeclFullName = value.asInstanceOf[String]
+      case "TYPE_SIZE"           => this._typeSize = value.asInstanceOf[scala.Int]
 
       case _ => PropertyErrorRegister.logPropertyErrorIfFirst(getClass, key)
     }
@@ -588,6 +604,7 @@ class TypeDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Type
     this._fullName = newNode.asInstanceOf[NewType].fullName
     this._name = newNode.asInstanceOf[NewType].name
     this._typeDeclFullName = newNode.asInstanceOf[NewType].typeDeclFullName
+    this._typeSize = newNode.asInstanceOf[NewType].typeSize
 
     graph.indexManager.putIfIndexed("FULL_NAME", newNode.asInstanceOf[NewType].fullName, this.ref)
   }

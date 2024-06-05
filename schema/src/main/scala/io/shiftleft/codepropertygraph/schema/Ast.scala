@@ -142,6 +142,7 @@ object Ast extends SchemaBase {
       )
       .protoId(23)
       .addProperties(typeFullName)
+      .addProperties(fullName)
       .extendz(declaration, astNode)
 
     val identifier: NodeType = builder

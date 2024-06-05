@@ -188,6 +188,9 @@ public static final overflowdb.PropertyKey<Integer> LINE_NUMBER_END = new overfl
 /** MACRO_FULL_NAME */
 public static final overflowdb.PropertyKey<String> MACRO_FULL_NAME = new overflowdb.PropertyKey<>("MACRO_FULL_NAME");
 
+/** MEMBER_OFFSET */
+public static final overflowdb.PropertyKey<scala.Int> MEMBER_OFFSET = new overflowdb.PropertyKey<>("MEMBER_OFFSET");
+
 /** The FULL_NAME of a method. Used to link CALL and METHOD nodes. It is required
 to have exactly one METHOD node for each METHOD_FULL_NAME */
 public static final overflowdb.PropertyKey<String> METHOD_FULL_NAME = new overflowdb.PropertyKey<>("METHOD_FULL_NAME");
@@ -265,6 +268,9 @@ construct represented by a node. It is the name of an instantiated type, e.g.,
 cannot be determined, this field should be set to the empty string. */
 public static final overflowdb.PropertyKey<String> TYPE_FULL_NAME = new overflowdb.PropertyKey<>("TYPE_FULL_NAME");
 
+/** TYPE_SIZE */
+public static final overflowdb.PropertyKey<scala.Int> TYPE_SIZE = new overflowdb.PropertyKey<>("TYPE_SIZE");
+
 /** This property denotes a string value as used in a key-value pair. */
 public static final overflowdb.PropertyKey<String> VALUE = new overflowdb.PropertyKey<>("VALUE");
 
@@ -314,6 +320,7 @@ add(LANGUAGE);
 add(LINE_NUMBER);
 add(LINE_NUMBER_END);
 add(MACRO_FULL_NAME);
+add(MEMBER_OFFSET);
 add(METHOD_FULL_NAME);
 add(METHOD_SHORT_NAME);
 add(MODIFIER_TYPE);
@@ -331,6 +338,7 @@ add(SIGNATURE);
 add(SYMBOL);
 add(TYPE_DECL_FULL_NAME);
 add(TYPE_FULL_NAME);
+add(TYPE_SIZE);
 add(VALUE);
 add(VARIABLE);
 add(VERSION);

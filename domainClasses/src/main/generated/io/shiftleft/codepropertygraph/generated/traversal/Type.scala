@@ -189,4 +189,52 @@ class TypeTraversalExtGen[NodeType <: Type](val traversal: Iterator[NodeType]) e
     overflowdb.traversal.filter.StringPropertyFilter.regexpNotMultiple(traversal)(_.typeDeclFullName, patterns)
   }
 
+  /** Traverse to typeSize property */
+  def typeSize: Iterator[scala.Int] =
+    traversal.map(_.typeSize)
+
+  /** Traverse to nodes where the typeSize equals the given `value`
+    */
+  def typeSize(value: scala.Int): Iterator[NodeType] =
+    traversal.filter { _.typeSize == value }
+
+  /** Traverse to nodes where the typeSize equals at least one of the given `values`
+    */
+  def typeSize(values: scala.Int*): Iterator[NodeType] = {
+    val vset = values.toSet
+    traversal.filter { node => vset.contains(node.typeSize) }
+  }
+
+  /** Traverse to nodes where the typeSize is greater than the given `value`
+    */
+  def typeSizeGt(value: scala.Int): Iterator[NodeType] =
+    traversal.filter { _.typeSize > value }
+
+  /** Traverse to nodes where the typeSize is greater than or equal the given `value`
+    */
+  def typeSizeGte(value: scala.Int): Iterator[NodeType] =
+    traversal.filter { _.typeSize >= value }
+
+  /** Traverse to nodes where the typeSize is less than the given `value`
+    */
+  def typeSizeLt(value: scala.Int): Iterator[NodeType] =
+    traversal.filter { _.typeSize < value }
+
+  /** Traverse to nodes where the typeSize is less than or equal the given `value`
+    */
+  def typeSizeLte(value: scala.Int): Iterator[NodeType] =
+    traversal.filter { _.typeSize <= value }
+
+  /** Traverse to nodes where typeSize is not equal to the given `value`.
+    */
+  def typeSizeNot(value: scala.Int): Iterator[NodeType] =
+    traversal.filter { _.typeSize != value }
+
+  /** Traverse to nodes where typeSize is not equal to any of the given `values`.
+    */
+  def typeSizeNot(values: scala.Int*): Iterator[NodeType] = {
+    val vset = values.toSet
+    traversal.filter { node => !vset.contains(node.typeSize) }
+  }
+
 }

@@ -71,6 +71,24 @@ object Type extends SchemaBase {
       .mandatory(PropertyDefaults.String)
       .protoId(52)
 
+    val typeSize = builder
+      .addProperty(
+        name = "TYPE_SIZE",
+        valueType = ValueType.Int,
+        comment = """TYPE_SIZE""".stripMargin
+      )
+      .mandatory(-1)
+      .protoId(51030)
+
+    val memberOffset = builder
+      .addProperty(
+        name = "MEMBER_OFFSET",
+        valueType = ValueType.Int,
+        comment = """MEMBER_OFFSET""".stripMargin
+      )
+      .mandatory(-1)
+      .protoId(51031)
+
     // Nodes
 
     val typeDecl: NodeType = builder
@@ -149,6 +167,8 @@ object Type extends SchemaBase {
       .protoId(9)
       .addProperties(typeFullName)
       .addProperties(astParentType, astParentFullName)
+      .addProperties(fullName)
+      .addProperties(memberOffset)
       .extendz(declaration)
 
     val tpe: NodeType = builder
@@ -159,6 +179,7 @@ object Type extends SchemaBase {
       )
       .protoId(45)
       .addProperties(name, fullName, typeDeclFullName)
+      .addProperties(typeSize)
       .starterName("typ")
 
     // edges

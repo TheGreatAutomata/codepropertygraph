@@ -14,11 +14,13 @@ object TypeDecl {
     val AstParentType            = "AST_PARENT_TYPE"
     val Code                     = "CODE"
     val ColumnNumber             = "COLUMN_NUMBER"
+    val ColumnNumberEnd          = "COLUMN_NUMBER_END"
     val Filename                 = "FILENAME"
     val FullName                 = "FULL_NAME"
     val InheritsFromTypeFullName = "INHERITS_FROM_TYPE_FULL_NAME"
     val IsExternal               = "IS_EXTERNAL"
     val LineNumber               = "LINE_NUMBER"
+    val LineNumberEnd            = "LINE_NUMBER_END"
     val Name                     = "NAME"
     val Offset                   = "OFFSET"
     val OffsetEnd                = "OFFSET_END"
@@ -29,11 +31,13 @@ object TypeDecl {
       AstParentType,
       Code,
       ColumnNumber,
+      ColumnNumberEnd,
       Filename,
       FullName,
       InheritsFromTypeFullName,
       IsExternal,
       LineNumber,
+      LineNumberEnd,
       Name,
       Offset,
       OffsetEnd,
@@ -48,11 +52,13 @@ object TypeDecl {
     val AstParentType            = new overflowdb.PropertyKey[String]("AST_PARENT_TYPE")
     val Code                     = new overflowdb.PropertyKey[String]("CODE")
     val ColumnNumber             = new overflowdb.PropertyKey[Integer]("COLUMN_NUMBER")
+    val ColumnNumberEnd          = new overflowdb.PropertyKey[Integer]("COLUMN_NUMBER_END")
     val Filename                 = new overflowdb.PropertyKey[String]("FILENAME")
     val FullName                 = new overflowdb.PropertyKey[String]("FULL_NAME")
     val InheritsFromTypeFullName = new overflowdb.PropertyKey[IndexedSeq[String]]("INHERITS_FROM_TYPE_FULL_NAME")
     val IsExternal               = new overflowdb.PropertyKey[Boolean]("IS_EXTERNAL")
     val LineNumber               = new overflowdb.PropertyKey[Integer]("LINE_NUMBER")
+    val LineNumberEnd            = new overflowdb.PropertyKey[Integer]("LINE_NUMBER_END")
     val Name                     = new overflowdb.PropertyKey[String]("NAME")
     val Offset                   = new overflowdb.PropertyKey[Integer]("OFFSET")
     val OffsetEnd                = new overflowdb.PropertyKey[Integer]("OFFSET_END")
@@ -128,11 +134,13 @@ trait TypeDeclBase extends AbstractNode with AstNodeBase {
   def astParentType: String
   def code: String
   def columnNumber: Option[Integer]
+  def columnNumberEnd: Option[Integer]
   def filename: String
   def fullName: String
   def inheritsFromTypeFullName: IndexedSeq[String]
   def isExternal: Boolean
   def lineNumber: Option[Integer]
+  def lineNumberEnd: Option[Integer]
   def name: String
   def offset: Option[Integer]
   def offsetEnd: Option[Integer]
@@ -150,11 +158,13 @@ class TypeDecl(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bu
   override def astParentType: String                        = get().astParentType
   override def code: String                                 = get().code
   override def columnNumber: Option[Integer]                = get().columnNumber
+  override def columnNumberEnd: Option[Integer]             = get().columnNumberEnd
   override def filename: String                             = get().filename
   override def fullName: String                             = get().fullName
   override def inheritsFromTypeFullName: IndexedSeq[String] = get().inheritsFromTypeFullName
   override def isExternal: Boolean                          = get().isExternal
   override def lineNumber: Option[Integer]                  = get().lineNumber
+  override def lineNumberEnd: Option[Integer]               = get().lineNumberEnd
   override def name: String                                 = get().name
   override def offset: Option[Integer]                      = get().offset
   override def offsetEnd: Option[Integer]                   = get().offsetEnd
@@ -321,15 +331,17 @@ class TypeDecl(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bu
       case 3  => "astParentType"
       case 4  => "code"
       case 5  => "columnNumber"
-      case 6  => "filename"
-      case 7  => "fullName"
-      case 8  => "inheritsFromTypeFullName"
-      case 9  => "isExternal"
-      case 10 => "lineNumber"
-      case 11 => "name"
-      case 12 => "offset"
-      case 13 => "offsetEnd"
-      case 14 => "order"
+      case 6  => "columnNumberEnd"
+      case 7  => "filename"
+      case 8  => "fullName"
+      case 9  => "inheritsFromTypeFullName"
+      case 10 => "isExternal"
+      case 11 => "lineNumber"
+      case 12 => "lineNumberEnd"
+      case 13 => "name"
+      case 14 => "offset"
+      case 15 => "offsetEnd"
+      case 16 => "order"
     }
 
   override def productElement(n: Int): Any =
@@ -340,19 +352,21 @@ class TypeDecl(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bu
       case 3  => astParentType
       case 4  => code
       case 5  => columnNumber
-      case 6  => filename
-      case 7  => fullName
-      case 8  => inheritsFromTypeFullName
-      case 9  => isExternal
-      case 10 => lineNumber
-      case 11 => name
-      case 12 => offset
-      case 13 => offsetEnd
-      case 14 => order
+      case 6  => columnNumberEnd
+      case 7  => filename
+      case 8  => fullName
+      case 9  => inheritsFromTypeFullName
+      case 10 => isExternal
+      case 11 => lineNumber
+      case 12 => lineNumberEnd
+      case 13 => name
+      case 14 => offset
+      case 15 => offsetEnd
+      case 16 => order
     }
 
   override def productPrefix = "TypeDecl"
-  override def productArity  = 15
+  override def productArity  = 17
 }
 
 class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with AstNode with TypeDeclBase {
@@ -369,6 +383,8 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
   def code: String                                          = _code
   private var _columnNumber: Integer                        = null
   def columnNumber: Option[Integer]                         = Option(_columnNumber)
+  private var _columnNumberEnd: Integer                     = null
+  def columnNumberEnd: Option[Integer]                      = Option(_columnNumberEnd)
   private var _filename: String                             = TypeDecl.PropertyDefaults.Filename
   def filename: String                                      = _filename
   private var _fullName: String                             = TypeDecl.PropertyDefaults.FullName
@@ -379,6 +395,8 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
   def isExternal: Boolean                                   = _isExternal
   private var _lineNumber: Integer                          = null
   def lineNumber: Option[Integer]                           = Option(_lineNumber)
+  private var _lineNumberEnd: Integer                       = null
+  def lineNumberEnd: Option[Integer]                        = Option(_lineNumberEnd)
   private var _name: String                                 = TypeDecl.PropertyDefaults.Name
   def name: String                                          = _name
   private var _offset: Integer                              = null
@@ -396,6 +414,7 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
     properties.put("AST_PARENT_TYPE", astParentType)
     properties.put("CODE", code)
     columnNumber.map { value => properties.put("COLUMN_NUMBER", value) }
+    columnNumberEnd.map { value => properties.put("COLUMN_NUMBER_END", value) }
     properties.put("FILENAME", filename)
     properties.put("FULL_NAME", fullName)
     if (this._inheritsFromTypeFullName != null && this._inheritsFromTypeFullName.nonEmpty) {
@@ -403,6 +422,7 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
     }
     properties.put("IS_EXTERNAL", isExternal)
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
+    lineNumberEnd.map { value => properties.put("LINE_NUMBER_END", value) }
     properties.put("NAME", name)
     offset.map { value => properties.put("OFFSET", value) }
     offsetEnd.map { value => properties.put("OFFSET_END", value) }
@@ -419,6 +439,7 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
     if (!(("<empty>") == astParentType)) { properties.put("AST_PARENT_TYPE", astParentType) }
     if (!(("<empty>") == code)) { properties.put("CODE", code) }
     columnNumber.map { value => properties.put("COLUMN_NUMBER", value) }
+    columnNumberEnd.map { value => properties.put("COLUMN_NUMBER_END", value) }
     if (!(("<empty>") == filename)) { properties.put("FILENAME", filename) }
     if (!(("<empty>") == fullName)) { properties.put("FULL_NAME", fullName) }
     if (this._inheritsFromTypeFullName != null && this._inheritsFromTypeFullName.nonEmpty) {
@@ -426,6 +447,7 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
     }
     if (!((false) == isExternal)) { properties.put("IS_EXTERNAL", isExternal) }
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
+    lineNumberEnd.map { value => properties.put("LINE_NUMBER_END", value) }
     if (!(("<empty>") == name)) { properties.put("NAME", name) }
     offset.map { value => properties.put("OFFSET", value) }
     offsetEnd.map { value => properties.put("OFFSET_END", value) }
@@ -512,15 +534,17 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
       case 3  => "astParentType"
       case 4  => "code"
       case 5  => "columnNumber"
-      case 6  => "filename"
-      case 7  => "fullName"
-      case 8  => "inheritsFromTypeFullName"
-      case 9  => "isExternal"
-      case 10 => "lineNumber"
-      case 11 => "name"
-      case 12 => "offset"
-      case 13 => "offsetEnd"
-      case 14 => "order"
+      case 6  => "columnNumberEnd"
+      case 7  => "filename"
+      case 8  => "fullName"
+      case 9  => "inheritsFromTypeFullName"
+      case 10 => "isExternal"
+      case 11 => "lineNumber"
+      case 12 => "lineNumberEnd"
+      case 13 => "name"
+      case 14 => "offset"
+      case 15 => "offsetEnd"
+      case 16 => "order"
     }
 
   override def productElement(n: Int): Any =
@@ -531,19 +555,21 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
       case 3  => astParentType
       case 4  => code
       case 5  => columnNumber
-      case 6  => filename
-      case 7  => fullName
-      case 8  => inheritsFromTypeFullName
-      case 9  => isExternal
-      case 10 => lineNumber
-      case 11 => name
-      case 12 => offset
-      case 13 => offsetEnd
-      case 14 => order
+      case 6  => columnNumberEnd
+      case 7  => filename
+      case 8  => fullName
+      case 9  => inheritsFromTypeFullName
+      case 10 => isExternal
+      case 11 => lineNumber
+      case 12 => lineNumberEnd
+      case 13 => name
+      case 14 => offset
+      case 15 => offsetEnd
+      case 16 => order
     }
 
   override def productPrefix = "TypeDecl"
-  override def productArity  = 15
+  override def productArity  = 17
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[TypeDeclDb]
 
@@ -554,11 +580,13 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
       case "AST_PARENT_TYPE"              => this._astParentType
       case "CODE"                         => this._code
       case "COLUMN_NUMBER"                => this._columnNumber
+      case "COLUMN_NUMBER_END"            => this._columnNumberEnd
       case "FILENAME"                     => this._filename
       case "FULL_NAME"                    => this._fullName
       case "INHERITS_FROM_TYPE_FULL_NAME" => this._inheritsFromTypeFullName
       case "IS_EXTERNAL"                  => this._isExternal
       case "LINE_NUMBER"                  => this._lineNumber
+      case "LINE_NUMBER_END"              => this._lineNumberEnd
       case "NAME"                         => this._name
       case "OFFSET"                       => this._offset
       case "OFFSET_END"                   => this._offsetEnd
@@ -575,6 +603,7 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
       case "AST_PARENT_TYPE"      => this._astParentType = value.asInstanceOf[String]
       case "CODE"                 => this._code = value.asInstanceOf[String]
       case "COLUMN_NUMBER"        => this._columnNumber = value.asInstanceOf[Integer]
+      case "COLUMN_NUMBER_END"    => this._columnNumberEnd = value.asInstanceOf[Integer]
       case "FILENAME"             => this._filename = value.asInstanceOf[String]
       case "FULL_NAME"            => this._fullName = value.asInstanceOf[String]
       case "INHERITS_FROM_TYPE_FULL_NAME" =>
@@ -595,12 +624,13 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
               collection.immutable.ArraySeq.unsafeWrapArray(iter.asInstanceOf[Iterable[String]].toArray)
             } else collection.immutable.ArraySeq.empty
         }
-      case "IS_EXTERNAL" => this._isExternal = value.asInstanceOf[Boolean]
-      case "LINE_NUMBER" => this._lineNumber = value.asInstanceOf[Integer]
-      case "NAME"        => this._name = value.asInstanceOf[String]
-      case "OFFSET"      => this._offset = value.asInstanceOf[Integer]
-      case "OFFSET_END"  => this._offsetEnd = value.asInstanceOf[Integer]
-      case "ORDER"       => this._order = value.asInstanceOf[scala.Int]
+      case "IS_EXTERNAL"     => this._isExternal = value.asInstanceOf[Boolean]
+      case "LINE_NUMBER"     => this._lineNumber = value.asInstanceOf[Integer]
+      case "LINE_NUMBER_END" => this._lineNumberEnd = value.asInstanceOf[Integer]
+      case "NAME"            => this._name = value.asInstanceOf[String]
+      case "OFFSET"          => this._offset = value.asInstanceOf[Integer]
+      case "OFFSET_END"      => this._offsetEnd = value.asInstanceOf[Integer]
+      case "ORDER"           => this._order = value.asInstanceOf[scala.Int]
 
       case _ => PropertyErrorRegister.logPropertyErrorIfFirst(getClass, key)
     }
@@ -621,6 +651,7 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
     this._astParentType = newNode.asInstanceOf[NewTypeDecl].astParentType
     this._code = newNode.asInstanceOf[NewTypeDecl].code
     this._columnNumber = newNode.asInstanceOf[NewTypeDecl].columnNumber.orNull
+    this._columnNumberEnd = newNode.asInstanceOf[NewTypeDecl].columnNumberEnd.orNull
     this._filename = newNode.asInstanceOf[NewTypeDecl].filename
     this._fullName = newNode.asInstanceOf[NewTypeDecl].fullName
     this._inheritsFromTypeFullName =
@@ -629,6 +660,7 @@ class TypeDeclDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with 
       else collection.immutable.ArraySeq.empty
     this._isExternal = newNode.asInstanceOf[NewTypeDecl].isExternal
     this._lineNumber = newNode.asInstanceOf[NewTypeDecl].lineNumber.orNull
+    this._lineNumberEnd = newNode.asInstanceOf[NewTypeDecl].lineNumberEnd.orNull
     this._name = newNode.asInstanceOf[NewTypeDecl].name
     this._offset = newNode.asInstanceOf[NewTypeDecl].offset.orNull
     this._offsetEnd = newNode.asInstanceOf[NewTypeDecl].offsetEnd.orNull

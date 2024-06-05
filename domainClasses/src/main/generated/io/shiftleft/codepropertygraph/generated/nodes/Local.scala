@@ -13,6 +13,7 @@ object Local {
     val Code                    = "CODE"
     val ColumnNumber            = "COLUMN_NUMBER"
     val DynamicTypeHintFullName = "DYNAMIC_TYPE_HINT_FULL_NAME"
+    val FullName                = "FULL_NAME"
     val LineNumber              = "LINE_NUMBER"
     val Name                    = "NAME"
     val Order                   = "ORDER"
@@ -23,6 +24,7 @@ object Local {
       Code,
       ColumnNumber,
       DynamicTypeHintFullName,
+      FullName,
       LineNumber,
       Name,
       Order,
@@ -37,6 +39,7 @@ object Local {
     val Code                    = new overflowdb.PropertyKey[String]("CODE")
     val ColumnNumber            = new overflowdb.PropertyKey[Integer]("COLUMN_NUMBER")
     val DynamicTypeHintFullName = new overflowdb.PropertyKey[IndexedSeq[String]]("DYNAMIC_TYPE_HINT_FULL_NAME")
+    val FullName                = new overflowdb.PropertyKey[String]("FULL_NAME")
     val LineNumber              = new overflowdb.PropertyKey[Integer]("LINE_NUMBER")
     val Name                    = new overflowdb.PropertyKey[String]("NAME")
     val Order                   = new overflowdb.PropertyKey[scala.Int]("ORDER")
@@ -47,6 +50,7 @@ object Local {
 
   object PropertyDefaults {
     val Code         = "<empty>"
+    val FullName     = "<empty>"
     val Name         = "<empty>"
     val Order        = -1: Int
     val TypeFullName = "<empty>"
@@ -94,6 +98,7 @@ trait LocalBase extends AbstractNode with AstNodeBase with DeclarationBase {
   def code: String
   def columnNumber: Option[Integer]
   def dynamicTypeHintFullName: IndexedSeq[String]
+  def fullName: String
   def lineNumber: Option[Integer]
   def name: String
   def order: scala.Int
@@ -112,6 +117,7 @@ class Local(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/i
   override def code: String                                = get().code
   override def columnNumber: Option[Integer]               = get().columnNumber
   override def dynamicTypeHintFullName: IndexedSeq[String] = get().dynamicTypeHintFullName
+  override def fullName: String                            = get().fullName
   override def lineNumber: Option[Integer]                 = get().lineNumber
   override def name: String                                = get().name
   override def order: scala.Int                            = get().order
@@ -120,6 +126,7 @@ class Local(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/i
   override def propertyDefaultValue(propertyKey: String) =
     propertyKey match {
       case "CODE"           => Local.PropertyDefaults.Code
+      case "FULL_NAME"      => Local.PropertyDefaults.FullName
       case "NAME"           => Local.PropertyDefaults.Name
       case "ORDER"          => Local.PropertyDefaults.Order
       case "TYPE_FULL_NAME" => Local.PropertyDefaults.TypeFullName
@@ -228,34 +235,36 @@ class Local(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/i
 
   override def productElementName(n: Int): String =
     n match {
-      case 0 => "id"
-      case 1 => "closureBindingId"
-      case 2 => "code"
-      case 3 => "columnNumber"
-      case 4 => "dynamicTypeHintFullName"
-      case 5 => "lineNumber"
-      case 6 => "name"
-      case 7 => "order"
-      case 8 => "possibleTypes"
-      case 9 => "typeFullName"
+      case 0  => "id"
+      case 1  => "closureBindingId"
+      case 2  => "code"
+      case 3  => "columnNumber"
+      case 4  => "dynamicTypeHintFullName"
+      case 5  => "fullName"
+      case 6  => "lineNumber"
+      case 7  => "name"
+      case 8  => "order"
+      case 9  => "possibleTypes"
+      case 10 => "typeFullName"
     }
 
   override def productElement(n: Int): Any =
     n match {
-      case 0 => id
-      case 1 => closureBindingId
-      case 2 => code
-      case 3 => columnNumber
-      case 4 => dynamicTypeHintFullName
-      case 5 => lineNumber
-      case 6 => name
-      case 7 => order
-      case 8 => possibleTypes
-      case 9 => typeFullName
+      case 0  => id
+      case 1  => closureBindingId
+      case 2  => code
+      case 3  => columnNumber
+      case 4  => dynamicTypeHintFullName
+      case 5  => fullName
+      case 6  => lineNumber
+      case 7  => name
+      case 8  => order
+      case 9  => possibleTypes
+      case 10 => typeFullName
     }
 
   override def productPrefix = "Local"
-  override def productArity  = 10
+  override def productArity  = 11
 }
 
 class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with AstNode with Declaration with LocalBase {
@@ -270,6 +279,8 @@ class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Ast
   def columnNumber: Option[Integer]                        = Option(_columnNumber)
   private var _dynamicTypeHintFullName: IndexedSeq[String] = collection.immutable.ArraySeq.empty
   def dynamicTypeHintFullName: IndexedSeq[String]          = _dynamicTypeHintFullName
+  private var _fullName: String                            = Local.PropertyDefaults.FullName
+  def fullName: String                                     = _fullName
   private var _lineNumber: Integer                         = null
   def lineNumber: Option[Integer]                          = Option(_lineNumber)
   private var _name: String                                = Local.PropertyDefaults.Name
@@ -290,6 +301,7 @@ class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Ast
     if (this._dynamicTypeHintFullName != null && this._dynamicTypeHintFullName.nonEmpty) {
       properties.put("DYNAMIC_TYPE_HINT_FULL_NAME", dynamicTypeHintFullName)
     }
+    properties.put("FULL_NAME", fullName)
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     properties.put("NAME", name)
     properties.put("ORDER", order)
@@ -308,6 +320,7 @@ class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Ast
     if (this._dynamicTypeHintFullName != null && this._dynamicTypeHintFullName.nonEmpty) {
       properties.put("DYNAMIC_TYPE_HINT_FULL_NAME", dynamicTypeHintFullName)
     }
+    if (!(("<empty>") == fullName)) { properties.put("FULL_NAME", fullName) }
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     if (!(("<empty>") == name)) { properties.put("NAME", name) }
     if (!((-1: Int) == order)) { properties.put("ORDER", order) }
@@ -369,34 +382,36 @@ class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Ast
 
   override def productElementName(n: Int): String =
     n match {
-      case 0 => "id"
-      case 1 => "closureBindingId"
-      case 2 => "code"
-      case 3 => "columnNumber"
-      case 4 => "dynamicTypeHintFullName"
-      case 5 => "lineNumber"
-      case 6 => "name"
-      case 7 => "order"
-      case 8 => "possibleTypes"
-      case 9 => "typeFullName"
+      case 0  => "id"
+      case 1  => "closureBindingId"
+      case 2  => "code"
+      case 3  => "columnNumber"
+      case 4  => "dynamicTypeHintFullName"
+      case 5  => "fullName"
+      case 6  => "lineNumber"
+      case 7  => "name"
+      case 8  => "order"
+      case 9  => "possibleTypes"
+      case 10 => "typeFullName"
     }
 
   override def productElement(n: Int): Any =
     n match {
-      case 0 => id
-      case 1 => closureBindingId
-      case 2 => code
-      case 3 => columnNumber
-      case 4 => dynamicTypeHintFullName
-      case 5 => lineNumber
-      case 6 => name
-      case 7 => order
-      case 8 => possibleTypes
-      case 9 => typeFullName
+      case 0  => id
+      case 1  => closureBindingId
+      case 2  => code
+      case 3  => columnNumber
+      case 4  => dynamicTypeHintFullName
+      case 5  => fullName
+      case 6  => lineNumber
+      case 7  => name
+      case 8  => order
+      case 9  => possibleTypes
+      case 10 => typeFullName
     }
 
   override def productPrefix = "Local"
-  override def productArity  = 10
+  override def productArity  = 11
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[LocalDb]
 
@@ -406,6 +421,7 @@ class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Ast
       case "CODE"                        => this._code
       case "COLUMN_NUMBER"               => this._columnNumber
       case "DYNAMIC_TYPE_HINT_FULL_NAME" => this._dynamicTypeHintFullName
+      case "FULL_NAME"                   => this._fullName
       case "LINE_NUMBER"                 => this._lineNumber
       case "NAME"                        => this._name
       case "ORDER"                       => this._order
@@ -439,6 +455,7 @@ class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Ast
               collection.immutable.ArraySeq.unsafeWrapArray(iter.asInstanceOf[Iterable[String]].toArray)
             } else collection.immutable.ArraySeq.empty
         }
+      case "FULL_NAME"   => this._fullName = value.asInstanceOf[String]
       case "LINE_NUMBER" => this._lineNumber = value.asInstanceOf[Integer]
       case "NAME"        => this._name = value.asInstanceOf[String]
       case "ORDER"       => this._order = value.asInstanceOf[scala.Int]
@@ -483,6 +500,7 @@ class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Ast
       if (newNode.asInstanceOf[NewLocal].dynamicTypeHintFullName != null)
         newNode.asInstanceOf[NewLocal].dynamicTypeHintFullName
       else collection.immutable.ArraySeq.empty
+    this._fullName = newNode.asInstanceOf[NewLocal].fullName
     this._lineNumber = newNode.asInstanceOf[NewLocal].lineNumber.orNull
     this._name = newNode.asInstanceOf[NewLocal].name
     this._order = newNode.asInstanceOf[NewLocal].order
@@ -491,6 +509,7 @@ class LocalDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with Ast
       else collection.immutable.ArraySeq.empty
     this._typeFullName = newNode.asInstanceOf[NewLocal].typeFullName
 
+    graph.indexManager.putIfIndexed("FULL_NAME", newNode.asInstanceOf[NewLocal].fullName, this.ref)
   }
 
 }

@@ -227,6 +227,9 @@ public static final String tryCatch = "<operator>.tryCatch";
 /** Allocates memory for an object of a specific type */
 public static final String alloc = "<operator>.alloc";
 
+/** init */
+public static final String init = "<operator>.init";
+
 
 public static Set<String> ALL = new HashSet<String>() {{
 add(addition);
@@ -302,6 +305,7 @@ add(lengthOf);
 add(safeNavigation);
 add(tryCatch);
 add(alloc);
+add(init);
 }};
 
 }

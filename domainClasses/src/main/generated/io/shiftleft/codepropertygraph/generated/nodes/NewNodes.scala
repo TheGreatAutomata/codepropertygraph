@@ -27321,6 +27321,7 @@ class NewLocal extends NewNode with LocalBase with AstNodeNew with DeclarationNe
   var order: scala.Int                            = -1: Int
   var name: String                                = "<empty>"
   var lineNumber: Option[Integer]                 = None
+  var fullName: String                            = "<empty>"
   var dynamicTypeHintFullName: IndexedSeq[String] = collection.immutable.ArraySeq.empty
   var columnNumber: Option[Integer]               = None
   var code: String                                = "<empty>"
@@ -27334,6 +27335,7 @@ class NewLocal extends NewNode with LocalBase with AstNodeNew with DeclarationNe
     newInstance.code = this.code
     newInstance.columnNumber = this.columnNumber
     newInstance.dynamicTypeHintFullName = this.dynamicTypeHintFullName
+    newInstance.fullName = this.fullName
     newInstance.lineNumber = this.lineNumber
     newInstance.name = this.name
     newInstance.order = this.order
@@ -27363,6 +27365,11 @@ class NewLocal extends NewNode with LocalBase with AstNodeNew with DeclarationNe
 
   def dynamicTypeHintFullName(value: IterableOnce[String]): this.type = {
     this.dynamicTypeHintFullName = value.iterator.to(collection.immutable.ArraySeq)
+    this
+  }
+
+  def fullName(value: String): this.type = {
+    this.fullName = value
     this
   }
 
@@ -27401,6 +27408,7 @@ class NewLocal extends NewNode with LocalBase with AstNodeNew with DeclarationNe
     if (dynamicTypeHintFullName != null && dynamicTypeHintFullName.nonEmpty) {
       res += "DYNAMIC_TYPE_HINT_FULL_NAME" -> dynamicTypeHintFullName
     }
+    if (!(("<empty>") == fullName)) { res += "FULL_NAME" -> fullName }
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     if (!(("<empty>") == name)) { res += "NAME" -> name }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
@@ -27424,10 +27432,11 @@ class NewLocal extends NewNode with LocalBase with AstNodeNew with DeclarationNe
       case 2 => this.order
       case 3 => this.name
       case 4 => this.lineNumber
-      case 5 => this.dynamicTypeHintFullName
-      case 6 => this.columnNumber
-      case 7 => this.code
-      case 8 => this.closureBindingId
+      case 5 => this.fullName
+      case 6 => this.dynamicTypeHintFullName
+      case 7 => this.columnNumber
+      case 8 => this.code
+      case 9 => this.closureBindingId
       case _ => null
     }
 
@@ -27438,15 +27447,16 @@ class NewLocal extends NewNode with LocalBase with AstNodeNew with DeclarationNe
       case 2 => "order"
       case 3 => "name"
       case 4 => "lineNumber"
-      case 5 => "dynamicTypeHintFullName"
-      case 6 => "columnNumber"
-      case 7 => "code"
-      case 8 => "closureBindingId"
+      case 5 => "fullName"
+      case 6 => "dynamicTypeHintFullName"
+      case 7 => "columnNumber"
+      case 8 => "code"
+      case 9 => "closureBindingId"
       case _ => ""
     }
 
   override def productPrefix = "NewLocal"
-  override def productArity  = 9
+  override def productArity  = 10
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewLocal]
 }
@@ -32316,7 +32326,9 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
   var possibleTypes: IndexedSeq[String]           = collection.immutable.ArraySeq.empty
   var order: scala.Int                            = -1: Int
   var name: String                                = "<empty>"
+  var memberOffset: scala.Int                     = -1: Int
   var lineNumber: Option[Integer]                 = None
+  var fullName: String                            = "<empty>"
   var dynamicTypeHintFullName: IndexedSeq[String] = collection.immutable.ArraySeq.empty
   var columnNumber: Option[Integer]               = None
   var code: String                                = "<empty>"
@@ -32332,7 +32344,9 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
     newInstance.code = this.code
     newInstance.columnNumber = this.columnNumber
     newInstance.dynamicTypeHintFullName = this.dynamicTypeHintFullName
+    newInstance.fullName = this.fullName
     newInstance.lineNumber = this.lineNumber
+    newInstance.memberOffset = this.memberOffset
     newInstance.name = this.name
     newInstance.order = this.order
     newInstance.possibleTypes = this.possibleTypes
@@ -32367,12 +32381,22 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
     this
   }
 
+  def fullName(value: String): this.type = {
+    this.fullName = value
+    this
+  }
+
   def lineNumber(value: Integer): this.type = {
     this.lineNumber = Option(value)
     this
   }
 
   def lineNumber(value: Option[Integer]): this.type = lineNumber(value.orNull)
+
+  def memberOffset(value: scala.Int): this.type = {
+    this.memberOffset = value
+    this
+  }
 
   def name(value: String): this.type = {
     this.name = value
@@ -32403,7 +32427,9 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
     if (dynamicTypeHintFullName != null && dynamicTypeHintFullName.nonEmpty) {
       res += "DYNAMIC_TYPE_HINT_FULL_NAME" -> dynamicTypeHintFullName
     }
+    if (!(("<empty>") == fullName)) { res += "FULL_NAME" -> fullName }
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
+    if (!((-1: Int) == memberOffset)) { res += "MEMBER_OFFSET" -> memberOffset }
     if (!(("<empty>") == name)) { res += "NAME" -> name }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
     if (possibleTypes != null && possibleTypes.nonEmpty) { res += "POSSIBLE_TYPES" -> possibleTypes }
@@ -32421,36 +32447,40 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
 
   override def productElement(n: Int): Any =
     n match {
-      case 0 => this.typeFullName
-      case 1 => this.possibleTypes
-      case 2 => this.order
-      case 3 => this.name
-      case 4 => this.lineNumber
-      case 5 => this.dynamicTypeHintFullName
-      case 6 => this.columnNumber
-      case 7 => this.code
-      case 8 => this.astParentType
-      case 9 => this.astParentFullName
-      case _ => null
+      case 0  => this.typeFullName
+      case 1  => this.possibleTypes
+      case 2  => this.order
+      case 3  => this.name
+      case 4  => this.memberOffset
+      case 5  => this.lineNumber
+      case 6  => this.fullName
+      case 7  => this.dynamicTypeHintFullName
+      case 8  => this.columnNumber
+      case 9  => this.code
+      case 10 => this.astParentType
+      case 11 => this.astParentFullName
+      case _  => null
     }
 
   override def productElementName(n: Int): String =
     n match {
-      case 0 => "typeFullName"
-      case 1 => "possibleTypes"
-      case 2 => "order"
-      case 3 => "name"
-      case 4 => "lineNumber"
-      case 5 => "dynamicTypeHintFullName"
-      case 6 => "columnNumber"
-      case 7 => "code"
-      case 8 => "astParentType"
-      case 9 => "astParentFullName"
-      case _ => ""
+      case 0  => "typeFullName"
+      case 1  => "possibleTypes"
+      case 2  => "order"
+      case 3  => "name"
+      case 4  => "memberOffset"
+      case 5  => "lineNumber"
+      case 6  => "fullName"
+      case 7  => "dynamicTypeHintFullName"
+      case 8  => "columnNumber"
+      case 9  => "code"
+      case 10 => "astParentType"
+      case 11 => "astParentFullName"
+      case _  => ""
     }
 
   override def productPrefix = "NewMember"
-  override def productArity  = 10
+  override def productArity  = 12
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewMember]
 }
@@ -48750,6 +48780,7 @@ object NewType {
 class NewType extends NewNode with TypeBase {
   type StoredType = Type
 
+  var typeSize: scala.Int      = -1: Int
   var typeDeclFullName: String = "<empty>"
   var name: String             = "<empty>"
   var fullName: String         = "<empty>"
@@ -48761,6 +48792,7 @@ class NewType extends NewNode with TypeBase {
     newInstance.fullName = this.fullName
     newInstance.name = this.name
     newInstance.typeDeclFullName = this.typeDeclFullName
+    newInstance.typeSize = this.typeSize
     newInstance.asInstanceOf[this.type]
   }
 
@@ -48779,11 +48811,17 @@ class NewType extends NewNode with TypeBase {
     this
   }
 
+  def typeSize(value: scala.Int): this.type = {
+    this.typeSize = value
+    this
+  }
+
   override def properties: Map[String, Any] = {
     var res = Map[String, Any]()
     if (!(("<empty>") == fullName)) { res += "FULL_NAME" -> fullName }
     if (!(("<empty>") == name)) { res += "NAME" -> name }
     if (!(("<empty>") == typeDeclFullName)) { res += "TYPE_DECL_FULL_NAME" -> typeDeclFullName }
+    if (!((-1: Int) == typeSize)) { res += "TYPE_SIZE" -> typeSize }
     res
   }
 
@@ -48797,22 +48835,24 @@ class NewType extends NewNode with TypeBase {
 
   override def productElement(n: Int): Any =
     n match {
-      case 0 => this.typeDeclFullName
-      case 1 => this.name
-      case 2 => this.fullName
+      case 0 => this.typeSize
+      case 1 => this.typeDeclFullName
+      case 2 => this.name
+      case 3 => this.fullName
       case _ => null
     }
 
   override def productElementName(n: Int): String =
     n match {
-      case 0 => "typeDeclFullName"
-      case 1 => "name"
-      case 2 => "fullName"
+      case 0 => "typeSize"
+      case 1 => "typeDeclFullName"
+      case 2 => "name"
+      case 3 => "fullName"
       case _ => ""
     }
 
   override def productPrefix = "NewType"
-  override def productArity  = 3
+  override def productArity  = 4
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewType]
 }
@@ -51840,11 +51880,13 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
   var offsetEnd: Option[Integer]                   = None
   var offset: Option[Integer]                      = None
   var name: String                                 = "<empty>"
+  var lineNumberEnd: Option[Integer]               = None
   var lineNumber: Option[Integer]                  = None
   var isExternal: Boolean                          = false
   var inheritsFromTypeFullName: IndexedSeq[String] = collection.immutable.ArraySeq.empty
   var fullName: String                             = "<empty>"
   var filename: String                             = "<empty>"
+  var columnNumberEnd: Option[Integer]             = None
   var columnNumber: Option[Integer]                = None
   var code: String                                 = "<empty>"
   var astParentType: String                        = "<empty>"
@@ -51860,11 +51902,13 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
     newInstance.astParentType = this.astParentType
     newInstance.code = this.code
     newInstance.columnNumber = this.columnNumber
+    newInstance.columnNumberEnd = this.columnNumberEnd
     newInstance.filename = this.filename
     newInstance.fullName = this.fullName
     newInstance.inheritsFromTypeFullName = this.inheritsFromTypeFullName
     newInstance.isExternal = this.isExternal
     newInstance.lineNumber = this.lineNumber
+    newInstance.lineNumberEnd = this.lineNumberEnd
     newInstance.name = this.name
     newInstance.offset = this.offset
     newInstance.offsetEnd = this.offsetEnd
@@ -51901,6 +51945,13 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
 
   def columnNumber(value: Option[Integer]): this.type = columnNumber(value.orNull)
 
+  def columnNumberEnd(value: Integer): this.type = {
+    this.columnNumberEnd = Option(value)
+    this
+  }
+
+  def columnNumberEnd(value: Option[Integer]): this.type = columnNumberEnd(value.orNull)
+
   def filename(value: String): this.type = {
     this.filename = value
     this
@@ -51927,6 +51978,13 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
   }
 
   def lineNumber(value: Option[Integer]): this.type = lineNumber(value.orNull)
+
+  def lineNumberEnd(value: Integer): this.type = {
+    this.lineNumberEnd = Option(value)
+    this
+  }
+
+  def lineNumberEnd(value: Option[Integer]): this.type = lineNumberEnd(value.orNull)
 
   def name(value: String): this.type = {
     this.name = value
@@ -51959,6 +52017,7 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
     if (!(("<empty>") == astParentType)) { res += "AST_PARENT_TYPE" -> astParentType }
     if (!(("<empty>") == code)) { res += "CODE" -> code }
     columnNumber.map { value => res += "COLUMN_NUMBER" -> value }
+    columnNumberEnd.map { value => res += "COLUMN_NUMBER_END" -> value }
     if (!(("<empty>") == filename)) { res += "FILENAME" -> filename }
     if (!(("<empty>") == fullName)) { res += "FULL_NAME" -> fullName }
     if (inheritsFromTypeFullName != null && inheritsFromTypeFullName.nonEmpty) {
@@ -51966,6 +52025,7 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
     }
     if (!((false) == isExternal)) { res += "IS_EXTERNAL" -> isExternal }
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
+    lineNumberEnd.map { value => res += "LINE_NUMBER_END" -> value }
     if (!(("<empty>") == name)) { res += "NAME" -> name }
     offset.map { value => res += "OFFSET" -> value }
     offsetEnd.map { value => res += "OFFSET_END" -> value }
@@ -51987,16 +52047,18 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
       case 1  => this.offsetEnd
       case 2  => this.offset
       case 3  => this.name
-      case 4  => this.lineNumber
-      case 5  => this.isExternal
-      case 6  => this.inheritsFromTypeFullName
-      case 7  => this.fullName
-      case 8  => this.filename
-      case 9  => this.columnNumber
-      case 10 => this.code
-      case 11 => this.astParentType
-      case 12 => this.astParentFullName
-      case 13 => this.aliasTypeFullName
+      case 4  => this.lineNumberEnd
+      case 5  => this.lineNumber
+      case 6  => this.isExternal
+      case 7  => this.inheritsFromTypeFullName
+      case 8  => this.fullName
+      case 9  => this.filename
+      case 10 => this.columnNumberEnd
+      case 11 => this.columnNumber
+      case 12 => this.code
+      case 13 => this.astParentType
+      case 14 => this.astParentFullName
+      case 15 => this.aliasTypeFullName
       case _  => null
     }
 
@@ -52006,21 +52068,23 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
       case 1  => "offsetEnd"
       case 2  => "offset"
       case 3  => "name"
-      case 4  => "lineNumber"
-      case 5  => "isExternal"
-      case 6  => "inheritsFromTypeFullName"
-      case 7  => "fullName"
-      case 8  => "filename"
-      case 9  => "columnNumber"
-      case 10 => "code"
-      case 11 => "astParentType"
-      case 12 => "astParentFullName"
-      case 13 => "aliasTypeFullName"
+      case 4  => "lineNumberEnd"
+      case 5  => "lineNumber"
+      case 6  => "isExternal"
+      case 7  => "inheritsFromTypeFullName"
+      case 8  => "fullName"
+      case 9  => "filename"
+      case 10 => "columnNumberEnd"
+      case 11 => "columnNumber"
+      case 12 => "code"
+      case 13 => "astParentType"
+      case 14 => "astParentFullName"
+      case 15 => "aliasTypeFullName"
       case _  => ""
     }
 
   override def productPrefix = "NewTypeDecl"
-  override def productArity  = 14
+  override def productArity  = 16
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewTypeDecl]
 }
