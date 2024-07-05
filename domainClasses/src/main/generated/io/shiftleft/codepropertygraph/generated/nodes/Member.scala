@@ -15,6 +15,7 @@ object Member {
     val ColumnNumber            = "COLUMN_NUMBER"
     val DynamicTypeHintFullName = "DYNAMIC_TYPE_HINT_FULL_NAME"
     val FullName                = "FULL_NAME"
+    val IndexOrder              = "INDEX_ORDER"
     val LineNumber              = "LINE_NUMBER"
     val MemberOffset            = "MEMBER_OFFSET"
     val Name                    = "NAME"
@@ -28,6 +29,7 @@ object Member {
       ColumnNumber,
       DynamicTypeHintFullName,
       FullName,
+      IndexOrder,
       LineNumber,
       MemberOffset,
       Name,
@@ -45,6 +47,7 @@ object Member {
     val ColumnNumber            = new overflowdb.PropertyKey[Integer]("COLUMN_NUMBER")
     val DynamicTypeHintFullName = new overflowdb.PropertyKey[IndexedSeq[String]]("DYNAMIC_TYPE_HINT_FULL_NAME")
     val FullName                = new overflowdb.PropertyKey[String]("FULL_NAME")
+    val IndexOrder              = new overflowdb.PropertyKey[scala.Int]("INDEX_ORDER")
     val LineNumber              = new overflowdb.PropertyKey[Integer]("LINE_NUMBER")
     val MemberOffset            = new overflowdb.PropertyKey[scala.Int]("MEMBER_OFFSET")
     val Name                    = new overflowdb.PropertyKey[String]("NAME")
@@ -59,6 +62,7 @@ object Member {
     val AstParentType     = "<empty>"
     val Code              = "<empty>"
     val FullName          = "<empty>"
+    val IndexOrder        = -1: Int
     val MemberOffset      = -1: Int
     val Name              = "<empty>"
     val Order             = -1: Int
@@ -107,6 +111,7 @@ trait MemberBase extends AbstractNode with AstNodeBase with DeclarationBase {
   def columnNumber: Option[Integer]
   def dynamicTypeHintFullName: IndexedSeq[String]
   def fullName: String
+  def indexOrder: scala.Int
   def lineNumber: Option[Integer]
   def memberOffset: scala.Int
   def name: String
@@ -128,6 +133,7 @@ class Member(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
   override def columnNumber: Option[Integer]               = get().columnNumber
   override def dynamicTypeHintFullName: IndexedSeq[String] = get().dynamicTypeHintFullName
   override def fullName: String                            = get().fullName
+  override def indexOrder: scala.Int                       = get().indexOrder
   override def lineNumber: Option[Integer]                 = get().lineNumber
   override def memberOffset: scala.Int                     = get().memberOffset
   override def name: String                                = get().name
@@ -140,6 +146,7 @@ class Member(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
       case "AST_PARENT_TYPE"      => Member.PropertyDefaults.AstParentType
       case "CODE"                 => Member.PropertyDefaults.Code
       case "FULL_NAME"            => Member.PropertyDefaults.FullName
+      case "INDEX_ORDER"          => Member.PropertyDefaults.IndexOrder
       case "MEMBER_OFFSET"        => Member.PropertyDefaults.MemberOffset
       case "NAME"                 => Member.PropertyDefaults.Name
       case "ORDER"                => Member.PropertyDefaults.Order
@@ -235,12 +242,13 @@ class Member(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
       case 4  => "columnNumber"
       case 5  => "dynamicTypeHintFullName"
       case 6  => "fullName"
-      case 7  => "lineNumber"
-      case 8  => "memberOffset"
-      case 9  => "name"
-      case 10 => "order"
-      case 11 => "possibleTypes"
-      case 12 => "typeFullName"
+      case 7  => "indexOrder"
+      case 8  => "lineNumber"
+      case 9  => "memberOffset"
+      case 10 => "name"
+      case 11 => "order"
+      case 12 => "possibleTypes"
+      case 13 => "typeFullName"
     }
 
   override def productElement(n: Int): Any =
@@ -252,16 +260,17 @@ class Member(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
       case 4  => columnNumber
       case 5  => dynamicTypeHintFullName
       case 6  => fullName
-      case 7  => lineNumber
-      case 8  => memberOffset
-      case 9  => name
-      case 10 => order
-      case 11 => possibleTypes
-      case 12 => typeFullName
+      case 7  => indexOrder
+      case 8  => lineNumber
+      case 9  => memberOffset
+      case 10 => name
+      case 11 => order
+      case 12 => possibleTypes
+      case 13 => typeFullName
     }
 
   override def productPrefix = "Member"
-  override def productArity  = 13
+  override def productArity  = 14
 }
 
 class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with AstNode with Declaration with MemberBase {
@@ -280,6 +289,8 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
   def dynamicTypeHintFullName: IndexedSeq[String]          = _dynamicTypeHintFullName
   private var _fullName: String                            = Member.PropertyDefaults.FullName
   def fullName: String                                     = _fullName
+  private var _indexOrder: scala.Int                       = Member.PropertyDefaults.IndexOrder
+  def indexOrder: scala.Int                                = _indexOrder
   private var _lineNumber: Integer                         = null
   def lineNumber: Option[Integer]                          = Option(_lineNumber)
   private var _memberOffset: scala.Int                     = Member.PropertyDefaults.MemberOffset
@@ -304,6 +315,7 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
       properties.put("DYNAMIC_TYPE_HINT_FULL_NAME", dynamicTypeHintFullName)
     }
     properties.put("FULL_NAME", fullName)
+    properties.put("INDEX_ORDER", indexOrder)
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     properties.put("MEMBER_OFFSET", memberOffset)
     properties.put("NAME", name)
@@ -325,6 +337,7 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
       properties.put("DYNAMIC_TYPE_HINT_FULL_NAME", dynamicTypeHintFullName)
     }
     if (!(("<empty>") == fullName)) { properties.put("FULL_NAME", fullName) }
+    if (!((-1: Int) == indexOrder)) { properties.put("INDEX_ORDER", indexOrder) }
     lineNumber.map { value => properties.put("LINE_NUMBER", value) }
     if (!((-1: Int) == memberOffset)) { properties.put("MEMBER_OFFSET", memberOffset) }
     if (!(("<empty>") == name)) { properties.put("NAME", name) }
@@ -391,12 +404,13 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
       case 4  => "columnNumber"
       case 5  => "dynamicTypeHintFullName"
       case 6  => "fullName"
-      case 7  => "lineNumber"
-      case 8  => "memberOffset"
-      case 9  => "name"
-      case 10 => "order"
-      case 11 => "possibleTypes"
-      case 12 => "typeFullName"
+      case 7  => "indexOrder"
+      case 8  => "lineNumber"
+      case 9  => "memberOffset"
+      case 10 => "name"
+      case 11 => "order"
+      case 12 => "possibleTypes"
+      case 13 => "typeFullName"
     }
 
   override def productElement(n: Int): Any =
@@ -408,16 +422,17 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
       case 4  => columnNumber
       case 5  => dynamicTypeHintFullName
       case 6  => fullName
-      case 7  => lineNumber
-      case 8  => memberOffset
-      case 9  => name
-      case 10 => order
-      case 11 => possibleTypes
-      case 12 => typeFullName
+      case 7  => indexOrder
+      case 8  => lineNumber
+      case 9  => memberOffset
+      case 10 => name
+      case 11 => order
+      case 12 => possibleTypes
+      case 13 => typeFullName
     }
 
   override def productPrefix = "Member"
-  override def productArity  = 13
+  override def productArity  = 14
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[MemberDb]
 
@@ -429,6 +444,7 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
       case "COLUMN_NUMBER"               => this._columnNumber
       case "DYNAMIC_TYPE_HINT_FULL_NAME" => this._dynamicTypeHintFullName
       case "FULL_NAME"                   => this._fullName
+      case "INDEX_ORDER"                 => this._indexOrder
       case "LINE_NUMBER"                 => this._lineNumber
       case "MEMBER_OFFSET"               => this._memberOffset
       case "NAME"                        => this._name
@@ -465,6 +481,7 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
             } else collection.immutable.ArraySeq.empty
         }
       case "FULL_NAME"     => this._fullName = value.asInstanceOf[String]
+      case "INDEX_ORDER"   => this._indexOrder = value.asInstanceOf[scala.Int]
       case "LINE_NUMBER"   => this._lineNumber = value.asInstanceOf[Integer]
       case "MEMBER_OFFSET" => this._memberOffset = value.asInstanceOf[scala.Int]
       case "NAME"          => this._name = value.asInstanceOf[String]
@@ -512,6 +529,7 @@ class MemberDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode with As
         newNode.asInstanceOf[NewMember].dynamicTypeHintFullName
       else collection.immutable.ArraySeq.empty
     this._fullName = newNode.asInstanceOf[NewMember].fullName
+    this._indexOrder = newNode.asInstanceOf[NewMember].indexOrder
     this._lineNumber = newNode.asInstanceOf[NewMember].lineNumber.orNull
     this._memberOffset = newNode.asInstanceOf[NewMember].memberOffset
     this._name = newNode.asInstanceOf[NewMember].name

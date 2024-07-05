@@ -32328,6 +32328,7 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
   var name: String                                = "<empty>"
   var memberOffset: scala.Int                     = -1: Int
   var lineNumber: Option[Integer]                 = None
+  var indexOrder: scala.Int                       = -1: Int
   var fullName: String                            = "<empty>"
   var dynamicTypeHintFullName: IndexedSeq[String] = collection.immutable.ArraySeq.empty
   var columnNumber: Option[Integer]               = None
@@ -32345,6 +32346,7 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
     newInstance.columnNumber = this.columnNumber
     newInstance.dynamicTypeHintFullName = this.dynamicTypeHintFullName
     newInstance.fullName = this.fullName
+    newInstance.indexOrder = this.indexOrder
     newInstance.lineNumber = this.lineNumber
     newInstance.memberOffset = this.memberOffset
     newInstance.name = this.name
@@ -32383,6 +32385,11 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
 
   def fullName(value: String): this.type = {
     this.fullName = value
+    this
+  }
+
+  def indexOrder(value: scala.Int): this.type = {
+    this.indexOrder = value
     this
   }
 
@@ -32428,6 +32435,7 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
       res += "DYNAMIC_TYPE_HINT_FULL_NAME" -> dynamicTypeHintFullName
     }
     if (!(("<empty>") == fullName)) { res += "FULL_NAME" -> fullName }
+    if (!((-1: Int) == indexOrder)) { res += "INDEX_ORDER" -> indexOrder }
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     if (!((-1: Int) == memberOffset)) { res += "MEMBER_OFFSET" -> memberOffset }
     if (!(("<empty>") == name)) { res += "NAME" -> name }
@@ -32453,12 +32461,13 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
       case 3  => this.name
       case 4  => this.memberOffset
       case 5  => this.lineNumber
-      case 6  => this.fullName
-      case 7  => this.dynamicTypeHintFullName
-      case 8  => this.columnNumber
-      case 9  => this.code
-      case 10 => this.astParentType
-      case 11 => this.astParentFullName
+      case 6  => this.indexOrder
+      case 7  => this.fullName
+      case 8  => this.dynamicTypeHintFullName
+      case 9  => this.columnNumber
+      case 10 => this.code
+      case 11 => this.astParentType
+      case 12 => this.astParentFullName
       case _  => null
     }
 
@@ -32470,17 +32479,18 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
       case 3  => "name"
       case 4  => "memberOffset"
       case 5  => "lineNumber"
-      case 6  => "fullName"
-      case 7  => "dynamicTypeHintFullName"
-      case 8  => "columnNumber"
-      case 9  => "code"
-      case 10 => "astParentType"
-      case 11 => "astParentFullName"
+      case 6  => "indexOrder"
+      case 7  => "fullName"
+      case 8  => "dynamicTypeHintFullName"
+      case 9  => "columnNumber"
+      case 10 => "code"
+      case 11 => "astParentType"
+      case 12 => "astParentFullName"
       case _  => ""
     }
 
   override def productPrefix = "NewMember"
-  override def productArity  = 12
+  override def productArity  = 13
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewMember]
 }

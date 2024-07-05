@@ -141,6 +141,9 @@ public static final String IMPORTED_ENTITY = "IMPORTED_ENTITY";
  self / this parameter. */
 public static final String INDEX = "INDEX";
 
+/** INDEX_ORDER */
+public static final String INDEX_ORDER = "INDEX_ORDER";
+
 /** The static types a TYPE_DECL inherits from. This property is matched against the
 FULL_NAME of TYPE nodes and thus it is required to have at least one TYPE node
 for each TYPE_FULL_NAME */
@@ -310,6 +313,7 @@ add(HASH);
 add(IMPORTED_AS);
 add(IMPORTED_ENTITY);
 add(INDEX);
+add(INDEX_ORDER);
 add(INHERITS_FROM_TYPE_FULL_NAME);
 add(IS_EXPLICIT);
 add(IS_EXTERNAL);

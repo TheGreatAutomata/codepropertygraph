@@ -653,6 +653,19 @@ object Ast extends SchemaBase {
     method.addOutEdge(edge = templatePara, inNode = local)
     typeDecl.addOutEdge(edge = templatePara, inNode = local)
     tpe.addOutEdge(edge = specializepara, inNode = astNode)
+
+    val index = builder
+      .addProperty(
+        name = "INDEX_ORDER",
+        valueType = ValueType.Int,
+        comment =
+          """INDEX_ORDER
+            |""".stripMargin
+      )
+      .mandatory(-1)
+      .protoId(50025)
+
+    member.addProperties(index)
   }
 
 }

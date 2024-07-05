@@ -302,6 +302,54 @@ class MemberTraversalExtGen[NodeType <: Member](val traversal: Iterator[NodeType
     overflowdb.traversal.filter.StringPropertyFilter.regexpNotMultiple(traversal)(_.fullName, patterns)
   }
 
+  /** Traverse to indexOrder property */
+  def indexOrder: Iterator[scala.Int] =
+    traversal.map(_.indexOrder)
+
+  /** Traverse to nodes where the indexOrder equals the given `value`
+    */
+  def indexOrder(value: scala.Int): Iterator[NodeType] =
+    traversal.filter { _.indexOrder == value }
+
+  /** Traverse to nodes where the indexOrder equals at least one of the given `values`
+    */
+  def indexOrder(values: scala.Int*): Iterator[NodeType] = {
+    val vset = values.toSet
+    traversal.filter { node => vset.contains(node.indexOrder) }
+  }
+
+  /** Traverse to nodes where the indexOrder is greater than the given `value`
+    */
+  def indexOrderGt(value: scala.Int): Iterator[NodeType] =
+    traversal.filter { _.indexOrder > value }
+
+  /** Traverse to nodes where the indexOrder is greater than or equal the given `value`
+    */
+  def indexOrderGte(value: scala.Int): Iterator[NodeType] =
+    traversal.filter { _.indexOrder >= value }
+
+  /** Traverse to nodes where the indexOrder is less than the given `value`
+    */
+  def indexOrderLt(value: scala.Int): Iterator[NodeType] =
+    traversal.filter { _.indexOrder < value }
+
+  /** Traverse to nodes where the indexOrder is less than or equal the given `value`
+    */
+  def indexOrderLte(value: scala.Int): Iterator[NodeType] =
+    traversal.filter { _.indexOrder <= value }
+
+  /** Traverse to nodes where indexOrder is not equal to the given `value`.
+    */
+  def indexOrderNot(value: scala.Int): Iterator[NodeType] =
+    traversal.filter { _.indexOrder != value }
+
+  /** Traverse to nodes where indexOrder is not equal to any of the given `values`.
+    */
+  def indexOrderNot(values: scala.Int*): Iterator[NodeType] = {
+    val vset = values.toSet
+    traversal.filter { node => !vset.contains(node.indexOrder) }
+  }
+
   /** Traverse to lineNumber property */
   def lineNumber: Iterator[Integer] =
     traversal.flatMap(_.lineNumber)

@@ -141,6 +141,9 @@ public static final overflowdb.PropertyKey<String> IMPORTED_ENTITY = new overflo
  self / this parameter. */
 public static final overflowdb.PropertyKey<scala.Int> INDEX = new overflowdb.PropertyKey<>("INDEX");
 
+/** INDEX_ORDER */
+public static final overflowdb.PropertyKey<scala.Int> INDEX_ORDER = new overflowdb.PropertyKey<>("INDEX_ORDER");
+
 /** The static types a TYPE_DECL inherits from. This property is matched against the
 FULL_NAME of TYPE nodes and thus it is required to have at least one TYPE node
 for each TYPE_FULL_NAME */
@@ -310,6 +313,7 @@ add(HASH);
 add(IMPORTED_AS);
 add(IMPORTED_ENTITY);
 add(INDEX);
+add(INDEX_ORDER);
 add(INHERITS_FROM_TYPE_FULL_NAME);
 add(IS_EXPLICIT);
 add(IS_EXTERNAL);

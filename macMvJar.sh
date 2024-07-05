@@ -1,4 +1,4 @@
-VERSION="0.1+4-1a655e2a"
+VERSION="0.1+5-d31b74f1+20240704-1354"
 
 #/Users/liuhaokun/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/io/shiftleft/codepropertygraph_3/1.6.6
 
