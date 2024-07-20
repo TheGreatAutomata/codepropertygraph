@@ -82,13 +82,14 @@ class TypeParameter(graph_4762: Graph, id_4762: Long /*cf https://github.com/sca
   override def lineNumber: Option[Integer]   = get().lineNumber
   override def name: String                  = get().name
   override def order: scala.Int              = get().order
-  override def propertyDefaultValue(propertyKey: String) =
+  override def propertyDefaultValue(propertyKey: String) = {
     propertyKey match {
       case "CODE"  => TypeParameter.PropertyDefaults.Code
       case "NAME"  => TypeParameter.PropertyDefaults.Name
       case "ORDER" => TypeParameter.PropertyDefaults.Order
       case _       => super.propertyDefaultValue(propertyKey)
     }
+  }
 
   def inMacroOut: Iterator[MacroDecl] = get().inMacroOut
   override def _inMacroOut            = get()._inMacroOut

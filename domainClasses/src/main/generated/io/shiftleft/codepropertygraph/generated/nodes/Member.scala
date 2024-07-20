@@ -140,7 +140,7 @@ class Member(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
   override def order: scala.Int                            = get().order
   override def possibleTypes: IndexedSeq[String]           = get().possibleTypes
   override def typeFullName: String                        = get().typeFullName
-  override def propertyDefaultValue(propertyKey: String) =
+  override def propertyDefaultValue(propertyKey: String) = {
     propertyKey match {
       case "AST_PARENT_FULL_NAME" => Member.PropertyDefaults.AstParentFullName
       case "AST_PARENT_TYPE"      => Member.PropertyDefaults.AstParentType
@@ -153,6 +153,7 @@ class Member(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/
       case "TYPE_FULL_NAME"       => Member.PropertyDefaults.TypeFullName
       case _                      => super.propertyDefaultValue(propertyKey)
     }
+  }
 
   def astOut: Iterator[AstNode] = get().astOut
   override def _astOut          = get()._astOut

@@ -113,7 +113,7 @@ class MethodParameterOut(graph_4762: Graph, id_4762: Long /*cf https://github.co
   override def name: String                  = get().name
   override def order: scala.Int              = get().order
   override def typeFullName: String          = get().typeFullName
-  override def propertyDefaultValue(propertyKey: String) =
+  override def propertyDefaultValue(propertyKey: String) = {
     propertyKey match {
       case "CODE"                => MethodParameterOut.PropertyDefaults.Code
       case "EVALUATION_STRATEGY" => MethodParameterOut.PropertyDefaults.EvaluationStrategy
@@ -124,6 +124,7 @@ class MethodParameterOut(graph_4762: Graph, id_4762: Long /*cf https://github.co
       case "TYPE_FULL_NAME"      => MethodParameterOut.PropertyDefaults.TypeFullName
       case _                     => super.propertyDefaultValue(propertyKey)
     }
+  }
 
   def evalTypeOut: Iterator[Type] = get().evalTypeOut
   override def _evalTypeOut       = get()._evalTypeOut

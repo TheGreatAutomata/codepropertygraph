@@ -128,6 +128,7 @@ class Type(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
       case "TYPE_SIZE"           => Type.PropertyDefaults.TypeSize
       case _                     => super.propertyDefaultValue(propertyKey)
     }
+  }
 
   def aliasOfOut: Iterator[Type] = get().aliasOfOut
   override def _aliasOfOut       = get()._aliasOfOut

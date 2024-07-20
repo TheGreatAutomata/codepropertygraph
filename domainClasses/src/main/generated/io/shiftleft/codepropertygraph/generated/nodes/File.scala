@@ -95,7 +95,7 @@ class File(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
   override def lineNumber: Option[Integer]   = get().lineNumber
   override def name: String                  = get().name
   override def order: scala.Int              = get().order
-  override def propertyDefaultValue(propertyKey: String) =
+  override def propertyDefaultValue(propertyKey: String) = {
     propertyKey match {
       case "CODE"    => File.PropertyDefaults.Code
       case "CONTENT" => File.PropertyDefaults.Content
@@ -103,6 +103,7 @@ class File(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/is
       case "ORDER"   => File.PropertyDefaults.Order
       case _         => super.propertyDefaultValue(propertyKey)
     }
+  }
 
   def astOut: Iterator[AstNode] = get().astOut
   override def _astOut          = get()._astOut

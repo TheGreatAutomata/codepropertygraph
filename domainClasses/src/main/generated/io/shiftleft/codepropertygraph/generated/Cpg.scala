@@ -18,9 +18,8 @@ object Cpg {
 
   /** Instantiate Cpg with storage. If the storage file already exists, it will load (a subset of) the data into memory.
     * Otherwise it will create an empty Cpg. In either case, configuring storage means that OverflowDb will be stored to
-    * disk on shutdown (`close`).
-    * I.e. if you want to preserve state between sessions, just use this method to instantiate the Cpg and ensure to
-    * properly `close` it at the end.
+    * disk on shutdown (`close`). I.e. if you want to preserve state between sessions, just use this method to
+    * instantiate the Cpg and ensure to properly `close` it at the end.
     * @param path
     *   to the storage file, e.g. /home/user1/overflowdb.bin
     */
@@ -81,8 +80,8 @@ class GeneratedNodeStarterExt(val wrapper: Cpg) extends AnyVal {
   def annotationParameter: Iterator[nodes.AnnotationParameter] =
     overflowdb.traversal.InitialTraversal.from[nodes.AnnotationParameter](wrapper.graph, "ANNOTATION_PARAMETER")
 
-  @overflowdb.traversal.help.Doc(
-    info = "All nodes of type AnnotationParameterAssign, i.e. with label ANNOTATION_PARAMETER_ASSIGN"
+  @overflowdb.traversal.help.Doc(info =
+    "All nodes of type AnnotationParameterAssign, i.e. with label ANNOTATION_PARAMETER_ASSIGN"
   )
   def annotationParameterAssign: Iterator[nodes.AnnotationParameterAssign] = overflowdb.traversal.InitialTraversal
     .from[nodes.AnnotationParameterAssign](wrapper.graph, "ANNOTATION_PARAMETER_ASSIGN")
@@ -245,7 +244,7 @@ class GeneratedNodeStarterExt(val wrapper: Cpg) extends AnyVal {
   @overflowdb.traversal.help.Doc(info = "All nodes of type Unknown, i.e. with label UNKNOWN")
   def unknown: Iterator[nodes.Unknown] =
     overflowdb.traversal.InitialTraversal.from[nodes.Unknown](wrapper.graph, "UNKNOWN")
-
+  
   @overflowdb.traversal.help.Doc(
     info =
       "All nodes of type AstNode, i.e. with label in ANNOTATION, ANNOTATION_LITERAL, ANNOTATION_PARAMETER, ANNOTATION_PARAMETER_ASSIGN, ARRAY_INITIALIZER, BLOCK, CALL, COMMENT, CONTROL_STRUCTURE, FIELD_IDENTIFIER, FILE, IDENTIFIER, IMPORT, JUMP_LABEL, JUMP_TARGET, LITERAL, LOCAL, MACRO_DECL, MACRO_REF, MEMBER, METHOD, METHOD_PARAMETER_IN, METHOD_PARAMETER_OUT, METHOD_REF, METHOD_RETURN, MODIFIER, NAMESPACE, NAMESPACE_BLOCK, RETURN, TEMPLATE_DOM, TYPE_ARGUMENT, TYPE_DECL, TYPE_PARAMETER, TYPE_REF, UNKNOWN"
@@ -294,9 +293,11 @@ class GeneratedNodeStarterExt(val wrapper: Cpg) extends AnyVal {
   @overflowdb.traversal.help.Doc(info = "All nodes of type CallRepr, i.e. with label in CALL")
   def callRepr: Iterator[nodes.CallRepr] = wrapper.graph.nodes("CALL").asScala.asInstanceOf[Iterator[nodes.CallRepr]]
 
+
   @overflowdb.traversal.help.Doc(
     info =
       "All nodes of type CfgNode, i.e. with label in ANNOTATION, ANNOTATION_LITERAL, ARRAY_INITIALIZER, BLOCK, CALL, CONTROL_STRUCTURE, FIELD_IDENTIFIER, IDENTIFIER, JUMP_TARGET, LITERAL, MACRO_REF, METHOD, METHOD_PARAMETER_IN, METHOD_PARAMETER_OUT, METHOD_REF, METHOD_RETURN, RETURN, TEMPLATE_DOM, TYPE_REF, UNKNOWN"
+
   )
   def cfgNode: Iterator[nodes.CfgNode] = wrapper.graph
     .nodes(
@@ -323,7 +324,7 @@ class GeneratedNodeStarterExt(val wrapper: Cpg) extends AnyVal {
     )
     .asScala
     .asInstanceOf[Iterator[nodes.CfgNode]]
-
+  
   @overflowdb.traversal.help.Doc(
     info =
       "All nodes of type Declaration, i.e. with label in LOCAL, MACRO_DECL, MEMBER, METHOD, METHOD_PARAMETER_IN, METHOD_PARAMETER_OUT"
@@ -332,10 +333,11 @@ class GeneratedNodeStarterExt(val wrapper: Cpg) extends AnyVal {
     .nodes("LOCAL", "MACRO_DECL", "MEMBER", "METHOD", "METHOD_PARAMETER_IN", "METHOD_PARAMETER_OUT")
     .asScala
     .asInstanceOf[Iterator[nodes.Declaration]]
-
+  
   @overflowdb.traversal.help.Doc(
     info =
       "All nodes of type Expression, i.e. with label in ANNOTATION, ANNOTATION_LITERAL, ARRAY_INITIALIZER, BLOCK, CALL, CONTROL_STRUCTURE, FIELD_IDENTIFIER, IDENTIFIER, LITERAL, MACRO_REF, METHOD_REF, RETURN, TEMPLATE_DOM, TYPE_REF, UNKNOWN"
+
   )
   def expression: Iterator[nodes.Expression] = wrapper.graph
     .nodes(

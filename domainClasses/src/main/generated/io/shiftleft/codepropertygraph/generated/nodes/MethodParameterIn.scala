@@ -140,7 +140,7 @@ class MethodParameterIn(graph_4762: Graph, id_4762: Long /*cf https://github.com
   override def order: scala.Int                            = get().order
   override def possibleTypes: IndexedSeq[String]           = get().possibleTypes
   override def typeFullName: String                        = get().typeFullName
-  override def propertyDefaultValue(propertyKey: String) =
+  override def propertyDefaultValue(propertyKey: String) = {
     propertyKey match {
       case "CODE"                => MethodParameterIn.PropertyDefaults.Code
       case "EVALUATION_STRATEGY" => MethodParameterIn.PropertyDefaults.EvaluationStrategy
@@ -151,6 +151,7 @@ class MethodParameterIn(graph_4762: Graph, id_4762: Long /*cf https://github.com
       case "TYPE_FULL_NAME"      => MethodParameterIn.PropertyDefaults.TypeFullName
       case _                     => super.propertyDefaultValue(propertyKey)
     }
+  }
 
   def astOut: Iterator[Expression] = get().astOut
   override def _astOut             = get()._astOut

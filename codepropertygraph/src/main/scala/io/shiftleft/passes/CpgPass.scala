@@ -21,7 +21,7 @@ abstract class CpgPass(cpg: Cpg, outName: String = "", keyPool: Option[KeyPool] 
 
   def run(builder: overflowdb.BatchedUpdate.DiffGraphBuilder): Unit
 
-  final override def generateParts(): Array[_ <: AnyRef] = Array[AnyRef](null)
+  final override def generateParts(): Array[? <: AnyRef] = Array[AnyRef](null)
 
   final override def runOnPart(builder: overflowdb.BatchedUpdate.DiffGraphBuilder, part: AnyRef): Unit =
     run(builder)
@@ -60,11 +60,7 @@ abstract class ForkJoinParallelCpgPass[T <: AnyRef](
   keyPool: Option[KeyPool] = None
 ) extends NewStyleCpgPassBase[T] {
 
-  override def createApplySerializeAndStore(
-    serializedCpg: SerializedCpg,
-    inverse: Boolean = false,
-    prefix: String = ""
-  ): Unit = {
+  override def createApplySerializeAndStore(serializedCpg: SerializedCpg, prefix: String = ""): Unit = {
     baseLogger.info(s"Start of pass: $name")
     val nanosStart = System.nanoTime()
     var nParts     = 0
@@ -94,7 +90,7 @@ abstract class ForkJoinParallelCpgPass[T <: AnyRef](
         val nanosStop = System.nanoTime()
         val fracRun   = if (nanosBuilt == -1) 0.0 else (nanosStop - nanosBuilt) * 100.0 / (nanosStop - nanosStart + 1)
         val serializationString = if (serializedCpg != null && !serializedCpg.isEmpty) {
-          if (inverse) " Inverse serialized and stored." else " Diff serialized and stored."
+          " Diff serialized and stored."
         } else ""
         baseLogger.info(
           f"Pass $name completed in ${(nanosStop - nanosStart) * 1e-6}%.0f ms (${fracRun}%.0f%% on mutations). ${nDiff}%d + ${nDiffT - nDiff}%d changes committed from ${nParts}%d parts.${serializationString}%s"
@@ -115,7 +111,7 @@ abstract class ForkJoinParallelCpgPass[T <: AnyRef](
 abstract class NewStyleCpgPassBase[T <: AnyRef] extends CpgPassBase {
   type DiffGraphBuilder = overflowdb.BatchedUpdate.DiffGraphBuilder
   // generate Array of parts that can be processed in parallel
-  def generateParts(): Array[_ <: AnyRef]
+  def generateParts(): Array[? <: AnyRef]
   // setup large data structures, acquire external resources
   def init(): Unit = {}
   // release large data structures and external resources
@@ -179,7 +175,7 @@ trait CpgPassBase {
 
   def createAndApply(): Unit
 
-  def createApplySerializeAndStore(serializedCpg: SerializedCpg, inverse: Boolean = false, prefix: String = ""): Unit
+  def createApplySerializeAndStore(serializedCpg: SerializedCpg, prefix: String = ""): Unit
 
   /** Name of the pass. By default it is inferred from the name of the class, override if needed.
     */

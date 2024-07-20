@@ -76,12 +76,13 @@ class AnnotationParameter(graph_4762: Graph, id_4762: Long /*cf https://github.c
   override def columnNumber: Option[Integer] = get().columnNumber
   override def lineNumber: Option[Integer]   = get().lineNumber
   override def order: scala.Int              = get().order
-  override def propertyDefaultValue(propertyKey: String) =
+  override def propertyDefaultValue(propertyKey: String) = {
     propertyKey match {
       case "CODE"  => AnnotationParameter.PropertyDefaults.Code
       case "ORDER" => AnnotationParameter.PropertyDefaults.Order
       case _       => super.propertyDefaultValue(propertyKey)
     }
+  }
 
   def inMacroOut: Iterator[MacroDecl] = get().inMacroOut
   override def _inMacroOut            = get()._inMacroOut

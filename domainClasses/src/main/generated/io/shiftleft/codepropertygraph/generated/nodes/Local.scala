@@ -123,7 +123,7 @@ class Local(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/i
   override def order: scala.Int                            = get().order
   override def possibleTypes: IndexedSeq[String]           = get().possibleTypes
   override def typeFullName: String                        = get().typeFullName
-  override def propertyDefaultValue(propertyKey: String) =
+  override def propertyDefaultValue(propertyKey: String) = {
     propertyKey match {
       case "CODE"           => Local.PropertyDefaults.Code
       case "FULL_NAME"      => Local.PropertyDefaults.FullName
@@ -132,6 +132,7 @@ class Local(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/bug/i
       case "TYPE_FULL_NAME" => Local.PropertyDefaults.TypeFullName
       case _                => super.propertyDefaultValue(propertyKey)
     }
+  }
 
   def astOut: Iterator[Call] = get().astOut
   override def _astOut       = get()._astOut
